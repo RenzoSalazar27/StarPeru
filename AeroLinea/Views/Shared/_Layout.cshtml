@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AeroLinea</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Estilos_index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AeroLinea.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                    <span class="hamburger" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        &#9776; <!-- Este es el símbolo de hamburguesa -->
+                    </span>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                <div class="line"></div>
+                                <img src="~/img/LOGO2.png" asp-append-version="true" alt="Home" />
+
+
+                            </a>
+
+                       
+
+                        </li>
+                    </ul>
+                    @if (Context.Session.GetString("AdminUsername") != null)
+                    {
+                        <div class="d-flex align-items-center">
+                            <span class="me-3 text-dark">Administrador: @Context.Session.GetString("AdminUsername")</span>
+                            <a class="btn btn-outline-danger" asp-controller="Admin" asp-action="Logout">Cerrar Sesión</a>
+                        </div>
+                    }
+                    else if (Context.Session.GetString("UserEmail") != null)
+                    {
+                        <div class="d-flex align-items-center">
+                            <span class="me-3 text-dark">Usuario: @Context.Session.GetString("UserEmail")</span>
+                            <a class="btn btn-outline-danger" asp-controller="Home" asp-action="LogoutUser">Cerrar Sesión</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center">
+                            <a class="btn btn-outline-primary" asp-controller="Home" asp-action="SelectLogin">Iniciar Sesión</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </nav>
+        <!-- Menú desplegable -->
+        <div class="collapse" id="menuOptions">
+            <div class="card2 card-body">
+                <ul class="navbar-nav">
+                    <h5 style="text-align: center; color: orange; margin-top: 10px;">TU CUENTA</h5>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Autenticacion">👤 Perfil</a>
+                    </li>
+                    <h5 style="text-align: center; color: orange; margin-top: 10px;">ADMINISTRADOR</h5>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="PanelAdministrador">👤 Panel Administrador</a>
+                    </li>
+                    <h5 style="text-align: center; color: orange; margin-top: 11px;">SERVICIOS</h5>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Promociones">⭐Promociones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Alianzas">🤝🏻Alianzas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Servicios_al_cliente">🛠️Servicios al Cliente</a>
+                    </li>
+
+                    <h5 style="text-align: center; color: orange; margin-top: 10px;">INFORMACIÓN</h5>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Destinos">🗺️Nuestros Destinos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Oficinas">🖥️Nuestras Oficinas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Flota">✈️Flota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Equipaje">🧳Equipaje</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Cargo">💳StarPerú Cargo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">⬅️ Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Admin" asp-action="Login">Panel de Administrador</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container" style="color: black;">
+            &copy; 2024 - AeroLinea - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

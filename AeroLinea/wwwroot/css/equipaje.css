@@ -1,0 +1,74 @@
+﻿/* Contenedor principal */
+.equipaje-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de cada sección desplegable */
+.equipaje-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+/* Encabezado con menor tamaño y estilo distintivo */
+.equipaje-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .equipaje-header h4 {
+        font-size: 1em;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .equipaje-header:hover {
+        background-color: #c0392b;
+    }
+
+.toggle-icon {
+    font-size: 1em;
+    transition: transform 0.3s ease;
+}
+
+/* Estilo del contenido desplegable */
+.equipaje-content {
+    display: none;
+    padding: 15px;
+    color: #333;
+    background-color: #ffffff;
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+    .equipaje-content p {
+        margin: 8px 0;
+    }
+
+/* Estilo de la cabecera principal */
+.header-section {
+    background-color: #f9ffc1;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 8px;
+}
+
+    .header-section .title {
+        font-size: 1.5em;
+        margin: 0;
+        font-weight: bold;
+    }

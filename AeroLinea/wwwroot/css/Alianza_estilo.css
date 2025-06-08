@@ -1,0 +1,129 @@
+﻿body {
+    margin: 0; 
+}
+
+.atras {
+    background-image: url('../img/viajando.jpg');
+    background-size: cover; /* Para que la imagen cubra todo el espacio */
+    background-position: center; /* Para centrar la imagen */
+    max-width: 3700px; /* El ancho máximo que deseas */
+    width: 106%; /* Aumenta el ancho aquí */
+    height: 25vh; /* Altura de 10% de la ventana */
+    margin-left: -3%; /* Ajusta el margen para compensar el aumento en el ancho */
+    border-radius: 10px;
+    display: flex; /* Flexbox para centrar */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.bajar {
+    margin-top: 10px ;
+}
+
+.abajo {
+    resize: initial;
+
+}
+
+.separa {
+    margin-top: 5%;
+}
+
+.tamano {
+    height: auto; /* Altura de 10% de la ventana */
+    text-align: center; /* Centra el texto */
+    padding: 10px;
+}
+
+.bi {
+    font-size: 1.5em; /* Ajusta el tamaño */
+    margin-right: 5px; /* Espacio a la derecha */
+    color: #000; /* Color del ícono */
+    vertical-align: middle; /* Alineación vertical */
+}
+
+@media (max-width: 600px) {
+    .tamaño {
+        height: 20vh; /* Ajusta para pantallas pequeñas */
+    }
+}
+
+
+
+.cuadro_red {
+    background-image: url('../img/fondoclaro.jpg');
+    background-color: antiquewhite;
+    max-width: 3700px; /* El ancho máximo que deseas */
+    width: 106%;
+    height: 370vh; /* Altura de 10% de la ventana */
+    margin-left: -3%;
+    background-size: cover; /* O usa 'contain' si prefieres ver la imagen completa */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    opacity: 0.9;
+    border-radius: 7px;
+}
+
+.cuadro {
+    width: 480px; /* Ancho del cuadrado */
+    height: 420px; /* Altura del cuadrado */
+    background-color: #808080; /* Color de fondo */
+    margin-left: 50px;
+    margin-top: 6%;
+    overflow: auto; /* barra de para desplazar y ver si el texto es largo */
+    display: flex; /* Activa flexbox */
+    flex-direction: column; /* Alinear el contenido verticalmente */
+    align-items: center; /* Centrar horizontalmente el contenido */
+}
+
+.imagen1 {
+    background-image: url('../img/avianca.jpg');
+    width: 500px; /* Ancho del cuadrado */
+    height: 420px; /* Altura del cuadrado */
+    margin-left: 30px;
+    margin-top: 6%;
+    display: flex; /* Activa flexbox */
+    flex-direction: column; /* Alinear el contenido verticalmente */
+    align-items: center; /* Centrar horizontalmente el contenido */
+    background-size: cover; /* Ajusta la imagen para cubrir el contenedor */
+}
+
+.imagen2 {
+    background-image: url('../img/latam.jpg');
+    width: 500px; /* Ancho del cuadrado */
+    height: 420px; /* Altura del cuadrado */
+    margin-left: 30px;
+    margin-top: 6%;
+    display: flex; /* Activa flexbox */
+    flex-direction: column; /* Alinear el contenido verticalmente */
+    align-items: center; /* Centrar horizontalmente el contenido */
+    background-size: cover; /* Ajusta la imagen para cubrir el contenedor */
+}
+
+.imagen3 {
+    background-image: url('../img/americanailine.jpg');
+    width: 500px; /* Ancho del cuadrado */
+    height: 420px; /* Altura del cuadrado */
+    margin-left: 30px;
+    margin-top: 6%;
+    display: flex; /* Activa flexbox */
+    flex-direction: column; /* Alinear el contenido verticalmente */
+    align-items: center; /* Centrar horizontalmente el contenido */
+    background-size: cover; /* Ajusta la imagen para cubrir el contenedor */
+}
+
+.derecha {
+    white-space: normal; /* Permite que el texto se divida en varias líneas */
+    text-align: center; /* Centra el texto horizontalmente */
+    margin: 0;
+}
+
+.contenedor {
+    display: flex; /* Activa flexbox para alinear los elementos en fila */
+    flex-direction: row; /* Alinea en fila */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: flex-start; /* Alinea los elementos en la parte superior */
+    flex-wrap: wrap;
+    position: relative; /* Permite ajustar la posición */
+    top: -20px; /* Ajusta este valor para mover el contenedor hacia arriba */
+}

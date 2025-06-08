@@ -1,0 +1,86 @@
+﻿body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin-bottom: 60px;
+}
+
+.container {
+    max-width: 900px;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón personalizado */
+.btn-custom {
+    background-color: #ff2e4e;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom:hover {
+        background-color: darkorange;
+        transform: translateY(-2px);
+    }
+
+/* Encabezados */
+h1, h2 {
+    color: #3c465df0;
+    font-weight: bold;
+    text-align: center;
+}
+
+    h2::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background-color: #ffffff;
+        margin: 10px auto 0;
+    }
+
+/* Acordeón sin líneas rojas */
+.accordion-item {
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.accordion-button {
+    font-weight: bold;
+    background-color: #fff;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+    .accordion-button:not(.collapsed) {
+        color: white;
+        background-color: #ff2e4e;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+.titulo-panel {
+    background-color: #934048;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .titulo-panel h1 {
+        color: white;
+        margin: 0;
+        font-weight: bold;
+    }

@@ -1,0 +1,228 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administrador</title>
+    <link rel="stylesheet" href="~/css/Administrador/panelAdministrador.css" /> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="AeroLinea/Views/Home/Index.cshtml" />
+
+    <script>
+        // JavaScript para controlar el cambio de secciones
+        function mostrarSeccion(seccion) {
+            var secciones = document.querySelectorAll('.seccion');
+            secciones.forEach(function(sec) {
+                sec.style.display = 'none';
+            });
+
+            document.getElementById(seccion).style.display = 'block';
+        }
+
+        window.onload = function() {
+            mostrarSeccion('pasajeros');
+        };
+
+        let vueloId = 1;
+        function agregarVuelo() {
+            const ruta = document.getElementById('ruta').value;
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
+
+            if (ruta === "" || fecha === "" || hora === "") {
+                alert("Por favor complete todos los campos.");
+                return;
+            }
+            const nuevaFila = document.createElement('tr');
+            const celdaId = document.createElement('td');
+            celdaId.textContent = vueloId++;
+            const celdaRuta = document.createElement('td');
+            celdaRuta.textContent = ruta;
+            const celdaFecha = document.createElement('td');
+            celdaFecha.textContent = fecha;
+            const celdaHora = document.createElement('td');
+            celdaHora.textContent = hora;
+            const celdaEstado = document.createElement('td');
+            celdaEstado.textContent = 'Programado';
+            nuevaFila.appendChild(celdaId);
+            nuevaFila.appendChild(celdaRuta);
+            nuevaFila.appendChild(celdaFecha);
+            nuevaFila.appendChild(celdaHora);
+            nuevaFila.appendChild(celdaEstado);
+
+            document.getElementById('tabla-vuelos').querySelector('tbody').appendChild(nuevaFila)
+            document.getElementById('ruta').value = "";
+            document.getElementById('fecha').value = "";
+            document.getElementById('hora').value = "";
+            alert('Vuelo registrado con éxito!');          
+
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="admin-panel">
+        <!-- Barra lateral -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('pasajeros')">Pasajeros</a></li>
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('promociones')">Promociones</a></li>
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('vuelos')">Vuelos Programados</a></li>
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('registro-vuelo')">Registrar Vuelo</a></li>
+                <li><a href="@Url.Action("Index", "Home")">Volver al Inicio</a></li>
+            </ul>
+        </nav>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <div id="contenido">
+                <!-- Sección Pasajeros -->
+                <section id="pasajeros" class="seccion">
+                    <h3>Pasajeros Registrados</h3>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Email</th>
+                                <th>Ruta</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Datos dinámicos de pasajeros se mostrarán aquí -->
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-success">Registrar pasajero</button>
+                    <button type="button" class="btn btn-danger">Eliminar pasajero</button>
+
+                    <div class="form-group"></div>
+                        <label for="lugarDestino">Selecciona un destino</label>
+                        <select id="lugarDestino">
+                            <option value="">Selecciona un lugar</option>
+                            <option value="Lima">Lima</option>
+                            <option value="Cusco">Cusco</option>
+                            <option value="Arequipa">Arequipa</option>
+                            <option value="Trujillo">Trujillo</option>
+                            <option value="Piura">Piura</option>
+                            <option value="Chiclayo">Chiclayo</option>
+                            <option value="Iquitos">Iquitos</option>
+                            <option value="Puno">Puno</option>
+                            <option value="Tacna">Tacna</option>
+                            <option value="Huancayo">Huancayo</option>
+                        </select>
+
+                        <button class="btn" id="ordenarBtn">Ordenar por Destino</button>
+                    </div>
+                    
+
+                </section>
+
+                <!-- Sección Promociones -->
+                <section id="promociones" class="seccion" style="display: none;">
+                    <h3>Promociones Activas</h3>
+                    <ul>
+                        <!-- Datos dinámicos de promociones se mostrarán aquí -->
+                    </ul>
+                </section>
+
+                <!-- Sección Vuelos -->
+                <section id="vuelos" class="seccion" style="display: none;">
+                    <h3>Vuelos Programados</h3>
+                    <table class="table table-striped" id="tabla-vuelos">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Ruta</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí se agregarán los vuelos dinámicamente -->
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-success">Registrar vuelo</button>
+                    <button type="button" class="btn btn-danger">Eliminar vuelo</button>
+                </section>
+
+                <section id="registro-vuelo" class="seccion">
+                    <h3>Registrar Nuevo Vuelo</h3>
+                    <form onsubmit="event.preventDefault(); agregarVuelo();">
+                        <label for="ruta">Ruta:</label>
+                        <input type="text" id="ruta" name="ruta" required />
+
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" name="fecha" required />
+
+                        <label for="hora">Hora:</label>
+                        <input type="time" id="hora" name="hora" required />
+
+                        <button type="submit">Registrar Vuelo</button>
+                    </form>
+
+                    <p>Los vuelos registrados se mostrarán en la tabla de Vuelos Programados.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script>
+        let pasajeroId = 1;
+
+        document.querySelector(".btn-success").addEventListener("click", function () {
+            const nombres = prompt("Ingrese nombres del pasajero:");
+            const apellidos = prompt("Ingrese apellidos:");
+            const email = prompt("Ingrese email:");
+            const ruta = prompt("Ingrese la ruta (ej. Lima, Cusco...):");
+
+            if (!nombres || !apellidos || !email || !ruta) {
+                alert("Todos los campos son obligatorios.");
+                return;
+            }
+
+            const tabla = document.querySelector("#pasajeros table tbody");
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                    <td>${pasajeroId++}</td>
+                    <td>${nombres}</td>
+                    <td>${apellidos}</td>
+                    <td>${email}</td>
+                    <td>${ruta}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="eliminarFila(this)">Eliminar</button></td>
+                `;
+
+            tabla.appendChild(fila);
+        });
+
+        function eliminarFila(boton) {
+            if (confirm("¿Está seguro de eliminar este pasajero?")) {
+                boton.closest("tr").remove();
+            }
+        }
+
+        document.getElementById("ordenarBtn").addEventListener("click", function () {
+            const tabla = document.querySelector("#pasajeros table tbody");
+            const filas = Array.from(tabla.querySelectorAll("tr"));
+
+            filas.sort((a, b) => {
+                const destinoA = a.children[4].textContent.toLowerCase();
+                const destinoB = b.children[4].textContent.toLowerCase();
+                return destinoA.localeCompare(destinoB);
+            });
+
+            tabla.innerHTML = "";
+            filas.forEach(f => tabla.appendChild(f));
+        });
+    </script>
+</body>
+</html>

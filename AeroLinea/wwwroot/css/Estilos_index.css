@@ -1,0 +1,88 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background: linear-gradient(to bottom, #ff490d, #e14a4a);
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+/*-- PARTE SUPERIOR DE LA PAGINA-- */
+
+.nav-item {
+    margin-right: 40px; /* Espacio entre los elementos */
+}
+
+.nav-link {
+    display: flex; /* Para centrar el contenido */
+    align-items: center; /* Alinear verticalmente */
+}
+
+    .nav-link img {
+        height: 60px; /* Aumentar altura */
+        width: 150px; /* Aumentar ancho */
+        margin-right: 50px; /* Espacio entre la imagen y la línea */
+    }
+
+.line {
+    width: 2px; /* Ancho de la línea */
+    height: 40px; /* Altura de la línea */
+    background-color: rgba(0, 0, 0, 0.7); /* Color de la línea menos claro */
+    margin-left: 10px; /* Espacio entre la línea y la imagen */
+}
+
+.navbar-brand {
+    display: flex; /* Para alinear el título y el icono */
+    align-items: center; /* Alinear verticalmente */
+}
+
+.hamburger {
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    margin-left: 10px; /* Espacio entre el título y el ícono */
+    font-size: 30px; /* Tamaño de la hamburguesa aumentado */
+    color: darkred; /* Color rojo oscuro */
+    font-weight: bold; /* Grosor de la hamburguesa */
+}
+
+
+/* --- ESTILOS PARA EL MENU DE OPCIONES ---*/
+
+#menuOptions {
+    position: absolute; /* Posicionarlo en relación al contenedor */
+    top: 90px; /* Ajustar según la altura de la barra de navegación */
+    left: 10px; /* Ajustar la distancia desde la hamburguesa */
+    width: 300px; /* Reducir el ancho del menú */
+    z-index: 1000; /* Asegurarse de que esté encima de otros elementos */
+}
+
+.card2 {
+    padding: 0; /* Quitar padding */
+    border: none; /* Quitar borde */
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo negro semi-transparente */
+}
+
+.nav-link {
+    color: yellow;
+    display: flex; /* Para centrar el contenido */
+    align-items: center; /* Alinear verticalmente */
+    margin-left: 20px; /* Mover el texto a la derecha */
+}

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Información de Equipaje";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+    <link href="~/css/equipaje.css" rel="stylesheet" />
+</head>
+<body>
+
+    <section class="header-section">
+        <h1 class="title">Información de Equipaje</h1>
+    </section>
+
+    <div class="equipaje-container">
+        <!-- Sección Detalle de Equipaje -->
+        <div class="equipaje-item">
+            <div class="equipaje-header" onclick="toggleSection('detalle')">
+                <h4>Detalle de tu Equipaje</h4>
+                <span class="toggle-icon" id="toggle-detalle">&#9662;</span>
+            </div>
+            <div class="equipaje-content" id="detalle">
+                <p>El equipaje de mano es de 1 pieza, incluyendo artículos personales. Se recomienda evitar alimentos perecederos que puedan deteriorarse, como queso fresco, carne fresca, y frutas frescas.</p>
+                <p><strong>Ciudades permitidas:</strong> Cajamarca, Pucallpa, Iquitos, Chiclayo, Tarapoto, Huánuco.</p>
+                <p><strong>Peso permitido:</strong> Hasta 10kg.</p>
+            </div>
+        </div>
+
+        <!-- Sección Equipaje No Permitido -->
+        <div class="equipaje-item">
+            <div class="equipaje-header" onclick="toggleSection('no-permitido')">
+                <h4>Equipaje No Permitido</h4>
+                <span class="toggle-icon" id="toggle-no-permitido">&#9662;</span>
+            </div>
+            <div class="equipaje-content" id="no-permitido">
+                <p>No se permiten piezas de equipaje con más de 32kg o dimensiones superiores a 158 cm lineales.</p>
+                <p><strong>Artículos restringidos:</strong> Sustancias inflamables, explosivos, baterías de litio sueltas, y armas sin autorización.</p>
+            </div>
+        </div>
+
+        <!-- Sección Equipaje Especial -->
+        <div class="equipaje-item">
+            <div class="equipaje-header" onclick="toggleSection('especial')">
+                <h4>Equipaje Especial</h4>
+                <span class="toggle-icon" id="toggle-especial">&#9662;</span>
+            </div>
+            <div class="equipaje-content" id="especial">
+                <p>Incluye artículos deportivos, instrumentos musicales y equipos médicos que requieren embalaje adecuado y pueden tener cargos adicionales.</p>
+                <p><strong>Artículos permitidos:</strong> Bicicletas, equipos de golf, tablas de surf, entre otros.</p>
+            </div>
+        </div>
+
+        <!-- Sección Artículos Permitidos en Equipaje de Mano -->
+        <div class="equipaje-item">
+            <div class="equipaje-header" onclick="toggleSection('permitido-mano')">
+                <h4>Artículos Permitidos en Equipaje de Mano</h4>
+                <span class="toggle-icon" id="toggle-permitido-mano">&#9662;</span>
+            </div>
+            <div class="equipaje-content" id="permitido-mano">
+                <p>Artículos personales como portátiles, cámaras, medicamentos, y líquidos en envases de 100 ml o menos están permitidos.</p>
+                <p><strong>Nota:</strong> Los líquidos deben ir en una bolsa plástica transparente para facilitar la inspección.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para manejo de despliegue -->
+    <script>
+        function toggleSection(sectionId) {
+            var content = document.getElementById(sectionId);
+            var icon = document.getElementById('toggle-' + sectionId);
+
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "block";
+                icon.innerHTML = "&#9650;";  // Flecha hacia arriba
+            } else {
+                content.style.display = "none";
+                icon.innerHTML = "&#9662;";  // Flecha hacia abajo
+            }
+        }
+    </script>
+
+</body>
+</html>

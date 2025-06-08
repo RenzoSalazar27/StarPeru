@@ -1,0 +1,72 @@
+﻿body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+}
+
+/* Cabecera */
+.header {
+    background-color: #FF3D60;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .header h1 {
+        font-size: 2em;
+        margin: 0;
+        letter-spacing: 1px;
+    }
+
+/* Contenedor general de aeronaves */
+.aircraft {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 30px;
+}
+
+/* Tarjeta individual */
+.aircraft-item {
+    width: 320px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+    .aircraft-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Imagen */
+    .aircraft-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+/* Información del avión */
+.aircraft-info {
+    padding: 20px;
+    color: #333;
+}
+
+    .aircraft-info h2 {
+        font-size: 1.2em;
+        margin-top: 0;
+        color: #FF3D60;
+    }
+
+    .aircraft-info p {
+        margin: 6px 0;
+        font-size: 0.95em;
+        color: #555;
+    }

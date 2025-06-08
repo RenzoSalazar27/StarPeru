@@ -1,0 +1,377 @@
+@{
+    ViewData["Title"] = "Reserva de Vuelos";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Reserva tu Vuelo</h3>
+        </div>
+        <div class="card-body">
+            <form id="reservaForm">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="origin" class="form-label">Ubicación de Origen</label>
+                        <select class="form-select" id="origin" name="origin_id" required onchange="validarUbicaciones(); actualizarPrecios();">
+                            <option value="">Seleccione origen</option>
+                            @foreach (var origin in ViewBag.Origins)
+                            {
+                                <option value="@origin.Id">@origin.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="destiny" class="form-label">Ubicación de Destino</label>
+                        <select class="form-select" id="destiny" name="destiny_id" required onchange="validarUbicaciones(); actualizarPrecios();">
+                            <option value="">Seleccione destino</option>
+                            @foreach (var destiny in ViewBag.Destinies)
+                            {
+                                <option value="@destiny.Id">@destiny.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="time_start" class="form-label">Fecha de Ida</label>
+                        <input type="date" class="form-control" id="time_start" name="time_start" required min="@DateTime.Now.ToString("yyyy-MM-dd")" onchange="validarUbicaciones()">
+                        <small id="fechaError" class="text-danger" style="display: none;">La fecha no puede ser pasada.</small>
+
+
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="button" class="btn btn-primary btn-lg" id="btnConfirmar" onclick="guardarYMostrarClases()" disabled>Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Formulario de Selección de Clase (inicialmente oculto) -->
+    <div id="seleccionClase" class="card mt-4" style="display: none;">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Flota - Selección de Clase y Tipo de Vuelo</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-controller="Home" asp-action="ProcesarReserva">
+                @Html.AntiForgeryToken()
+                <!-- Clase de Avión -->
+                <div class="mb-4">
+                    <label for="tipoAvion" class="form-label">Clase de Avión</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card price-card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Económica</h5>
+                                    <p class="price" id="precioEconomica">S/ 0.00</p>
+                                    <button type="button" class="btn btn-outline-primary w-100" onclick="seleccionarClase('economica')">Seleccionar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card price-card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Ejecutiva</h5>
+                                    <p class="price" id="precioEjecutiva">S/ 0.00</p>
+                                    <button type="button" class="btn btn-outline-primary w-100" onclick="seleccionarClase('ejecutiva')">Seleccionar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card price-card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Premium</h5>
+                                    <p class="price" id="precioPremium">S/ 0.00</p>
+                                    <button type="button" class="btn btn-outline-primary w-100" onclick="seleccionarClase('premium')">Seleccionar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="tipoAvion" name="tipoAvion" required>
+                </div>
+
+                <!-- Detalles que aparecen al seleccionar clase -->
+                <div id="detallesVuelo" style="display: none;">
+                    <!-- Clase de Vuelos -->
+                    <div class="mb-3">
+                        <label class="form-label">Clase de Vuelos</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoVuelo" id="nacional" value="nacional" required checked>
+                            <label class="form-check-label" for="nacional">Nacional</label>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Asiento -->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Asiento</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoAsiento" id="regular" value="regular" required>
+                            <label class="form-check-label" for="regular">Regular</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoAsiento" id="discapacitado" value="discapacitado">
+                            <label class="form-check-label" for="discapacitado">Asiento para Personas con Discapacidad</label>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Pago -->
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">Realizar Pago</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Definir las rutas y precios
+        const rutasPrecios = {
+            'Lima-Iquitos': { economica: 300, ejecutiva: 450, premium: 700 },
+            'Lima-Huánuco': { economica: 150, ejecutiva: 250, premium: 400 },
+            'Tarapoto-Huánuco': { economica: 120, ejecutiva: 200, premium: 350 },
+            'Iquitos-Tarapoto': { economica: 130, ejecutiva: 210, premium: 360 },
+            'Tarapoto-Pucallpa': { economica: 140, ejecutiva: 220, premium: 370 },
+            'Pucallpa-Cajamarca': { economica: 180, ejecutiva: 280, premium: 450 },
+            'Cajamarca-Chiclayo': { economica: 100, ejecutiva: 180, premium: 300 }
+        };
+
+        function actualizarPrecios() {
+            const origen = document.getElementById('origin');
+            const destino = document.getElementById('destiny');
+            
+            if (origen.selectedIndex > 0 && destino.selectedIndex > 0) {
+                const originId = parseInt(origen.value);
+                const destinyId = parseInt(destino.value);
+
+                fetch('@Url.Action("GetRoutePrice", "Home")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        originId: originId,
+                        destinyId: destinyId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('precioEconomica').textContent = `S/ ${data.prices.economy}`;
+                        document.getElementById('precioEjecutiva').textContent = `S/ ${data.prices.executive}`;
+                        document.getElementById('precioPremium').textContent = `S/ ${data.prices.premium}`;
+                    } else {
+                        document.getElementById('precioEconomica').textContent = 'No disponible';
+                        document.getElementById('precioEjecutiva').textContent = 'No disponible';
+                        document.getElementById('precioPremium').textContent = 'No disponible';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('precioEconomica').textContent = 'Error';
+                    document.getElementById('precioEjecutiva').textContent = 'Error';
+                    document.getElementById('precioPremium').textContent = 'Error';
+                });
+            }
+        }
+
+        function seleccionarClase(clase) {
+            document.getElementById('tipoAvion').value = clase;
+            document.getElementById('detallesVuelo').style.display = 'block';
+            document.getElementById('detallesVuelo').scrollIntoView({ behavior: 'smooth' });
+
+            // Resaltar la tarjeta seleccionada
+            document.querySelectorAll('.price-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.price-card').classList.add('selected');
+        }
+
+        function validarUbicaciones() {
+            const origen = parseInt(document.getElementById('origin').value);
+            const destino = parseInt(document.getElementById('destiny').value);
+            const fecha = document.getElementById('time_start').value;
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            const errorFecha = document.getElementById('fechaError');
+
+            // Validar que ambos campos tengan valores
+            if (isNaN(origen) || isNaN(destino)) {
+                btnConfirmar.disabled = true;
+                errorFecha.style.display = 'none';
+                return;
+            }
+
+            // Validar que origen y destino sean diferentes
+            if (origen === destino) {
+                alert('El origen y el destino no pueden ser el mismo');
+                document.getElementById('destiny').value = '';
+                btnConfirmar.disabled = true;
+                errorFecha.style.display = 'none';
+                return;
+            }
+
+            // Validar que la fecha no sea pasada
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0); // limpiar hora para comparar solo la fecha
+
+            const fechaIngresada = new Date(fecha);
+            if (fecha && fechaIngresada < hoy) {
+                errorFecha.style.display = 'block';
+                btnConfirmar.disabled = true;
+                return;
+            } else {
+                errorFecha.style.display = 'none';
+            }
+
+            // Habilitar el botón solo si todos los campos son válidos
+            btnConfirmar.disabled = !fecha;
+
+            // Ocultar el formulario de selección de clase si se cambian los valores
+            document.getElementById('seleccionClase').style.display = 'none';
+        }
+
+
+        function guardarYMostrarClases() {
+            const origen = parseInt(document.getElementById('origin').value);
+            const destino = parseInt(document.getElementById('destiny').value);
+            const fecha = document.getElementById('time_start').value;
+
+            if (isNaN(origen) || isNaN(destino) || !fecha) {
+                alert('Por favor, complete todos los campos');
+                return;
+            }
+
+            if (origen === destino) {
+                alert('El origen y el destino no pueden ser el mismo');
+                return;
+            }
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            // Guardar la selección
+            fetch('@Url.Action("GuardarSeleccionVuelo", "Home")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify({
+                    origin_id: origen,
+                    destiny_id: destino,
+                    time_start: fecha
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                if (data.success) {
+                    // Mostrar el formulario de selección de clase
+                    document.getElementById('seleccionClase').style.display = 'block';
+                    // Hacer scroll suave hasta el formulario de selección de clase
+                    document.getElementById('seleccionClase').scrollIntoView({ behavior: 'smooth' });
+                    // Actualizar precios
+                    actualizarPrecios();
+                } else {
+                    alert(data.message || 'Error al guardar la selección');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar la selección. Por favor, intente nuevamente.');
+            });
+        }
+
+        // Validar campos al cargar la página
+        window.addEventListener('load', validarUbicaciones);
+    </script>
+}
+
+<style>
+    .card {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        border-radius: 10px 10px 0 0;
+        background-color: #0056b3 !important;
+    }
+
+    .form-select, .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 0.5rem;
+    }
+
+    .form-select:focus, .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
+    .btn {
+        border-radius: 5px;
+        padding: 10px 25px;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #0056b3;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .form-check {
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .price-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        height: 100%;
+    }
+
+    .price-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .price-card.selected {
+        border: 2px solid #0056b3;
+        background-color: #f8f9fa;
+    }
+
+    .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #0056b3;
+        margin: 1rem 0;
+    }
+
+    .card-title {
+        color: #495057;
+        font-weight: 600;
+    }
+</style> 

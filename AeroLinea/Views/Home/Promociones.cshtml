@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Promociones";
+
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Promociones.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - AeroLinea</title>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-content">
+            <a href="../Views/Home/Index.cshtml" class="nav-item">Home</a>
+            <a href="../Views/Home/Servicios_al_cliente.cshtml" class="nav-item">Contacto</a>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Promociones</h1>
+        <div class="promotions-grid mt-4">
+            <!-- Tarjetas de Promociones con diseño similar a Destinos -->
+            <a href="#" class="promo-card" onclick="showPromotions('Oh!')">
+                <img src="~/img/tarjetaoh.png" alt="Tarjeta Oh!" />
+                <p class="card-title">Tarjeta Oh!</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('BBVA')">
+                <img src="~/img/bbva.png" alt="BBVA" />
+                <p class="card-title">BBVA</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('Diners Club')">
+                <img src="~/img/dinnersclub.png" alt="Diners Club" />
+                <p class="card-title">Diners Club</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('Pagoefectivo')">
+                <img src="~/img/pagoefectivo.png" alt="Pagoefectivo" />
+                <p class="card-title">Pagoefectivo</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('Interbank')">
+                <img src="~/img/interbank.png" alt="Interbank" />
+                <p class="card-title">Interbank</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('BCP')">
+                <img src="~/img/bcp.png" alt="BCP" />
+                <p class="card-title">BCP</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('Monnet')">
+                <img src="~/img/monnet.png" alt="Monnet" />
+                <p class="card-title">Monnet</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('Banco de la Nación')">
+                <img src="~/img/bancodelanacion.png" alt="Banco de la Nación" />
+                <p class="card-title">Banco de la Nación</p>
+            </a>
+            <a href="#" class="promo-card" onclick="showPromotions('Rimac')">
+                <img src="~/img/rimacseguros.png" alt="Rimac" />
+                <p class="card-title">Rimac</p>
+            </a>
+        </div>
+
+        <div id="promotionsModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Promociones de Vuelos</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="promotionDetails">Selecciona una tarjeta para ver las promociones.</p>
+                        <p id="promotionCondition" style="display:none;"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="showConditions()">Ver condiciones</button>
+                        <button type="button" class="btn btn-success">Vuela</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const promotions = {
+            'Oh!': '50% de descuento en vuelos nacionales.',
+            'BBVA': '25% de descuento en tu siguiente vuelo.',
+            'Diners Club': '1 milla adicional por cada dólar gastado.',
+            'Pagoefectivo': 'Descuentos especiales en vuelos a destinos selectos.',
+            'Interbank': 'Promociones exclusivas de fin de semana.',
+            'BCP': '10% de descuento en la compra de dos boletos.',
+            'Monnet': 'Promociones de viaje grupal.',
+            'Banco de la Nación': '5% de descuento en todos los vuelos.',
+            'Rimac': 'Cobertura de seguro de viaje al comprar un boleto.',
+        };
+
+        const conditions = {
+            'Oh!': {
+                summary: 'La promoción "Tarjeta Oh!" ofrece un increíble 50% de descuento en vuelos nacionales, permitiendo que los usuarios disfruten de precios reducidos en sus viajes. Esta oferta es ideal para aquellos que planean escapadas cortas o viajes de negocios, facilitando un acceso más asequible a múltiples destinos. Se puede utilizar para la compra de boletos de ida y vuelta, así como para vuelos de una sola dirección, siempre y cuando se reserven con antelación. Sin embargo, es importante tener en cuenta que esta promoción es válida solo en vuelos realizados de lunes a jueves, por lo que los viajeros deben planificar sus itinerarios de acuerdo a esta restricción para aprovechar al máximo el descuento. Al utilizar esta promoción, los usuarios no solo ahorran en el costo de sus vuelos, sino que también pueden descubrir nuevas rutas y destinos que quizás no habrían considerado debido al precio.',
+                condition: 'Solo aplicable en vuelos de lunes a jueves.'
+            },
+            'BBVA': {
+                summary: 'La promoción de BBVA ofrece un 25% de descuento en la compra de su siguiente vuelo, brindando una excelente oportunidad para aquellos que buscan ahorrar en su próximo viaje. Esta promoción está diseñada para incentivar a los clientes a utilizar su tarjeta BBVA al momento de reservar sus vuelos. Con el descuento, los clientes pueden explorar una variedad de destinos a precios más accesibles, lo que les permite viajar más frecuentemente. Esta oferta es ideal para quienes planean escapadas de fin de semana o vacaciones prolongadas. Sin embargo, es importante recordar que esta promoción es válida solo para clientes nuevos, lo que significa que los usuarios existentes no podrán beneficiarse de esta oferta en particular. Esto resalta la intención de BBVA de atraer a nuevos clientes y fomentar el uso de su tarjeta para el consumo de servicios de viaje.',
+                condition: 'Promoción válida solo para clientes nuevos.'
+            },
+            'Diners Club': {
+                summary: 'La promoción de Diners Club permite a los usuarios ganar 1 milla adicional por cada dólar gastado en la compra de boletos de avión. Este programa de recompensas es especialmente atractivo para los viajeros frecuentes, ya que las millas acumuladas pueden canjearse por descuentos en futuros vuelos, upgrades a clase ejecutiva o incluso vuelos gratuitos. Este incentivo no solo motiva a los clientes a elegir Diners Club como su método de pago preferido, sino que también promueve una mayor lealtad hacia la marca. Sin embargo, es crucial tener en cuenta que las millas acumuladas con esta promoción no son acumulables con otras ofertas o descuentos, lo que significa que los usuarios deben evaluar su uso con cuidado para maximizar los beneficios.',
+                condition: 'No acumulable con otras promociones.'
+            },
+            'Pagoefectivo': {
+                summary: 'La promoción de Pagoefectivo ofrece descuentos especiales en vuelos a destinos selectos, lo que permite a los viajeros ahorrar significativamente en sus próximas aventuras. Esta oferta es perfecta para aquellos que buscan opciones de viaje económicas y están abiertos a explorar nuevas rutas. Con descuentos que pueden variar según el destino, los usuarios tienen la oportunidad de planificar escapadas a lugares que tal vez no habrían considerado anteriormente. Sin embargo, es importante destacar que esta promoción es válida únicamente en compras realizadas en línea, lo que significa que los usuarios deben realizar sus reservas a través de la plataforma digital para beneficiarse del descuento.',
+                condition: 'Válido solo en compras online.'
+            },
+            'Interbank': {
+                summary: 'La promoción de Interbank ofrece promociones exclusivas de fin de semana, permitiendo a los viajeros disfrutar de precios especiales en vuelos reservados durante estos días. Esta oferta es ideal para aquellos que desean escaparse por un fin de semana o aprovechar un viaje corto sin comprometer su presupuesto. Los usuarios pueden beneficiarse de tarifas reducidas en diversos destinos, lo que les brinda la flexibilidad de explorar nuevas opciones de viaje. Sin embargo, es importante tener en cuenta que esta promoción está limitada a 1000 boletos, lo que significa que los interesados deben actuar rápidamente para asegurarse de no perderse esta oportunidad única.',
+                condition: 'Promoción limitada a 1000 boletos.'
+            },
+            'BCP': {
+                summary: 'La promoción de BCP ofrece un 10% de descuento en la compra de dos boletos, ideal para aquellos que planean viajar con un acompañante. Esta oferta es perfecta para parejas, amigos o familias que buscan explorar nuevos destinos juntos, permitiéndoles disfrutar de tarifas más económicas. Con esta promoción, los viajeros pueden planificar escapadas, vacaciones o incluso viajes de negocios a un costo reducido. Sin embargo, es fundamental recordar que este descuento es aplicable únicamente a vuelos nacionales, por lo que los usuarios deben asegurarse de que sus planes de viaje se ajusten a esta restricción para poder beneficiarse del ahorro.',
+                condition: 'Solo aplicable a vuelos nacionales.'
+            },
+            'Monnet': {
+                summary: 'La promoción de Monnet se centra en ofrecer promociones de viaje grupal, lo que permite a las personas que viajan en grupo disfrutar de tarifas especiales. Esta oferta es ideal para familias, amigos o colegas que desean explorar un destino juntos, asegurando que todos puedan beneficiarse de un costo reducido. Las promociones grupales pueden incluir descuentos adicionales, facilidades de pago y servicios especiales para grupos, lo que hace que la experiencia de viaje sea aún más agradable. Sin embargo, es importante destacar que esta promoción es aplicable solo a grupos de más de 5 personas, lo que significa que los viajeros individuales o las parejas no podrán acceder a este beneficio.',
+                condition: 'Aplicable a grupos de más de 5 personas.'
+            },
+            'Banco de la Nación': {
+                summary: 'La promoción de Banco de la Nación ofrece un 5% de descuento en todos los vuelos, proporcionando una opción atractiva para los viajeros que buscan ahorrar en sus compras de boletos. Esta oferta es válida para una amplia gama de destinos y no está restringida a ciertas fechas o días de la semana, lo que brinda a los usuarios la flexibilidad de planificar su viaje según sus preferencias. Esta promoción es ideal para quienes desean una forma sencilla de reducir el costo de sus vuelos. Sin embargo, es importante tener en cuenta que no será válida en temporadas altas, lo que significa que los usuarios deben planificar sus viajes fuera de estos períodos para aprovechar el descuento.',
+                condition: 'No válido en temporadas altas.'
+            },
+            'Rimac': {
+                summary: 'La promoción de Rimac ofrece cobertura de seguro de viaje al comprar un boleto, brindando tranquilidad a los viajeros en caso de imprevistos. Este beneficio es especialmente valioso, ya que permite a los usuarios disfrutar de su viaje con la seguridad de que están protegidos ante situaciones inesperadas. La cobertura incluye asistencia médica, pérdida de equipaje y cancelaciones, lo que hace que la experiencia de viaje sea más segura y confiable. Sin embargo, es crucial tener en cuenta que esta promoción solo es aplicable si se contrata el seguro al momento de comprar el boleto, lo que significa que los usuarios deben estar atentos a este detalle para asegurarse de obtener la protección necesaria.',
+                condition: 'Solo aplicable si se contrata el seguro.'
+            },
+        };
+
+        function showPromotions(cardName) {
+            document.getElementById('promotionDetails').innerText = promotions[cardName];
+            document.getElementById('promotionCondition').style.display = 'none';
+            $('#promotionsModal').modal('show');
+        }
+
+        function showConditions() {
+            const cardName = Object.keys(promotions).find(key => promotions[key] === document.getElementById('promotionDetails').innerText);
+            const conditionText = conditions[cardName].condition;
+            document.getElementById('promotionCondition').innerText = conditions[cardName].summary + ' ' + conditionText;
+            document.getElementById('promotionCondition').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

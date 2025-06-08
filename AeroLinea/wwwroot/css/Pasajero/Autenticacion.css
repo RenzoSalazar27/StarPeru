@@ -1,0 +1,182 @@
+﻿body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: #f8f9fa;
+}
+
+.auth-container {
+	width: 1000px;
+	height: 600px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	display: flex;
+}
+
+.login-section {
+	flex: 1;
+	padding: 3rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #ffffff;
+}
+
+.login-section h2 {
+	font-size: 2rem;
+	color: #333;
+	margin-bottom: 1.5rem;
+}
+
+.social-login {
+	display: flex;
+	gap: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.social-btn {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: none;
+	font-size: 1.5rem;
+	color: white;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.social-btn.facebook {
+	background-color: #3b5998;
+}
+
+.social-btn.google {
+	background-color: #db4437;
+}
+
+.social-btn.linkedin {
+	background-color: #0077b5;
+}
+
+.form-group {
+	width: 100%;
+	margin-bottom: 1.5rem;
+}
+
+input {
+	width: 100%;
+	padding: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1.1rem;
+}
+
+.forgot-password {
+	color: #d9534f;
+	text-decoration: none;
+	font-size: 1rem;
+	margin-bottom: 1.5rem;
+	display: inline-block;
+}
+
+.forgot-password:hover {
+	text-decoration: underline;
+}
+
+.login-btn {
+	width: 100%;
+	padding: 1rem;
+	background-color: #d9534f;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	font-size: 1.2rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+	background-color: #c9302c;
+}
+
+.register-section {
+	flex: 1;
+	padding: 3rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(135deg, #ff416c, #ff4b2b);
+	color: white;
+	text-align: center;
+}
+
+.register-section h2 {
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin-bottom: 1rem;
+}
+
+.register-section p {
+	font-size: 1.2rem;
+	margin-bottom: 2rem;
+	font-weight: 300;
+}
+
+.register-btn {
+	padding: 1rem 2.5rem;
+	background-color: transparent;
+	color: white;
+	border: 2px solid white;
+	border-radius: 30px;
+	font-size: 1.2rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s ease, color 0.3s ease;
+	text-decoration: none;
+	margin: 0.5rem;
+}
+
+.register-btn:hover {
+	background-color: white;
+	color: #ff416c;
+}
+
+.alert {
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border-radius: 5px;
+}
+
+.alert-success {
+	background-color: #d4edda;
+	color: #155724;
+	border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+	background-color: #f8d7da;
+	color: #721c24;
+	border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 1024px) {
+	.auth-container {
+		width: 90%;
+		height: auto;
+		flex-direction: column;
+	}
+
+	.login-section,
+	.register-section {
+		padding: 2rem;
+	}
+}

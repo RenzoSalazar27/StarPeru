@@ -1,0 +1,137 @@
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+.py-2{
+    color: #000;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #FF2E4E;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+/* Estilo de las Flechas-Panel */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    border-radius: 90%;
+    width: 15px;
+    height: 15px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+/* ESTILOS PARA LA COMPRA DE BOLETOS */
+.carousel-inner img {
+    max-height: 600px;
+    object-fit: cover;
+}
+
+/* Estilos para los botones */
+.btn-custom {
+    background-color: #FF8C00;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    margin: 0 5px;
+}
+
+.btn-custom:hover {
+    background-color: #FFA500;
+    color: black;
+    transform: translateY(-2px);
+}
+
+/* Contenedor de botones */
+#buttonContainer {
+    text-align: center;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+/* Estilo para el panel general */
+#infoPanel {
+    max-width: 1500px;
+    height: 160px;
+    margin: 1rem auto;
+    background-color: #ff8c00;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* PARA EL PEQUEÑO TEXTO */
+.small-text {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 20px;
+}
+
+.small-text img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+/* Estilos para las cards */
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.card-footer {
+    background-color: transparent;
+    border-top: none;
+    padding: 1rem;
+}
+
+/* Líneas separadoras */
+.separator-line {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 20px 0;
+}

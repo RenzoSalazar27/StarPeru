@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Panel Administrativo";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Panel Administrativo</h2>
+                <a asp-controller="Admin" asp-action="Logout" class="btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gestión de Vuelos</h5>
+                    <p class="card-text">Administrar los vuelos disponibles</p>
+                    <a href="#" class="btn btn-primary">Gestionar Vuelos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Reservaciones</h5>
+                    <p class="card-text">Ver todas las reservaciones</p>
+                    <a href="#" class="btn btn-primary">Ver Reservaciones</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Reportes</h5>
+                    <p class="card-text">Ver reportes y estadísticas</p>
+                    <a href="#" class="btn btn-primary">Ver Reportes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+} 

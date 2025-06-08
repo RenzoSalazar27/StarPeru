@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Reserva de Vuelo";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Selección de Vuelo y Clase</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-controller="Home" asp-action="ProcesarReserva">
+                <!-- Clase de Avión -->
+                <div class="mb-4">
+                    <label for="tipoAvion" class="form-label">Clase de Avión</label>
+                    <select class="form-select" id="tipoAvion" name="tipoAvion" required onchange="mostrarDetalles()">
+                        <option value="">Seleccione una clase</option>
+                        <option value="economica">Clase Económica - S/. 150.00</option>
+                        <option value="ejecutiva">Clase Ejecutiva - S/. 300.00</option>
+                        <option value="primera">Primera Clase - S/. 500.00</option>
+                    </select>
+                </div>
+
+                <!-- Detalles que aparecen al seleccionar clase -->
+                <div id="detallesVuelo" style="display: none;">
+                    <!-- Clase de Vuelos -->
+                    <div class="mb-3">
+                        <label class="form-label">Clase de Vuelos</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoVuelo" id="nacional" value="nacional" required>
+                            <label class="form-check-label" for="nacional">Nacional</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoVuelo" id="internacional" value="internacional">
+                            <label class="form-check-label" for="internacional">Internacional</label>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Asiento -->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Asiento</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoAsiento" id="regular" value="regular" required>
+                            <label class="form-check-label" for="regular">Regular</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoAsiento" id="discapacitado" value="discapacitado">
+                            <label class="form-check-label" for="discapacitado">Asiento para Personas con Discapacidad</label>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Pago -->
+                    <div class="mt-4">
+                        <form method="get" asp-action="PagoFinal" asp-controller="Home">
+                            <<a href="@Url.Action("PagoFinal", "Home")" class="btn btn-success btn-lg">Realizar Pago</a>
+                        </form>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function mostrarDetalles() {
+            const tipoAvion = document.getElementById('tipoAvion').value;
+            const detallesVuelo = document.getElementById('detallesVuelo');
+            
+            if (tipoAvion) {
+                detallesVuelo.style.display = 'block';
+            } else {
+                detallesVuelo.style.display = 'none';
+            }
+        }
+    </script>
+} 
