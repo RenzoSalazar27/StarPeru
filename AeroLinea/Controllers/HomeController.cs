@@ -129,7 +129,7 @@ namespace AeroLinea.Controllers
                 .ToList();
             
             ViewBag.Destino = destino;
-            return View("~/Views/Home/Destinos/VuelosPorDestino.cshtml", vuelos);
+            return PartialView("~/Views/Home/Destinos/vuelosDestinos.cshtml", vuelos);
         }
 
         public IActionResult Equipaje() => View();

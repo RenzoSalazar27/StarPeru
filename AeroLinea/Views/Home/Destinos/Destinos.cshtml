@@ -8,52 +8,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destinos en Perú</title>
     <link rel="stylesheet" href="~/css/Home/Destinos/destinos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Barra de navegación -->
-    <header class="navbar">
-        <div class="nav-content">
-            <a href="/Home/Index" class="nav-item">Home</a>
-            <a href="/Home/Servicios_al_cliente" class="nav-item">Contacto</a>
-        </div>
-    </header>
-
     <!-- Contenido principal de destinos -->
     <div class="container">
         <div class="gallery">
-            <a href="/Home/VuelosPorDestino?destino=Chiclayo" class="image-box chiclayo">
+            <a href="#" onclick="mostrarVuelos('Chiclayo')" class="image-box chiclayo">
                 <img src="~/img/chiclayo.jpeg" alt="Chiclayo">
                 <p>CHICLAYO</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Cajamarca" class="image-box cajamarca">
+            <a href="#" onclick="mostrarVuelos('Cajamarca')" class="image-box cajamarca">
                 <img src="~/img/cajamarca.jpeg" alt="Cajamarca">
                 <p>CAJAMARCA</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Huanuco" class="image-box huanuco">
+            <a href="#" onclick="mostrarVuelos('Huanuco')" class="image-box huanuco">
                 <img src="~/img/huanuco.jpeg" alt="Huánuco">
                 <p>HUÁNUCO</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Lima" class="image-box lima">
+            <a href="#" onclick="mostrarVuelos('Lima')" class="image-box lima">
                 <img src="~/img/lima.jpeg" alt="Lima">
                 <p>LIMA</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Iquitos" class="image-box iquitos">
+            <a href="#" onclick="mostrarVuelos('Iquitos')" class="image-box iquitos">
                 <img src="~/img/iquitos.jpeg" alt="Iquitos">
                 <p>IQUITOS</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Tarapoto" class="image-box tarapoto">
+            <a href="#" onclick="mostrarVuelos('Tarapoto')" class="image-box tarapoto">
                 <img src="~/img/tarapoto.jpeg" alt="Tarapoto">
                 <p>TARAPOTO</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Pucallpa" class="image-box pucallpa">
+            <a href="#" onclick="mostrarVuelos('Pucallpa')" class="image-box pucallpa">
                 <img src="~/img/pucallpa.jpeg" alt="Pucallpa">
                 <p>PUCALLPA</p>
             </a>
-            <a href="/Home/VuelosPorDestino?destino=Interdestinos" class="image-box interdestinos">
+            <a href="#" onclick="mostrarVuelos('Interdestinos')" class="image-box interdestinos">
                 <img src="~/img/interdestinos.png" alt="Interdestinos">
                 <p>INTERDESTINOS</p>
             </a>
         </div>
     </div>
+
+    <!-- Modal para mostrar vuelos -->
+    <div class="modal fade" id="vuelosModal" tabindex="-1" aria-labelledby="vuelosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vuelosModalLabel">Vuelos Disponibles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="vuelosModalBody">
+                    <!-- Aquí se cargarán los vuelos dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function mostrarVuelos(destino) {
+            fetch(`/Home/VuelosPorDestino?destino=${destino}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('vuelosModalBody').innerHTML = html;
+                    document.getElementById('vuelosModalLabel').textContent = `Vuelos Disponibles a ${destino}`;
+                    new bootstrap.Modal(document.getElementById('vuelosModal')).show();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function volar(idVuelo) {
+            // Función para implementar en el futuro
+            console.log('Volar a:', idVuelo);
+        }
+    </script>
 </body>
 </html>
