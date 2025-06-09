@@ -17,7 +17,7 @@ builder.Services.AddSession(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine($"Cadena de conexión: {connectionString}");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<Data.ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
         mySqlOptions =>
@@ -41,7 +41,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         Console.WriteLine("Intentando conectar a la base de datos...");
-        var context = services.GetRequiredService<ApplicationDbContext>();
+        var context = services.GetRequiredService<Data.ApplicationDbContext>();
         
         Console.WriteLine("Verificando si la base de datos existe...");
         if (context.Database.CanConnect())

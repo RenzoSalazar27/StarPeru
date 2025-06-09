@@ -2,15 +2,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AeroLinea.Models;
 using System.Diagnostics;
+using Data;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace AeroLinea.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly Data.ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, Data.ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -40,15 +46,23 @@ namespace AeroLinea.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == email && u.contrasenaUsuario == password);
-            if (usuario != null)
+            try
             {
-                HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
-                HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
-                HttpContext.Session.SetString("UserType", usuario.esAdmin ? "admin" : "user");
-                return RedirectToAction("Index", "Home");
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == email && u.contrasenaUsuario == password);
+                if (usuario != null)
+                {
+                    HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
+                    HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
+                    HttpContext.Session.SetString("UserType", usuario.esAdmin ? "admin" : "user");
+                    HttpContext.Session.SetInt32("UserId", usuario.idUsuario);
+                    return RedirectToAction("Index", "Home");
+                }
+                TempData["Error"] = "El correo o contraseña no son correctos";
             }
-            TempData["Error"] = "El correo o contraseña no son correctos";
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error al iniciar sesión: " + ex.Message;
+            }
             return View("~/Views/Autenticacion/Autenticacion.cshtml");
         }
 
@@ -60,26 +74,42 @@ namespace AeroLinea.Controllers
         [HttpPost]
         public IActionResult registroPasajero(Usuario usuario)
         {
-            if (ModelState.IsValid)
+            try
             {
-                usuario.esAdmin = false;
-                var usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == usuario.correoUsuario);
-                if (usuarioExistente != null)
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("correoUsuario", "El correo electrónico ya está registrado");
-                    return View(usuario);
+                    usuario.esAdmin = false;
+                    var usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == usuario.correoUsuario);
+                    if (usuarioExistente != null)
+                    {
+                        TempData["Error"] = "El correo electrónico ya está registrado";
+                        return View("~/Views/Autenticacion/registroPasajero.cshtml", usuario);
+                    }
+
+                    _context.Usuarios.Add(usuario);
+                    _context.SaveChanges();
+
+                    HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
+                    HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
+                    HttpContext.Session.SetString("UserType", "user");
+                    HttpContext.Session.SetInt32("UserId", usuario.idUsuario);
+
+                    TempData["Success"] = "Registro exitoso";
+                    return RedirectToAction("Index", "Home");
                 }
 
-                _context.Usuarios.Add(usuario);
-                _context.SaveChanges();
-
-                HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
-                HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
-                HttpContext.Session.SetString("UserType", "user");
-
-                return RedirectToAction("Index", "Home");
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    TempData["Error"] = error.ErrorMessage;
+                    break;
+                }
             }
-            return View(usuario);
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error al registrar: " + ex.Message;
+            }
+
+            return View("~/Views/Autenticacion/registroPasajero.cshtml", usuario);
         }
 
         public IActionResult CerrarSesion()
@@ -102,10 +132,20 @@ namespace AeroLinea.Controllers
         {
             if (HttpContext.Session.GetString("UserType") != "admin")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
+
             var usuarios = _context.Usuarios.ToList();
+            var consultas = _context.Consultas
+                .Include(c => c.Usuario)
+                .OrderByDescending(c => c.urgencia == "Alto")
+                .ThenByDescending(c => c.urgencia == "Medio")
+                .ThenByDescending(c => c.urgencia == "Bajo")
+                .ToList();
+
             ViewBag.Usuarios = usuarios;
+            ViewBag.Consultas = consultas;
+
             return View("~/Views/Administrador/panelAdministrador.cshtml");
         }
 
@@ -196,10 +236,13 @@ namespace AeroLinea.Controllers
                     usuarioExistente.apellidosUsuario = usuario.apellidosUsuario;
 
                 if (usuario.nacimientoUsuario != default(DateTime))
+                {
                     usuarioExistente.nacimientoUsuario = usuario.nacimientoUsuario;
-
-                if (usuario.telefonoUsuario != 0)
+                }
+                if (!string.IsNullOrEmpty(usuario.telefonoUsuario))
+                {
                     usuarioExistente.telefonoUsuario = usuario.telefonoUsuario;
+                }
 
                 if (!string.IsNullOrEmpty(usuario.identificacionUsuario))
                     usuarioExistente.identificacionUsuario = usuario.identificacionUsuario;
@@ -220,6 +263,75 @@ namespace AeroLinea.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult RegistrarConsulta(string motivoConsulta, string descripcionConsultas, string urgencia)
+        {
+            if (HttpContext.Session.GetString("UserType") == null)
+            {
+                return RedirectToAction("SelectLogin");
+            }
+
+            try
+            {
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (!userId.HasValue)
+                {
+                    TempData["Error"] = "No se pudo identificar al usuario";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
+                // Verificar que el usuario existe
+                var usuario = _context.Usuarios.Find(userId.Value);
+                if (usuario == null)
+                {
+                    TempData["Error"] = "Usuario no encontrado";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
+                var consulta = new Consulta
+                {
+                    motivoConsulta = motivoConsulta,
+                    descripcionConsultas = descripcionConsultas,
+                    urgencia = urgencia,
+                    estado = "Pendiente",
+                    idUsuario = userId.Value
+                };
+
+                _context.Consultas.Add(consulta);
+                _context.SaveChanges();
+
+                TempData["Mensaje"] = "Consulta registrada exitosamente";
+                return RedirectToAction("Servicios_al_cliente");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error al registrar la consulta: " + ex.Message;
+                return RedirectToAction("Servicios_al_cliente");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarEstadoConsulta([FromBody] ActualizarEstadoConsultaModel model)
+        {
+            try
+            {
+                var consulta = _context.Consultas.Find(model.id);
+                if (consulta == null)
+                {
+                    return Json(new { success = false, message = "No se encontró la consulta" });
+                }
+
+                consulta.estado = model.estado;
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Estado actualizado correctamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error al actualizar estado: {ex.Message}" });
+            }
+        }
+
         public class CambiarRolModel
         {
             public int id { get; set; }
@@ -229,6 +341,12 @@ namespace AeroLinea.Controllers
         public class EliminarUsuarioModel
         {
             public int id { get; set; }
+        }
+
+        public class ActualizarEstadoConsultaModel
+        {
+            public int id { get; set; }
+            public string estado { get; set; }
         }
     }
 }

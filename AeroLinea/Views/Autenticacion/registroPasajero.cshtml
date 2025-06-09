@@ -1,6 +1,6 @@
 @model AeroLinea.Models.Usuario
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -9,10 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro de Usuario</title>
     <link rel="stylesheet" href="~/css/Autenticacion/registroPasajero.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <div class="register-container">
         <h2>Registro de Usuario</h2>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (TempData["Success"] != null)
         {
             <div class="alert alert-success">
@@ -75,8 +78,10 @@
             <a asp-controller="Home" asp-action="Autenticacion">¿Ya tienes cuenta? Inicia sesión</a>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html> 

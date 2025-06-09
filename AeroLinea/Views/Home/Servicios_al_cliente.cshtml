@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Servicios al Cliente";
+    var usuarioLogueado = Context.Session.GetString("UserType") != null;
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -11,74 +12,117 @@
     <link href="~/css/Home/servicios_al_cliente.css" rel="stylesheet" />
 </head>
 <body>
-
     <div class="titulo-panel mb-4">
         <h1 class="mb-0">Servicio al Cliente</h1>
     </div>
 
-        <!-- Panel del Formulario -->
-        <div class="card p-4 mb-5">
-            <h2 class="mb-4">Contáctanos</h2>
-            <form>
+    <!-- Mensajes de alerta -->
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Mensaje"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Panel del Formulario -->
+    <div class="card p-4 mb-5">
+        <h2 class="mb-4">Contáctanos</h2>
+        @if (usuarioLogueado)
+        {
+            <form id="consultaForm" method="post" action="/Home/RegistrarConsulta">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" required />
+                        <label for="motivoConsulta" class="form-label">Motivo de la Consulta</label>
+                        <select class="form-select" id="motivoConsulta" name="motivoConsulta" required>
+                            <option value="">Seleccione un motivo</option>
+                            <option value="Reserva">Reserva</option>
+                            <option value="Cancelacion">Cancelación</option>
+                            <option value="Reembolso">Reembolso</option>
+                            <option value="Equipaje">Equipaje</option>
+                            <option value="Vuelo">Vuelo</option>
+                            <option value="Otro">Otro</option>
+                        </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" required />
+                        <label for="urgencia" class="form-label">Nivel de Urgencia</label>
+                        <select class="form-select" id="urgencia" name="urgencia" required>
+                            <option value="">Seleccione urgencia</option>
+                            <option value="Alto">Alto</option>
+                            <option value="Medio">Medio</option>
+                            <option value="Bajo">Bajo</option>
+                        </select>
                     </div>
                     <div class="col-12">
-                        <label for="message" class="form-label">Mensaje</label>
-                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        <label for="descripcionConsultas" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionConsultas" name="descripcionConsultas" rows="5" required></textarea>
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-custom">Enviar Mensaje</button>
+                    <button type="submit" class="btn btn-custom">Enviar Consulta</button>
                 </div>
             </form>
-        </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">¡Inicio de sesión requerido!</h4>
+                <p>Para enviar una consulta, necesitas iniciar sesión en tu cuenta.</p>
+                <hr>
+                <p class="mb-0">
+                    <a href="/Home/SelectLogin" class="btn btn-primary">Iniciar Sesión</a>
+                    o
+                    <a href="/Home/Registro" class="btn btn-outline-primary">Registrarse</a>
+                </p>
+            </div>
+        }
+    </div>
 
-        <!-- Acordeón de Preguntas Frecuentes -->
+    <!-- Acordeón de Preguntas Frecuentes -->
     <div class="titulo-panel mb-4">
         <h1 class="mb-0">Preguntas Frecuentes</h1>
     </div>
-        <div class="accordion" id="faqAccordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                        ¿Cómo puedo cambiar mi vuelo?
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Puedes cambiar tu vuelo a través de nuestra página web en la sección "Mis Reservas".
-                    </div>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                    ¿Cómo puedo cambiar mi vuelo?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Puedes cambiar tu vuelo a través de nuestra página web en la sección "Mis Reservas".
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                        ¿Qué debo hacer si perdí mi boleto?
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Si perdiste tu boleto, por favor contáctanos a nuestro servicio al cliente para asistencia.
-                    </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                    ¿Qué debo hacer si perdí mi boleto?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Si perdiste tu boleto, por favor contáctanos a nuestro servicio al cliente para asistencia.
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                        ¿Cómo puedo obtener un reembolso?
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Para solicitar un reembolso, visita la sección de "Reembolsos" en nuestra página web.
-                    </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                    ¿Cómo puedo obtener un reembolso?
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Para solicitar un reembolso, visita la sección de "Reembolsos" en nuestra página web.
                 </div>
             </div>
         </div>
@@ -86,5 +130,17 @@
 
     <div style="height: 60px;"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Hacer que los mensajes desaparezcan automáticamente después de 5 segundos
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+    </script>
 </body>
 </html>

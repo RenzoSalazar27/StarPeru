@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
     var usuarios = ViewBag.Usuarios as List<AeroLinea.Models.Usuario>;
+    var consultas = ViewBag.Consultas as List<AeroLinea.Models.Consulta>;
 }
 
 <!DOCTYPE html>
@@ -217,6 +218,56 @@
                 mostrarMensajeError('Error al eliminar usuario: ' + error.message, 'errorEliminar');
             });
         }
+
+        function marcarResuelto(id) {
+            fetch('/Home/ActualizarEstadoConsulta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    estado: 'Resuelto'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarMensajeExito('Consulta marcada como resuelta');
+                    location.reload();
+                } else {
+                    mostrarMensajeError(data.message || 'Error al actualizar estado', 'mensajeErrorConsultas');
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al actualizar estado: ' + error.message, 'mensajeErrorConsultas');
+            });
+        }
+
+        function marcarPendiente(id) {
+            fetch('/Home/ActualizarEstadoConsulta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    estado: 'Pendiente'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarMensajeExito('Consulta marcada como pendiente');
+                    location.reload();
+                } else {
+                    mostrarMensajeError(data.message || 'Error al actualizar estado', 'mensajeErrorConsultas');
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al actualizar estado: ' + error.message, 'mensajeErrorConsultas');
+            });
+        }
     </script>
     
 </head>
@@ -229,6 +280,7 @@
             </div>
             <ul class="sidebar-menu">
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('usuarios')">Usuarios</a></li>
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('consultas')">Consultas</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('promociones')">Promociones</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('vuelos')">Vuelos Programados</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('registro-vuelo')">Registrar Vuelo</a></li>
@@ -282,6 +334,53 @@
                                             </button>
                                             <button class="btn btn-sm btn-danger" onclick="eliminarUsuario(@usuario.idUsuario)">
                                                 <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Sección Consultas -->
+                <section id="consultas" class="seccion" style="display: none;">
+                    <h3>Consultas de Clientes</h3>
+                    <div id="mensajeErrorConsultas" class="alert alert-danger" style="display: none;"></div>
+                    <div id="mensajeExitoConsultas" class="alert alert-success" style="display: none;"></div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Motivo</th>
+                                    <th>Descripción</th>
+                                    <th>Urgencia</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var consulta in consultas)
+                                {
+                                    <tr class="@(consulta.urgencia == "Alto" ? "table-danger" : consulta.urgencia == "Medio" ? "table-warning" : "table-info")">
+                                        <td>@consulta.idConsulta</td>
+                                        <td>@consulta.Usuario.nombresUsuario @consulta.Usuario.apellidosUsuario</td>
+                                        <td>@consulta.motivoConsulta</td>
+                                        <td>@consulta.descripcionConsultas</td>
+                                        <td>@consulta.urgencia</td>
+                                        <td>
+                                            <span class="badge @(consulta.estado == "Resuelto" ? "bg-success" : "bg-warning")">
+                                                @consulta.estado
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success" onclick="marcarResuelto(@consulta.idConsulta)">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning" onclick="marcarPendiente(@consulta.idConsulta)">
+                                                <i class="fas fa-clock"></i>
                                             </button>
                                         </td>
                                     </tr>
