@@ -332,6 +332,160 @@ namespace AeroLinea.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult RegistrarPiloto([FromBody] Piloto piloto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
+                );
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                // Verificar si ya existe un piloto con el mismo DNI
+                if (_context.Pilotos.Any(p => p.DNI == piloto.DNI))
+                {
+                    return Json(new { success = false, message = "Ya existe un piloto con este DNI" });
+                }
+
+                // Verificar si ya existe un piloto con la misma licencia
+                if (_context.Pilotos.Any(p => p.licenciaPiloto == piloto.licenciaPiloto))
+                {
+                    return Json(new { success = false, message = "Ya existe un piloto con esta licencia" });
+                }
+
+                _context.Pilotos.Add(piloto);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Piloto registrado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al registrar piloto: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerPilotos()
+        {
+            try
+            {
+                var pilotos = _context.Pilotos.ToList();
+                return Json(new { success = true, data = pilotos });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener pilotos: " + ex.Message });
+            }
+        }
+
+        [HttpPut]
+        public IActionResult ActualizarPiloto(int id, [FromBody] Piloto piloto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
+                );
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                var pilotoExistente = _context.Pilotos.Find(id);
+                if (pilotoExistente == null)
+                {
+                    return Json(new { success = false, message = "Piloto no encontrado" });
+                }
+
+                // Verificar si el DNI ya existe en otro piloto
+                if (_context.Pilotos.Any(p => p.DNI == piloto.DNI && p.idPiloto != id))
+                {
+                    return Json(new { success = false, message = "Ya existe un piloto con este DNI" });
+                }
+
+                // Verificar si la licencia ya existe en otro piloto
+                if (_context.Pilotos.Any(p => p.licenciaPiloto == piloto.licenciaPiloto && p.idPiloto != id))
+                {
+                    return Json(new { success = false, message = "Ya existe un piloto con esta licencia" });
+                }
+
+                // Actualizar los datos del piloto
+                pilotoExistente.nombrePiloto = piloto.nombrePiloto;
+                pilotoExistente.apellidoPiloto = piloto.apellidoPiloto;
+                pilotoExistente.nacimientoPiloto = piloto.nacimientoPiloto;
+                pilotoExistente.telefonoPiloto = piloto.telefonoPiloto;
+                pilotoExistente.DNI = piloto.DNI;
+                pilotoExistente.licenciaPiloto = piloto.licenciaPiloto;
+                pilotoExistente.tipoLicPiloto = piloto.tipoLicPiloto;
+                pilotoExistente.fechaEmiLic = piloto.fechaEmiLic;
+
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Piloto actualizado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al actualizar piloto: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EliminarPiloto(int id)
+        {
+            try
+            {
+                var piloto = _context.Pilotos.Find(id);
+                if (piloto == null)
+                {
+                    return Json(new { success = false, message = "Piloto no encontrado" });
+                }
+
+                _context.Pilotos.Remove(piloto);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Piloto eliminado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar piloto: " + ex.Message });
+            }
+        }
+
+        public IActionResult EditarPiloto(int id)
+        {
+            var piloto = _context.Pilotos.Find(id);
+            if (piloto == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(piloto);
+        }
+
+        public IActionResult ObtenerPiloto(int id)
+        {
+            try
+            {
+                var piloto = _context.Pilotos.Find(id);
+                if (piloto == null)
+                {
+                    return Json(new { success = false, message = "Piloto no encontrado" });
+                }
+
+                return Json(new { success = true, data = piloto });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener datos del piloto: " + ex.Message });
+            }
+        }
+
         public class CambiarRolModel
         {
             public int id { get; set; }

@@ -23,6 +23,11 @@
             });
 
             document.getElementById(seccion).style.display = 'block';
+
+            // Si la sección es pilotos, cargar la lista de pilotos
+            if (seccion === 'pilotos') {
+                cargarPilotos();
+            }
         }
 
         window.onload = function() {
@@ -268,6 +273,164 @@
                 mostrarMensajeError('Error al actualizar estado: ' + error.message, 'mensajeErrorConsultas');
             });
         }
+
+        function editarPiloto(idPiloto) {
+            fetch(`/Home/ObtenerPiloto/${idPiloto}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('nombrePiloto').value = data.data.nombrePiloto;
+                        document.getElementById('apellidoPiloto').value = data.data.apellidoPiloto;
+                        document.getElementById('nacimientoPiloto').value = data.data.nacimientoPiloto.split('T')[0];
+                        document.getElementById('telefonoPiloto').value = data.data.telefonoPiloto;
+                        document.getElementById('DNI').value = data.data.DNI;
+                        document.getElementById('licenciaPiloto').value = data.data.licenciaPiloto;
+                        document.getElementById('tipoLicPiloto').value = data.data.tipoLicPiloto;
+                        document.getElementById('fechaEmiLic').value = data.data.fechaEmiLic.split('T')[0];
+                        document.querySelector('#modalRegistrarPiloto .modal-title').textContent = 'Editar Piloto';
+                        document.querySelector('#modalRegistrarPiloto .btn-primary').textContent = 'Guardar Cambios';
+                        document.querySelector('#modalRegistrarPiloto').dataset.pilotoId = idPiloto;
+                        $('#modalRegistrarPiloto').modal('show');
+                    } else {
+                        alert(data.message || 'Error al cargar datos del piloto');
+                    }
+                })
+                .catch(error => {
+                    alert('Error al cargar datos del piloto: ' + error.message);
+                });
+        }
+
+        function eliminarPiloto(idPiloto) {
+            document.getElementById('eliminarPilotoId').value = idPiloto;
+            $('#modalEliminarPiloto').modal('show');
+        }
+
+        function confirmarEliminacionPiloto() {
+            const idPiloto = document.getElementById('eliminarPilotoId').value;
+            fetch(`/Home/EliminarPiloto/${idPiloto}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#modalEliminarPiloto').modal('hide');
+                    mostrarMensajeExito('Piloto eliminado exitosamente');
+                    cargarPilotos();
+                } else {
+                    mostrarMensajeError(data.message || 'Error al eliminar piloto', 'errorEliminarPiloto');
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al eliminar piloto: ' + error.message, 'errorEliminarPiloto');
+            });
+        }
+
+        function registrarPiloto() {
+            // Limpiar mensajes de error anteriores
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            
+            const pilotoId = document.querySelector('#modalRegistrarPiloto').dataset.pilotoId;
+            const piloto = {
+                nombrePiloto: document.getElementById('nombrePiloto').value,
+                apellidoPiloto: document.getElementById('apellidoPiloto').value,
+                nacimientoPiloto: document.getElementById('nacimientoPiloto').value,
+                telefonoPiloto: document.getElementById('telefonoPiloto').value,
+                DNI: document.getElementById('DNI').value,
+                licenciaPiloto: document.getElementById('licenciaPiloto').value,
+                tipoLicPiloto: document.getElementById('tipoLicPiloto').value,
+                fechaEmiLic: document.getElementById('fechaEmiLic').value
+            };
+
+            const url = pilotoId ? `/Home/ActualizarPiloto/${pilotoId}` : '/Home/RegistrarPiloto';
+            const method = pilotoId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(piloto)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarMensajeExito(pilotoId ? 'Piloto actualizado exitosamente' : 'Piloto registrado exitosamente', 'mensajeExitoPiloto');
+                    // Limpiar los campos del formulario
+                    document.getElementById('nombrePiloto').value = '';
+                    document.getElementById('apellidoPiloto').value = '';
+                    document.getElementById('nacimientoPiloto').value = '';
+                    document.getElementById('telefonoPiloto').value = '';
+                    document.getElementById('DNI').value = '';
+                    document.getElementById('licenciaPiloto').value = '';
+                    document.getElementById('tipoLicPiloto').value = '';
+                    document.getElementById('fechaEmiLic').value = '';
+                    // Restaurar el título y el botón
+                    document.querySelector('#modalRegistrarPiloto .modal-title').textContent = 'Registrar Piloto';
+                    document.querySelector('#modalRegistrarPiloto .btn-primary').textContent = 'Registrar';
+                    // Limpiar el ID del piloto
+                    document.querySelector('#modalRegistrarPiloto').dataset.pilotoId = '';
+                    $('#modalRegistrarPiloto').modal('hide');
+                    cargarPilotos();
+                } else {
+                    if (data.errors) {
+                        // Mostrar errores de validación debajo de cada campo
+                        Object.keys(data.errors).forEach(key => {
+                            const input = document.getElementById(key);
+                            if (input) {
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'error-message text-danger mt-1';
+                                errorDiv.textContent = data.errors[key];
+                                input.parentNode.appendChild(errorDiv);
+                            }
+                        });
+                    } else {
+                        mostrarMensajeError(data.message || 'Error al procesar la solicitud', 'errorRegistroPiloto');
+                    }
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al procesar la solicitud: ' + error.message, 'errorRegistroPiloto');
+            });
+        }
+
+        function cargarPilotos() {
+            fetch('/Home/ObtenerPilotos')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const tbody = document.querySelector('#pilotos table tbody');
+                        tbody.innerHTML = '';
+                        data.data.forEach(piloto => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${piloto.idPiloto}</td>
+                                <td>${piloto.nombrePiloto}</td>
+                                <td>${piloto.apellidoPiloto}</td>
+                                <td>${new Date(piloto.nacimientoPiloto).toLocaleDateString()}</td>
+                                <td>${piloto.telefonoPiloto}</td>
+                                <td>${piloto.DNI}</td>
+                                <td>${piloto.licenciaPiloto}</td>
+                                <td>${piloto.tipoLicPiloto}</td>
+                                <td>${new Date(piloto.fechaEmiLic).toLocaleDateString()}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editarPiloto(${piloto.idPiloto})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarPiloto(${piloto.idPiloto})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } else {
+                        mostrarMensajeError(data.message || 'Error al cargar pilotos', 'mensajeErrorPilotos');
+                    }
+                })
+                .catch(error => {
+                    mostrarMensajeError('Error al cargar pilotos: ' + error.message, 'mensajeErrorPilotos');
+                });
+        }
     </script>
     
 </head>
@@ -281,6 +444,7 @@
             <ul class="sidebar-menu">
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('usuarios')">Usuarios</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('consultas')">Consultas</a></li>
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('pilotos')">Pilotos</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('promociones')">Promociones</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('vuelos')">Vuelos Programados</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('registro-vuelo')">Registrar Vuelo</a></li>
@@ -388,6 +552,37 @@
                             </tbody>
                         </table>
                     </div>
+                </section>
+
+                <!-- Sección Pilotos -->
+                <section id="pilotos" class="seccion" style="display: none;">
+                    <h3>Registro de Pilotos</h3>
+                    <div id="mensajeErrorPilotos" class="alert alert-danger" style="display: none;"></div>
+                    <div id="mensajeExitoPilotos" class="alert alert-success" style="display: none;"></div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Teléfono</th>
+                                    <th>DNI</th>
+                                    <th>Licencia</th>
+                                    <th>Tipo de Licencia</th>
+                                    <th>Fecha de Emisión</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegistrarPiloto">
+                        <i class="fas fa-plus"></i> Registrar Piloto
+                    </button>
                 </section>
 
                 <!-- Sección Promociones -->
@@ -535,6 +730,90 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" onclick="confirmarEliminacion()">Confirmar Eliminación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registrar Piloto -->
+    <div class="modal fade" id="modalRegistrarPiloto" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Nuevo Piloto</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorRegistroPiloto" class="alert alert-danger" style="display: none;"></div>
+                    <form id="formRegistrarPiloto">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" id="nombrePiloto" required maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label>Apellido</label>
+                            <input type="text" class="form-control" id="apellidoPiloto" required maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" id="nacimientoPiloto" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="number" class="form-control" id="telefonoPiloto" required>
+                        </div>
+                        <div class="form-group">
+                            <label>DNI</label>
+                            <input type="text" class="form-control" id="DNI" required maxlength="8">
+                        </div>
+                        <div class="form-group">
+                            <label>Licencia de Piloto</label>
+                            <input type="text" class="form-control" id="licenciaPiloto" required maxlength="9">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Licencia</label>
+                            <select class="form-control" id="tipoLicPiloto" required>
+                                <option value="">Seleccione un tipo</option>
+                                <option value="Privado">Privado</option>
+                                <option value="Comercial">Comercial</option>
+                                <option value="Ligeras">Ligeras</option>
+                                <option value="Linea Aerea">Línea Aérea</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Emisión de Licencia</label>
+                            <input type="date" class="form-control" id="fechaEmiLic" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="registrarPiloto()">Registrar Piloto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Piloto -->
+    <div class="modal fade" id="modalEliminarPiloto" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Piloto</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorEliminarPiloto" class="alert alert-danger" style="display: none;"></div>
+                    <input type="hidden" id="eliminarPilotoId">
+                    <p>¿Está seguro que desea eliminar este piloto?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmarEliminacionPiloto()">Confirmar Eliminación</button>
                 </div>
             </div>
         </div>

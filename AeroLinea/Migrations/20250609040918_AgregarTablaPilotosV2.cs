@@ -7,12 +7,38 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AeroLinea.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class AgregarTablaPilotosV2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Pilotos",
+                columns: table => new
+                {
+                    idPiloto = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    nombrePiloto = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    apellidoPiloto = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    nacimientoPiloto = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    telefonoPiloto = table.Column<int>(type: "int", nullable: false),
+                    DNI = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    licenciaPiloto = table.Column<string>(type: "varchar(9)", maxLength: 9, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    tipoLicPiloto = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    fechaEmiLic = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pilotos", x => x.idPiloto);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -82,6 +108,9 @@ namespace AeroLinea.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Consultas");
+
+            migrationBuilder.DropTable(
+                name: "Pilotos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");

@@ -60,6 +60,53 @@ namespace AeroLinea.Migrations
                     b.ToTable("Consultas");
                 });
 
+            modelBuilder.Entity("AeroLinea.Models.Piloto", b =>
+                {
+                    b.Property<int>("idPiloto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idPiloto"));
+
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
+
+                    b.Property<string>("apellidoPiloto")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<DateTime>("fechaEmiLic")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("licenciaPiloto")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("varchar(9)");
+
+                    b.Property<DateTime>("nacimientoPiloto")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("nombrePiloto")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<int>("telefonoPiloto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("tipoLicPiloto")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.HasKey("idPiloto");
+
+                    b.ToTable("Pilotos");
+                });
+
             modelBuilder.Entity("AeroLinea.Models.Usuario", b =>
                 {
                     b.Property<int>("idUsuario")
