@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250609061517_PruebaAvion")]
-    partial class PruebaAvion
+    [Migration("20250609073244_CambioDNI")]
+    partial class CambioDNI
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,15 +106,15 @@ namespace AeroLinea.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idPiloto"));
 
-                    b.Property<string>("DNI")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)");
-
                     b.Property<string>("apellidoPiloto")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("varchar(30)");
+
+                    b.Property<string>("dniPiloto")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
 
                     b.Property<DateTime>("fechaEmiLic")
                         .HasColumnType("datetime(6)");
@@ -197,6 +197,45 @@ namespace AeroLinea.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("AeroLinea.Models.Vuelo", b =>
+                {
+                    b.Property<int>("idVuelo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idVuelo"));
+
+                    b.Property<string>("destinoVuelo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("fechaVuelo")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("idAvion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("idPiloto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("origenVuelo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<decimal>("precioVuelo")
+                        .HasColumnType("decimal(6,2)");
+
+                    b.HasKey("idVuelo");
+
+                    b.HasIndex("idAvion");
+
+                    b.HasIndex("idPiloto");
+
+                    b.ToTable("Vuelo");
+                });
+
             modelBuilder.Entity("AeroLinea.Models.Consulta", b =>
                 {
                     b.HasOne("AeroLinea.Models.Usuario", "Usuario")
@@ -206,6 +245,25 @@ namespace AeroLinea.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.Vuelo", b =>
+                {
+                    b.HasOne("AeroLinea.Models.Flota", "Avion")
+                        .WithMany()
+                        .HasForeignKey("idAvion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AeroLinea.Models.Piloto", "Piloto")
+                        .WithMany()
+                        .HasForeignKey("idPiloto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Avion");
+
+                    b.Navigation("Piloto");
                 });
 
             modelBuilder.Entity("AeroLinea.Models.Usuario", b =>

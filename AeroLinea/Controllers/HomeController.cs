@@ -348,7 +348,7 @@ namespace AeroLinea.Controllers
             try
             {
                 // Verificar si ya existe un piloto con el mismo DNI
-                if (_context.Pilotos.Any(p => p.DNI == piloto.DNI))
+                if (_context.Pilotos.Any(p => p.dniPiloto == piloto.dniPiloto))
                 {
                     return Json(new { success = false, message = "Ya existe un piloto con este DNI" });
                 }
@@ -405,7 +405,7 @@ namespace AeroLinea.Controllers
                 }
 
                 // Verificar si el DNI ya existe en otro piloto
-                if (_context.Pilotos.Any(p => p.DNI == piloto.DNI && p.idPiloto != id))
+                if (_context.Pilotos.Any(p => p.dniPiloto == piloto.dniPiloto && p.idPiloto != id))
                 {
                     return Json(new { success = false, message = "Ya existe un piloto con este DNI" });
                 }
@@ -421,7 +421,7 @@ namespace AeroLinea.Controllers
                 pilotoExistente.apellidoPiloto = piloto.apellidoPiloto;
                 pilotoExistente.nacimientoPiloto = piloto.nacimientoPiloto;
                 pilotoExistente.telefonoPiloto = piloto.telefonoPiloto;
-                pilotoExistente.DNI = piloto.DNI;
+                pilotoExistente.dniPiloto = piloto.dniPiloto;
                 pilotoExistente.licenciaPiloto = piloto.licenciaPiloto;
                 pilotoExistente.tipoLicPiloto = piloto.tipoLicPiloto;
                 pilotoExistente.fechaEmiLic = piloto.fechaEmiLic;
@@ -596,6 +596,160 @@ namespace AeroLinea.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Error al eliminar avión: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerVuelos()
+        {
+            try
+            {
+                var vuelos = _context.Vuelo
+                    .Include(v => v.Avion)
+                    .Include(v => v.Piloto)
+                    .ToList();
+                return Json(new { success = true, data = vuelos });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener vuelos: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult RegistrarVuelo([FromBody] Vuelo vuelo)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = new Dictionary<string, string>();
+                    foreach (var modelState in ModelState)
+                    {
+                        if (modelState.Value.Errors.Count > 0)
+                        {
+                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
+                        }
+                    }
+                    return Json(new { success = false, errors = errors });
+                }
+
+                // Validar que origen y destino no sean iguales
+                if (vuelo.origenVuelo == vuelo.destinoVuelo)
+                {
+                    return Json(new { success = false, message = "El origen y destino no pueden ser la misma ciudad" });
+                }
+
+                // Validar fecha (mínimo 2 días después de hoy)
+                var fechaMinima = DateTime.Now.AddDays(2);
+                if (vuelo.fechaVuelo < fechaMinima)
+                {
+                    return Json(new { success = false, message = "La fecha del vuelo debe ser al menos 2 días después de hoy" });
+                }
+
+                _context.Vuelo.Add(vuelo);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Vuelo registrado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al registrar vuelo: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerVuelo(int id)
+        {
+            try
+            {
+                var vuelo = _context.Vuelo
+                    .Include(v => v.Avion)
+                    .Include(v => v.Piloto)
+                    .FirstOrDefault(v => v.idVuelo == id);
+                
+                if (vuelo == null)
+                {
+                    return Json(new { success = false, message = "Vuelo no encontrado" });
+                }
+                return Json(new { success = true, data = vuelo });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener vuelo: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarVuelo(int id, [FromBody] Vuelo vuelo)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = new Dictionary<string, string>();
+                    foreach (var modelState in ModelState)
+                    {
+                        if (modelState.Value.Errors.Count > 0)
+                        {
+                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
+                        }
+                    }
+                    return Json(new { success = false, errors = errors });
+                }
+
+                // Validar que origen y destino no sean iguales
+                if (vuelo.origenVuelo == vuelo.destinoVuelo)
+                {
+                    return Json(new { success = false, message = "El origen y destino no pueden ser la misma ciudad" });
+                }
+
+                var vueloExistente = _context.Vuelo.Find(id);
+                if (vueloExistente == null)
+                {
+                    return Json(new { success = false, message = "Vuelo no encontrado" });
+                }
+
+                // Validar fecha (mínimo 2 días después de hoy)
+                var fechaMinima = DateTime.Now.AddDays(2);
+                if (vuelo.fechaVuelo < fechaMinima)
+                {
+                    return Json(new { success = false, message = "La fecha del vuelo debe ser al menos 2 días después de hoy" });
+                }
+
+                vueloExistente.origenVuelo = vuelo.origenVuelo;
+                vueloExistente.destinoVuelo = vuelo.destinoVuelo;
+                vueloExistente.fechaVuelo = vuelo.fechaVuelo;
+                vueloExistente.idAvion = vuelo.idAvion;
+                vueloExistente.idPiloto = vuelo.idPiloto;
+                vueloExistente.precioVuelo = vuelo.precioVuelo;
+
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Vuelo actualizado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al actualizar vuelo: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EliminarVuelo(int id)
+        {
+            try
+            {
+                var vuelo = _context.Vuelo.Find(id);
+                if (vuelo == null)
+                {
+                    return Json(new { success = false, message = "Vuelo no encontrado" });
+                }
+
+                _context.Vuelo.Remove(vuelo);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Vuelo eliminado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar vuelo: " + ex.Message });
             }
         }
 

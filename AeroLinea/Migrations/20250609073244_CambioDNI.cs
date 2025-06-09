@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AeroLinea.Migrations
 {
     /// <inheritdoc />
-    public partial class PruebaAvion : Migration
+    public partial class CambioDNI : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,7 +49,7 @@ namespace AeroLinea.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     nacimientoPiloto = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     telefonoPiloto = table.Column<int>(type: "int", nullable: false),
-                    DNI = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
+                    dniPiloto = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     licenciaPiloto = table.Column<string>(type: "varchar(9)", maxLength: 9, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -92,6 +92,39 @@ namespace AeroLinea.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Vuelo",
+                columns: table => new
+                {
+                    idVuelo = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    origenVuelo = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    destinoVuelo = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    fechaVuelo = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    idAvion = table.Column<int>(type: "int", nullable: false),
+                    idPiloto = table.Column<int>(type: "int", nullable: false),
+                    precioVuelo = table.Column<decimal>(type: "decimal(6,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vuelo", x => x.idVuelo);
+                    table.ForeignKey(
+                        name: "FK_Vuelo_Flota_idAvion",
+                        column: x => x.idAvion,
+                        principalTable: "Flota",
+                        principalColumn: "idAvion",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vuelo_Pilotos_idPiloto",
+                        column: x => x.idPiloto,
+                        principalTable: "Pilotos",
+                        principalColumn: "idPiloto",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Consultas",
                 columns: table => new
                 {
@@ -123,6 +156,16 @@ namespace AeroLinea.Migrations
                 name: "IX_Consultas_idUsuario",
                 table: "Consultas",
                 column: "idUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vuelo_idAvion",
+                table: "Vuelo",
+                column: "idAvion");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vuelo_idPiloto",
+                table: "Vuelo",
+                column: "idPiloto");
         }
 
         /// <inheritdoc />
@@ -132,13 +175,16 @@ namespace AeroLinea.Migrations
                 name: "Consultas");
 
             migrationBuilder.DropTable(
+                name: "Vuelo");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
+
+            migrationBuilder.DropTable(
                 name: "Flota");
 
             migrationBuilder.DropTable(
                 name: "Pilotos");
-
-            migrationBuilder.DropTable(
-                name: "Usuarios");
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace AeroLinea.Models
 {
@@ -32,7 +33,8 @@ namespace AeroLinea.Models
         [Required(ErrorMessage = "El DNI es obligatorio")]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "El DNI debe tener 8 dígitos")]
         [RegularExpression(@"^[0-9]{8}$", ErrorMessage = "El DNI solo debe contener números")]
-        public string DNI { get; set; }
+        [JsonProperty("dni")]
+        public string dniPiloto { get; set; }
 
         [Required(ErrorMessage = "La licencia es obligatoria")]
         [StringLength(9, MinimumLength = 9, ErrorMessage = "La licencia debe tener 9 dígitos")]
