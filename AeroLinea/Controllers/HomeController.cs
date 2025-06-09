@@ -628,64 +628,38 @@ namespace AeroLinea.Controllers
         {
             try
             {
-                Console.WriteLine("Datos recibidos del vuelo:");
-                Console.WriteLine($"Origen: {vuelo.origenVuelo}");
-                Console.WriteLine($"Destino: {vuelo.destinoVuelo}");
-                Console.WriteLine($"Fecha: {vuelo.fechaVuelo}");
-                Console.WriteLine($"ID Avión: {vuelo.idAvion}");
-                Console.WriteLine($"ID Piloto: {vuelo.idPiloto}");
-                Console.WriteLine($"Precio: {vuelo.precioVuelo}");
-
-                if (!ModelState.IsValid)
+                if (vuelo == null)
                 {
-                    var errors = new Dictionary<string, string>();
-                    foreach (var modelState in ModelState)
-                    {
-                        if (modelState.Value.Errors.Count > 0)
-                        {
-                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
-                            Console.WriteLine($"Error en {modelState.Key}: {modelState.Value.Errors[0].ErrorMessage}");
-                        }
-                    }
-                    return Json(new { success = false, errors = errors });
+                    return Json(new { success = false, message = "Datos del vuelo no proporcionados" });
                 }
 
-                // Validar que origen y destino no sean iguales
+                // Validar que el origen y destino sean diferentes
                 if (vuelo.origenVuelo == vuelo.destinoVuelo)
                 {
-                    return Json(new { success = false, message = "El origen y destino no pueden ser la misma ciudad" });
+                    return Json(new { success = false, message = "El origen y destino no pueden ser iguales" });
                 }
 
-                // Validar fecha (mínimo 2 días después de hoy)
+                // Validar que la fecha sea al menos 2 días en el futuro
                 var fechaMinima = DateTime.Now.AddDays(2);
                 if (vuelo.fechaVuelo < fechaMinima)
                 {
-                    return Json(new { success = false, message = "La fecha del vuelo debe ser al menos 2 días después de hoy" });
+                    return Json(new { success = false, message = "La fecha del vuelo debe ser al menos 2 días en el futuro" });
                 }
 
-                // Verificar que el avión existe
-                var avion = _context.Flota.Find(vuelo.idAvion);
-                if (avion == null)
+                // Validar que el precio sea mayor a 0
+                if (vuelo.precioVuelo <= 0)
                 {
-                    return Json(new { success = false, message = "El avión seleccionado no existe" });
-                }
-
-                // Verificar que el piloto existe
-                var piloto = _context.Pilotos.Find(vuelo.idPiloto);
-                if (piloto == null)
-                {
-                    return Json(new { success = false, message = "El piloto seleccionado no existe" });
+                    return Json(new { success = false, message = "El precio debe ser mayor a 0" });
                 }
 
                 _context.Vuelo.Add(vuelo);
                 _context.SaveChanges();
+
                 return Json(new { success = true, message = "Vuelo registrado exitosamente" });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al registrar vuelo: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return Json(new { success = false, message = "Error al registrar vuelo: " + ex.Message });
+                return Json(new { success = false, message = "Error al registrar el vuelo: " + ex.Message });
             }
         }
 

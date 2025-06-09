@@ -25,10 +25,10 @@ namespace AeroLinea.Models
         public DateTime fechaVuelo { get; set; }
 
         [Required(ErrorMessage = "El avión es obligatorio")]
-        public int idAvion { get; set; }
+        public int? idAvion { get; set; }
 
         [Required(ErrorMessage = "El piloto es obligatorio")]
-        public int idPiloto { get; set; }
+        public int? idPiloto { get; set; }
 
         [Required(ErrorMessage = "El precio es obligatorio")]
         [Range(0.01, 999999.99, ErrorMessage = "El precio debe estar entre 0.01 y 999999.99")]
