@@ -1,4 +1,4 @@
-using AeroLinea.Data;
+using AeroLinea.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,9 +47,8 @@ using (var scope = app.Services.CreateScope())
         if (context.Database.CanConnect())
         {
             Console.WriteLine("Conexión exitosa a la base de datos");
-            
             // Inicializar los datos
-            DbInitializer.Initialize(context);
+            // DbInitializer.Initialize(context); // Línea eliminada
             Console.WriteLine("Datos inicializados correctamente");
         }
         else

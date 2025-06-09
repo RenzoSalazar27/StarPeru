@@ -2,216 +2,201 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Shop Homepage - Start Bootstrap Template</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
-</head>
-<body>
-    <!-- Header-->
-    <header class="bg-dark">
-        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+<!-- Header-->
+<header class="bg-dark">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/img/Panel.jpg" class="d-block w-100 carousel-img" alt="Descripción de la imagen 1">
+            </div>
+            <div class="carousel-item">
+                <img src="~/img/Panel2.jpg" class="d-block w-100 carousel-img" alt="Descripción de la imagen 2">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</header>
+
+<!-- Opciones para el panel -->
+<div class="text-center my-3" id="buttonContainer">
+    <a href="@Url.Action("Vuela", "Home")" class="btn btn-custom mx-2">Vuela</a>
+    <button class="btn btn-custom mx-2" onclick="updatePanel('Web Check-In')">Web Check-In</button>
+    <button class="btn btn-custom mx-2" onclick="updatePanel('Pagar Reserva')">Pagar Reserva</button>
+    <button class="btn btn-custom mx-2" onclick="updatePanel('E-ticket')">E-ticket</button>
+</div>
+<a class="align-content-lg-around"></a>
+
+<!-- Panel informativo -->
+<div class="bg-light py-2 text-center" id="infoPanel">
+    <h5 class="mb-0">¡Descubre nuestras mejores ofertas y destinos!</h5>
+</div>
+
+<!-- Línea blanca -->
+<div class="white-separator"></div>
+
+<!-- PEQUEÑO TEXTO-->
+<div class="small-text">
+    <img src="~/img/icono-destinos.jpg" alt="Pequeña imagen" />
+    Conoce nuestros destinos
+</div>
+
+<!-- Línea blanca -->
+<div class="white-separator"></div>
+
+<!--OPCIONES DE VIAJES-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="~/img/Panel.jpg" class="d-block w-100 carousel-img" alt="Descripción de la imagen 1">
+                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/LIMA.jpeg" alt="LIMA" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">LIMA</h5>
+                                    <p>Desde: USD 52.19 ó s/193.18</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Lima</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/IQUITOS.jpeg" alt="IQUITOS" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">IQUITOS</h5>
+                                    <p>Desde: USD 57.56 ó s/213.06</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Iquitos</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/TARAPOTO.jpeg" alt="TARAPOTO" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">TARAPOTO</h5>
+                                    <p>Desde: USD 54.26 ó s/200.84</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Tarapoto</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/HUANUCO.jpeg" alt="HUANUCO" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">HUÁNUCO</h5>
+                                    <p>Desde: USD 80.57 ó s/298.23</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Huánuco</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="~/img/Panel2.jpg" class="d-block w-100 carousel-img" alt="Descripción de la imagen 2">
+                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/PUCALLPA.jpeg" alt="PUCALLPA" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">PUCALLPA</h5>
+                                    <p>Desde: USD 54.26 ó s/200.84</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Pucallpa</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/CAJAMARCA.jpeg" alt="CAJAMARCA" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">CAJAMARCA</h5>
+                                    <p>Desde: USD 69.95 ó s/258.92</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Cajamarca</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/CHICLAYO.jpeg" alt="CHICLAYO" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">CHICLAYO</h5>
+                                    <p>Desde: USD 81.51 ó s/301.71</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Chiclayo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    </header>
-
-    <!-- Opciones para el panel -->
-    <div class="text-center my-3" id="buttonContainer">
-        <a href="@Url.Action("Vuela", "Home")" class="btn btn-custom mx-2">Vuela</a>
-        <button class="btn btn-custom mx-2" onclick="updatePanel('Web Check-In')">Web Check-In</button>
-        <button class="btn btn-custom mx-2" onclick="updatePanel('Pagar Reserva')">Pagar Reserva</button>
-        <button class="btn btn-custom mx-2" onclick="updatePanel('E-ticket')">E-ticket</button>
     </div>
-    <a class="align-content-lg-around"></a>
+</section>
 
-    <!-- Panel informativo -->
-    <div class="bg-light py-2 text-center" id="infoPanel">
-        <h5 class="mb-0">¡Descubre nuestras mejores ofertas y destinos!</h5>
-    </div>
+<!-- Línea blanca -->
+<div class="white-separator"></div>
 
-    <!-- Línea blanca -->
-    <div class="white-separator"></div>
-
-    <!-- PEQUEÑO TEXTO-->
-    <div class="small-text">
-        <img src="~/img/icono-destinos.jpg" alt="Pequeña imagen" />
-        Conoce nuestros destinos
-    </div>
-
-    <!-- Línea blanca -->
-    <div class="white-separator"></div>
-
-    <!--OPCIONES DE VIAJES-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/LIMA.jpeg" alt="LIMA" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">LIMA</h5>
-                                        <p>Desde: USD 52.19 ó s/193.18</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Lima</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/IQUITOS.jpeg" alt="IQUITOS" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">IQUITOS</h5>
-                                        <p>Desde: USD 57.56 ó s/213.06</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Iquitos</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/TARAPOTO.jpeg" alt="TARAPOTO" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">TARAPOTO</h5>
-                                        <p>Desde: USD 54.26 ó s/200.84</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Tarapoto</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/HUANUCO.jpeg" alt="HUANUCO" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">HUÁNUCO</h5>
-                                        <p>Desde: USD 80.57 ó s/298.23</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Huánuco</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/PUCALLPA.jpeg" alt="PUCALLPA" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">PUCALLPA</h5>
-                                        <p>Desde: USD 54.26 ó s/200.84</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Pucallpa</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/CAJAMARCA.jpeg" alt="CAJAMARCA" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">CAJAMARCA</h5>
-                                        <p>Desde: USD 69.95 ó s/258.92</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Cajamarca</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col mb-5">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="~/img/CHICLAYO.jpeg" alt="CHICLAYO" />
-                                    <div class="card-body text-center">
-                                        <h5 class="fw-bolder">CHICLAYO</h5>
-                                        <p>Desde: USD 81.51 ó s/301.71</p>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Chiclayo</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+<!-- ALIANZAS -->
+<div class="container">
+    <div class="row justify-content-center align-items-start">
+        <div class="col-6 col-md-3 d-flex align-items-start">
+            <img src="~/img/icono-convenios.png" alt="Alianza 1" class="img-fluid me-3" />
+            <span class="small-text text-white mt-n5">Alianzas</span>
         </div>
-    </section>
+        <div class="col-6 col-md-3 d-flex flex-column align-items-center">
+            <img src="~/img/avianca-star.png" alt="Alianza 2" class="img-fluid" />
+        </div>
+    </div>
+</div>
 
-    <!-- Línea blanca -->
-    <div class="white-separator"></div>
+<!-- Línea blanca -->
+<div class="white-separator"></div>
 
-    <!-- ALIANZAS -->
-    <div class="container">
-        <div class="row justify-content-center align-items-start">
-            <div class="col-6 col-md-3 d-flex align-items-start">
-                <img src="~/img/icono-convenios.png" alt="Alianza 1" class="img-fluid me-3" />
-                <span class="small-text text-white mt-n5">Alianzas</span>
-            </div>
-            <div class="col-6 col-md-3 d-flex flex-column align-items-center">
-                <img src="~/img/avianca-star.png" alt="Alianza 2" class="img-fluid" />
+<!-- Descripción -->
+<div class="container mb-5">
+    <div class="row align-items-center">
+        <div class="col-md-6 d-flex justify-content-center">
+            <img src="~/img/conocenos.jpg" alt="Descripción de la imagen" class="img-fluid w-100 h-auto object-fit-contain" />
+        </div>
+        <div class="col-md-6">
+            <div class="bg-light p-3">
+                <h5 class="text-center">Conócenos</h5>
+                <p>
+                    Somos la única línea aérea 100% peruana y nuestro equipo lo refleja en la dedicación y cuidado que ponemos en nuestro servicio y en cumplir con nuestra misión de llevarlos a su destino.
+                </p>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Línea blanca -->
-    <div class="white-separator"></div>
-
-    <!-- Descripción -->
-    <div class="container mb-5">
-        <div class="row align-items-center">
-            <div class="col-md-6 d-flex justify-content-center">
-                <img src="~/img/conocenos.jpg" alt="Descripción de la imagen" class="img-fluid w-100 h-auto object-fit-contain" />
-            </div>
-            <div class="col-md-6">
-                <div class="bg-light p-3">
-                    <h5 class="text-center">Conócenos</h5>
-                    <p>
-                        Somos la única línea aérea 100% peruana y nuestro equipo lo refleja en la dedicación y cuidado que ponemos en nuestro servicio y en cumplir con nuestra misión de llevarlos a su destino.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="~/js/scripts_index.js"></script>
-</body>
-</html>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="~/js/scripts_index.js"></script>

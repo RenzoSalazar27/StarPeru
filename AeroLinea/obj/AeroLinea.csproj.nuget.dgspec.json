@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\PROYECTOS\\StarPeru\\AeroLinea\\AeroLinea.csproj": {}
+    "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj": {}
   },
   "projects": {
-    "E:\\PROYECTOS\\StarPeru\\AeroLinea\\AeroLinea.csproj": {
+    "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\PROYECTOS\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+        "projectUniqueName": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
         "projectName": "AeroLinea",
-        "projectPath": "E:\\PROYECTOS\\StarPeru\\AeroLinea\\AeroLinea.csproj",
-        "packagesPath": "C:\\Users\\Jesus\\.nuget\\packages\\",
-        "outputPath": "E:\\PROYECTOS\\StarPeru\\AeroLinea\\obj\\",
+        "projectPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+        "packagesPath": "C:\\Users\\renzo\\.nuget\\packages\\",
+        "outputPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Jesus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\renzo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,7 +44,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -96,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
