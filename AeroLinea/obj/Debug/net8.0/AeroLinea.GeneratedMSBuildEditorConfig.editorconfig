@@ -44,14 +44,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBbGlhbnphcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Cargo.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYXJnby5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/ConfirmacionReserva.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb25maXJtYWNpb25SZXNlcnZhLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Destinos/Destinos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEZXN0aW5vc1xEZXN0aW5vcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -72,28 +64,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Oficinas.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxPZmljaW5hcy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/PagoFinal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYWdvRmluYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Promociones.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9tb2Npb25lcy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Reserva.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZXNlcnZhLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/SeleccionClase.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZWxlY2Npb25DbGFzZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/SelectLogin.cshtml]

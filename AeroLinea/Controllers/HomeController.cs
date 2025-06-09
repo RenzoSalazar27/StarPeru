@@ -132,12 +132,26 @@ namespace AeroLinea.Controllers
             return PartialView("~/Views/Home/Destinos/vuelosDestinos.cshtml", vuelos);
         }
 
+        public IActionResult VuelosEconomicos()
+        {
+            var vuelos = _context.Vuelo
+                .Where(v => v.precioVuelo < 300.00m)
+                .ToList();
+            
+            ViewBag.Destino = "FLOTA BARATO";
+            return PartialView("~/Views/Home/Destinos/vuelosDestinos.cshtml", vuelos);
+        }
+
         public IActionResult Equipaje() => View();
         public IActionResult Servicios_al_cliente() => View();
         public IActionResult Cargo() => View();
         public IActionResult Promociones() => View();
         public IActionResult Alianzas() => View();
-        public IActionResult Flota() => View();
+        public IActionResult Flota()
+        {
+            var flota = _context.Flota.ToList();
+            return View(flota);
+        }
         public IActionResult Oficinas() => View();
         public IActionResult Autenticacion() => View("~/Views/Autenticacion/Autenticacion.cshtml");
         public IActionResult panelAdministrador()
