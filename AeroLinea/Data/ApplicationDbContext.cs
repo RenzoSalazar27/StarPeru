@@ -13,5 +13,6 @@ namespace Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Consulta> Consultas { get; set; }
         public DbSet<Piloto> Pilotos { get; set; }
+        public DbSet<Flota> Flota { get; set; }
     }
 } 

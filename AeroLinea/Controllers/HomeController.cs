@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using System.Collections.Generic;
 
 namespace AeroLinea.Controllers
 {
@@ -483,6 +484,118 @@ namespace AeroLinea.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Error al obtener datos del piloto: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerFlota()
+        {
+            try
+            {
+                var flota = _context.Flota.ToList();
+                return Json(new { success = true, data = flota });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener la flota: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult RegistrarAvion([FromBody] Flota avion)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = new Dictionary<string, string>();
+                    foreach (var modelState in ModelState)
+                    {
+                        if (modelState.Value.Errors.Count > 0)
+                        {
+                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
+                        }
+                    }
+                    return Json(new { success = false, errors = errors });
+                }
+
+                _context.Flota.Add(avion);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Avión registrado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al registrar avión: " + ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerAvion(int id)
+        {
+            try
+            {
+                var avion = _context.Flota.Find(id);
+                if (avion == null)
+                {
+                    return Json(new { success = false, message = "Avión no encontrado" });
+                }
+                return Json(new { success = true, data = avion });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener avión: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarAvion(int id, [FromBody] Flota avion)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { success = false, message = "Datos inválidos" });
+                }
+
+                var avionExistente = _context.Flota.Find(id);
+                if (avionExistente == null)
+                {
+                    return Json(new { success = false, message = "Avión no encontrado" });
+                }
+
+                avionExistente.modeloAvion = avion.modeloAvion;
+                avionExistente.fabricanteAvion = avion.fabricanteAvion;
+                avionExistente.matriculaAvion = avion.matriculaAvion;
+                avionExistente.capacidadAvion = avion.capacidadAvion;
+                avionExistente.claseAvion = avion.claseAvion;
+
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Avión actualizado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al actualizar avión: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EliminarAvion(int id)
+        {
+            try
+            {
+                var avion = _context.Flota.Find(id);
+                if (avion == null)
+                {
+                    return Json(new { success = false, message = "Avión no encontrado" });
+                }
+
+                _context.Flota.Remove(avion);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Avión eliminado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar avión: " + ex.Message });
             }
         }
 

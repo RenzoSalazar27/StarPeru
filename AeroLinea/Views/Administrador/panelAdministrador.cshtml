@@ -24,9 +24,10 @@
 
             document.getElementById(seccion).style.display = 'block';
 
-            // Si la sección es pilotos, cargar la lista de pilotos
             if (seccion === 'pilotos') {
                 cargarPilotos();
+            } else if (seccion === 'flota') {
+                cargarFlota();
             }
         }
 
@@ -431,6 +432,138 @@
                     mostrarMensajeError('Error al cargar pilotos: ' + error.message, 'mensajeErrorPilotos');
                 });
         }
+
+        function cargarFlota() {
+            fetch('/Home/ObtenerFlota')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const tbody = document.querySelector('#flota table tbody');
+                        tbody.innerHTML = '';
+                        data.data.forEach(avion => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${avion.idAvion}</td>
+                                <td>${avion.modeloAvion}</td>
+                                <td>${avion.fabricanteAvion}</td>
+                                <td>${avion.matriculaAvion}</td>
+                                <td>${avion.capacidadAvion}</td>
+                                <td>${avion.claseAvion}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editarAvion(${avion.idAvion})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarAvion(${avion.idAvion})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } else {
+                        mostrarMensajeError(data.message || 'Error al cargar flota', 'mensajeErrorFlota');
+                    }
+                })
+                .catch(error => {
+                    mostrarMensajeError('Error al cargar flota: ' + error.message, 'mensajeErrorFlota');
+                });
+        }
+
+        function registrarAvion() {
+            // Limpiar mensajes de error anteriores
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            
+            const avion = {
+                modeloAvion: document.getElementById('modeloAvion').value,
+                fabricanteAvion: document.getElementById('fabricanteAvion').value,
+                matriculaAvion: document.getElementById('matriculaAvion').value,
+                capacidadAvion: parseInt(document.getElementById('capacidadAvion').value),
+                claseAvion: document.getElementById('claseAvion').value
+            };
+
+            fetch('/Home/RegistrarAvion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(avion)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#modalRegistrarAvion').modal('hide');
+                    mostrarMensajeExito('Avión registrado exitosamente');
+                    document.getElementById('formRegistrarAvion').reset();
+                    cargarFlota();
+                } else {
+                    if (data.errors) {
+                        // Mostrar errores de validación debajo de cada campo
+                        Object.keys(data.errors).forEach(key => {
+                            const input = document.getElementById(key);
+                            if (input) {
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'error-message text-danger mt-1';
+                                errorDiv.textContent = data.errors[key];
+                                input.parentNode.appendChild(errorDiv);
+                            }
+                        });
+                    } else {
+                        mostrarMensajeError(data.message || 'Error al registrar avión', 'errorRegistroAvion');
+                    }
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al registrar avión: ' + error.message, 'errorRegistroAvion');
+            });
+        }
+
+        function editarAvion(idAvion) {
+            fetch(`/Home/ObtenerAvion/${idAvion}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('modeloAvion').value = data.data.modeloAvion;
+                        document.getElementById('fabricanteAvion').value = data.data.fabricanteAvion;
+                        document.getElementById('matriculaAvion').value = data.data.matriculaAvion;
+                        document.getElementById('capacidadAvion').value = data.data.capacidadAvion;
+                        document.getElementById('claseAvion').value = data.data.claseAvion;
+                        document.querySelector('#modalRegistrarAvion').dataset.avionId = idAvion;
+                        document.querySelector('#modalRegistrarAvion .modal-title').textContent = 'Editar Avión';
+                        document.querySelector('#modalRegistrarAvion .btn-primary').textContent = 'Guardar Cambios';
+                        $('#modalRegistrarAvion').modal('show');
+                    } else {
+                        mostrarMensajeError(data.message || 'Error al cargar datos del avión', 'errorRegistroAvion');
+                    }
+                })
+                .catch(error => {
+                    mostrarMensajeError('Error al cargar datos del avión: ' + error.message, 'errorRegistroAvion');
+                });
+        }
+
+        function eliminarAvion(idAvion) {
+            document.getElementById('eliminarAvionId').value = idAvion;
+            $('#modalEliminarAvion').modal('show');
+        }
+
+        function confirmarEliminacionAvion() {
+            const idAvion = document.getElementById('eliminarAvionId').value;
+            fetch(`/Home/EliminarAvion/${idAvion}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#modalEliminarAvion').modal('hide');
+                    mostrarMensajeExito('Avión eliminado exitosamente');
+                    cargarFlota();
+                } else {
+                    mostrarMensajeError(data.message || 'Error al eliminar avión', 'errorEliminarAvion');
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al eliminar avión: ' + error.message, 'errorEliminarAvion');
+            });
+        }
     </script>
     
 </head>
@@ -445,6 +578,7 @@
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('usuarios')">Usuarios</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('consultas')">Consultas</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('pilotos')">Pilotos</a></li>
+                <li><a href="javascript:void(0);" onclick="mostrarSeccion('flota')">Flota</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('promociones')">Promociones</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('vuelos')">Vuelos Programados</a></li>
                 <li><a href="javascript:void(0);" onclick="mostrarSeccion('registro-vuelo')">Registrar Vuelo</a></li>
@@ -582,6 +716,34 @@
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegistrarPiloto">
                         <i class="fas fa-plus"></i> Registrar Piloto
+                    </button>
+                </section>
+
+                <!-- Sección Flota -->
+                <section id="flota" class="seccion" style="display: none;">
+                    <h3>Gestión de Flota</h3>
+                    <div id="mensajeErrorFlota" class="alert alert-danger" style="display: none;"></div>
+                    <div id="mensajeExitoFlota" class="alert alert-success" style="display: none;"></div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Modelo</th>
+                                    <th>Fabricante</th>
+                                    <th>Matrícula</th>
+                                    <th>Capacidad</th>
+                                    <th>Clase</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegistrarAvion">
+                        <i class="fas fa-plus"></i> Registrar Avión
                     </button>
                 </section>
 
@@ -814,6 +976,77 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" onclick="confirmarEliminacionPiloto()">Confirmar Eliminación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registrar Avión -->
+    <div class="modal fade" id="modalRegistrarAvion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Nuevo Avión</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorRegistroAvion" class="alert alert-danger" style="display: none;"></div>
+                    <form id="formRegistrarAvion">
+                        <div class="form-group">
+                            <label>Modelo</label>
+                            <input type="text" class="form-control" id="modeloAvion" required maxlength="15" minlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Fabricante</label>
+                            <input type="text" class="form-control" id="fabricanteAvion" required maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Matrícula</label>
+                            <input type="text" class="form-control" id="matriculaAvion" required maxlength="8" minlength="3">
+                        </div>
+                        <div class="form-group">
+                            <label>Capacidad</label>
+                            <input type="number" class="form-control" id="capacidadAvion" required min="10" max="200">
+                        </div>
+                        <div class="form-group">
+                            <label>Clase</label>
+                            <select class="form-control" id="claseAvion" required>
+                                <option value="">Seleccione una clase</option>
+                                <option value="Economica">Económica</option>
+                                <option value="Ejecutiva">Ejecutiva</option>
+                                <option value="Primera clase">Primera clase</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="registrarAvion()">Registrar Avión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Avión -->
+    <div class="modal fade" id="modalEliminarAvion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Avión</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorEliminarAvion" class="alert alert-danger" style="display: none;"></div>
+                    <input type="hidden" id="eliminarAvionId">
+                    <p>¿Está seguro que desea eliminar este avión?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmarEliminacionAvion()">Confirmar Eliminación</button>
                 </div>
             </div>
         </div>

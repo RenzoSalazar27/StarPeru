@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250609040918_AgregarTablaPilotosV2")]
-    partial class AgregarTablaPilotosV2
+    [Migration("20250609061517_PruebaAvion")]
+    partial class PruebaAvion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,41 @@ namespace AeroLinea.Migrations
                     b.HasIndex("idUsuario");
 
                     b.ToTable("Consultas");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.Flota", b =>
+                {
+                    b.Property<int>("idAvion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idAvion"));
+
+                    b.Property<int>("capacidadAvion")
+                        .HasColumnType("int");
+
+                    b.Property<string>("claseAvion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("fabricanteAvion")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("matriculaAvion")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
+
+                    b.Property<string>("modeloAvion")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
+
+                    b.HasKey("idAvion");
+
+                    b.ToTable("Flota");
                 });
 
             modelBuilder.Entity("AeroLinea.Models.Piloto", b =>
