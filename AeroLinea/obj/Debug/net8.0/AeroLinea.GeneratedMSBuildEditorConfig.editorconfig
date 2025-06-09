@@ -52,8 +52,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb25maXJtYWNpb25SZXNlcnZhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Destinos.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEZXN0aW5vcy5jc2h0bWw=
+[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Destinos/Destinos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEZXN0aW5vc1xEZXN0aW5vcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Destinos/VuelosPorDestino.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEZXN0aW5vc1xWdWVsb3NQb3JEZXN0aW5vLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Equipaje.cshtml]

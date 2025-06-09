@@ -120,7 +120,18 @@ namespace AeroLinea.Controllers
         }
 
         // Acciones para las páginas estáticas
-        public IActionResult Destinos() => View();
+        public IActionResult Destinos() => View("~/Views/Home/Destinos/Destinos.cshtml");
+
+        public IActionResult VuelosPorDestino(string destino)
+        {
+            var vuelos = _context.Vuelo
+                .Where(v => v.destinoVuelo == destino)
+                .ToList();
+            
+            ViewBag.Destino = destino;
+            return View("~/Views/Home/Destinos/VuelosPorDestino.cshtml", vuelos);
+        }
+
         public IActionResult Equipaje() => View();
         public IActionResult Servicios_al_cliente() => View();
         public IActionResult Cargo() => View();
