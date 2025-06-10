@@ -26,10 +26,10 @@
 
 <!-- Opciones para el panel -->
 <div class="text-center my-3" id="buttonContainer">
-    <a href="@Url.Action("Vuela", "Home")" class="btn btn-custom mx-2">Vuela</a>
-    <button class="btn btn-custom mx-2" onclick="updatePanel('Web Check-In')">Web Check-In</button>
-    <button class="btn btn-custom mx-2" onclick="updatePanel('Pagar Reserva')">Pagar Reserva</button>
-    <button class="btn btn-custom mx-2" onclick="updatePanel('E-ticket')">E-ticket</button>
+    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom mx-2">Vuela</a>
+    <a href="@Url.Action("Reservas", "Home")" class="btn btn-custom mx-2">Pagar Reserva</a>
+    <a href="@Url.Action("Servicios_al_cliente", "Home")" class="btn btn-custom mx-2">Consultas</a>
+    <a href="@Url.Action("Flota", "Home")" class="btn btn-custom mx-2">Flota</a>
 </div>
 <a class="align-content-lg-around"></a>
 
@@ -53,108 +53,116 @@
 <!--OPCIONES DE VIAJES-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
             <div class="carousel-inner">
+                <!-- Primer grupo de 3 destinos -->
                 <div class="carousel-item active">
-                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
+                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
                         <div class="col mb-5">
                             <div class="card h-100">
-                                <img class="card-img-top" src="~/img/LIMA.jpeg" alt="LIMA" />
+                                <img class="card-img-top" src="~/img/lima.jpeg" alt="LIMA" />
                                 <div class="card-body text-center">
                                     <h5 class="fw-bolder">LIMA</h5>
-                                    <p>Desde: USD 52.19 ó s/193.18</p>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Lima</a>
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col mb-5">
                             <div class="card h-100">
-                                <img class="card-img-top" src="~/img/IQUITOS.jpeg" alt="IQUITOS" />
+                                <img class="card-img-top" src="~/img/chiclayo.jpeg" alt="CHICLAYO" />
                                 <div class="card-body text-center">
-                                    <h5 class="fw-bolder">IQUITOS</h5>
-                                    <p>Desde: USD 57.56 ó s/213.06</p>
+                                    <h5 class="fw-bolder">CHICLAYO</h5>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Iquitos</a>
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col mb-5">
                             <div class="card h-100">
-                                <img class="card-img-top" src="~/img/TARAPOTO.jpeg" alt="TARAPOTO" />
+                                <img class="card-img-top" src="~/img/cajamarca.jpeg" alt="CAJAMARCA" />
                                 <div class="card-body text-center">
-                                    <h5 class="fw-bolder">TARAPOTO</h5>
-                                    <p>Desde: USD 54.26 ó s/200.84</p>
+                                    <h5 class="fw-bolder">CAJAMARCA</h5>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Tarapoto</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/HUANUCO.jpeg" alt="HUANUCO" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">HUÁNUCO</h5>
-                                    <p>Desde: USD 80.57 ó s/298.23</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Huánuco</a>
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Segundo grupo de 3 destinos -->
                 <div class="carousel-item">
-                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-center">
+                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
                         <div class="col mb-5">
                             <div class="card h-100">
-                                <img class="card-img-top" src="~/img/PUCALLPA.jpeg" alt="PUCALLPA" />
+                                <img class="card-img-top" src="~/img/huanuco.jpeg" alt="HUÁNUCO" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">HUÁNUCO</h5>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/iquitos.jpeg" alt="IQUITOS" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">IQUITOS</h5>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/tarapoto.jpeg" alt="TARAPOTO" />
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bolder">TARAPOTO</h5>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tercer grupo (último destino) -->
+                <div class="carousel-item">
+                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/img/pucallpa.jpeg" alt="PUCALLPA" />
                                 <div class="card-body text-center">
                                     <h5 class="fw-bolder">PUCALLPA</h5>
-                                    <p>Desde: USD 54.26 ó s/200.84</p>
+                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Pucallpa</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/CAJAMARCA.jpeg" alt="CAJAMARCA" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">CAJAMARCA</h5>
-                                    <p>Desde: USD 69.95 ó s/258.92</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Cajamarca</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/CHICLAYO.jpeg" alt="CHICLAYO" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">CHICLAYO</h5>
-                                    <p>Desde: USD 81.51 ó s/301.71</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a class="btn btn-custom" href="@Url.Action("Privacy", "Home")">Chiclayo</a>
+                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Flechas de navegación -->
             <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Anterior</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Siguiente</span>
             </button>
         </div>
     </div>
