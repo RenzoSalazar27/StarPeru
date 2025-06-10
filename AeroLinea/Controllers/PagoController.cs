@@ -39,16 +39,10 @@ namespace AeroLinea.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    var errores = ModelState.Values
-                        .SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList();
-                    
-                    return Json(new { 
-                        success = false, 
-                        message = "Datos de pago inválidos",
-                        errors = errores
-                    });
+                    ViewBag.Reserva = await _context.ReservaVuelos
+                        .Include(r => r.Pasajeros)
+                        .FirstOrDefaultAsync(r => r.idResVuelo == pago.idReserva);
+                    return View("ProcesoPago", pago);
                 }
 
                 // Obtener la reserva y el vuelo
@@ -59,19 +53,31 @@ namespace AeroLinea.Controllers
 
                 if (reserva == null)
                 {
-                    return Json(new { success = false, message = "Reserva no encontrada" });
+                    ModelState.AddModelError("", "Reserva no encontrada");
+                    ViewBag.Reserva = await _context.ReservaVuelos
+                        .Include(r => r.Pasajeros)
+                        .FirstOrDefaultAsync(r => r.idResVuelo == pago.idReserva);
+                    return View("ProcesoPago", pago);
                 }
 
                 // Verificar que la reserva no esté pagada
                 if (reserva.pagadoVuelo)
                 {
-                    return Json(new { success = false, message = "Esta reserva ya ha sido pagada" });
+                    ModelState.AddModelError("", "Esta reserva ya ha sido pagada");
+                    ViewBag.Reserva = await _context.ReservaVuelos
+                        .Include(r => r.Pasajeros)
+                        .FirstOrDefaultAsync(r => r.idResVuelo == pago.idReserva);
+                    return View("ProcesoPago", pago);
                 }
 
                 // Verificar que el vuelo no esté en el pasado
                 if (reserva.Vuelo.fechaVuelo < DateTime.Now)
                 {
-                    return Json(new { success = false, message = "No se puede pagar un vuelo en el pasado" });
+                    ModelState.AddModelError("", "No se puede pagar un vuelo en el pasado");
+                    ViewBag.Reserva = await _context.ReservaVuelos
+                        .Include(r => r.Pasajeros)
+                        .FirstOrDefaultAsync(r => r.idResVuelo == pago.idReserva);
+                    return View("ProcesoPago", pago);
                 }
 
                 // Verificar que haya suficientes asientos disponibles
@@ -81,7 +87,11 @@ namespace AeroLinea.Controllers
 
                 if (reservasExistentes + reserva.personasResVue > reserva.Vuelo.Avion.capacidadAvion)
                 {
-                    return Json(new { success = false, message = "No hay suficientes asientos disponibles para este vuelo" });
+                    ModelState.AddModelError("", "No hay suficientes asientos disponibles para este vuelo");
+                    ViewBag.Reserva = await _context.ReservaVuelos
+                        .Include(r => r.Pasajeros)
+                        .FirstOrDefaultAsync(r => r.idResVuelo == pago.idReserva);
+                    return View("ProcesoPago", pago);
                 }
 
                 // Establecer la fecha del pago
@@ -95,15 +105,15 @@ namespace AeroLinea.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Json(new { 
-                    success = true, 
-                    message = "Pago procesado exitosamente",
-                    redirectUrl = Url.Action("ConfirmacionPago", "Pago", new { id = reserva.idResVuelo })
-                });
+                return RedirectToAction("ConfirmacionPago", new { id = reserva.idResVuelo });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Error al procesar el pago: " + ex.Message });
+                ModelState.AddModelError("", "Error al procesar el pago: " + ex.Message);
+                ViewBag.Reserva = await _context.ReservaVuelos
+                    .Include(r => r.Pasajeros)
+                    .FirstOrDefaultAsync(r => r.idResVuelo == pago.idReserva);
+                return View("ProcesoPago", pago);
             }
         }
 

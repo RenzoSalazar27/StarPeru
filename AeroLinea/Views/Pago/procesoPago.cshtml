@@ -3,210 +3,261 @@
 @{
     ViewData["Title"] = "Proceso de Pago";
     var reserva = ViewBag.Reserva as AeroLinea.Models.ReservaVuelo;
+    Layout = null;
 }
 
-<style>
-    body {
-        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
-        min-height: 100vh;
-        padding: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StarPeru</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AeroLinea.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
+    <style>
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
 
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    .card-header {
-        background: #e14a4a;
-        border: none;
-        padding: 20px 30px;
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
 
-    .card-header h3 {
-        color: white;
-        margin: 0;
-        font-size: 1.8em;
-        font-weight: 600;
-    }
+        .card-header {
+            background: #e14a4a;
+            border: none;
+            padding: 20px 30px;
+        }
 
-    .card-body {
-        padding: 30px;
-    }
+        .card-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
+        .card-body {
+            padding: 30px;
+        }
 
-    .form-label {
-        font-weight: 600;
-        color: #555;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    .form-control {
-        border-radius: 8px;
-        padding: 12px;
-        border: 1px solid #ddd;
-    }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
 
-    .form-control:focus {
-        border-color: #e14a4a;
-        box-shadow: 0 0 0 0.2rem rgba(225, 74, 74, 0.25);
-    }
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
 
-    .btn-success {
-        background: #28a745;
-        border: none;
-        padding: 12px 25px;
-        font-size: 1.1em;
-        font-weight: 500;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
+        .form-control:focus {
+            border-color: #e14a4a;
+            box-shadow: 0 0 0 0.2rem rgba(225, 74, 74, 0.25);
+        }
 
-    .btn-success:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-    }
+        .btn-success {
+            background: #28a745;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
 
-    .price-info {
-        background: rgba(225, 74, 74, 0.05);
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
 
-    .price-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        font-size: 1.1em;
-    }
+        .btn-secondary-custom {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
 
-    .price-total {
-        font-weight: 600;
-        color: #e14a4a;
-        font-size: 1.2em;
-    }
-</style>
+        .btn-secondary-custom:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+            color: white;
+        }
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h3>Proceso de Pago</h3>
-        </div>
-        <div class="card-body">
-            <div class="price-info">
-                <div class="price-item">
-                    <span>Precio Total:</span>
-                    <span>S/ @reserva.precioVuelo.ToString("N2")</span>
-                </div>
-                <div class="price-item">
-                    <span>Descuento:</span>
-                    <span id="descuento">S/ 0.00</span>
-                </div>
-                <div class="price-item price-total">
-                    <span>Precio Final:</span>
-                    <span id="precioFinal">S/ @reserva.precioVuelo.ToString("N2")</span>
-                </div>
+        .price-info {
+            background: rgba(225, 74, 74, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .price-total {
+            font-weight: 600;
+            color: #e14a4a;
+            font-size: 1.2em;
+        }
+
+        .text-danger-custom {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Proceso de Pago</h3>
             </div>
-
-            <form asp-action="ProcesarPago" method="post" id="formPago">
-                <input type="hidden" asp-for="idReserva" value="@reserva.idResVuelo" />
-                <input type="hidden" asp-for="precioTotal" value="@reserva.precioVuelo" />
-                <input type="hidden" asp-for="precioFinal" id="precioFinalInput" value="@reserva.precioVuelo" />
-
-                <div class="form-group">
-                    <label asp-for="metodoPago">Método de Pago</label>
-                    <select asp-for="metodoPago" class="form-control" required onchange="calcularDescuento()">
-                        <option value="">Seleccione un método de pago</option>
-                        <option value="Visa">Visa</option>
-                        <option value="Mastercard">Mastercard</option>
-                    </select>
-                    <span asp-validation-for="metodoPago" class="text-danger"></span>
+            <div class="card-body">
+                <div class="price-info">
+                    <div class="price-item">
+                        <span>Precio Total:</span>
+                        <span>S/ @reserva.precioVuelo.ToString("N2")</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Descuento:</span>
+                        <span id="descuento">S/ 0.00</span>
+                    </div>
+                    <div class="price-item price-total">
+                        <span>Precio Final:</span>
+                        <span id="precioFinal">S/ @reserva.precioVuelo.ToString("N2")</span>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="nombreTitularPago">Nombre del Titular</label>
-                    <input asp-for="nombreTitularPago" class="form-control" required />
-                    <span asp-validation-for="nombreTitularPago" class="text-danger"></span>
-                </div>
+                <form asp-action="ProcesarPago" method="post" id="formPago">
+                    <input type="hidden" asp-for="idReserva" value="@reserva.idResVuelo" />
+                    <input type="hidden" asp-for="precioTotal" value="@reserva.precioVuelo" />
+                    <input type="hidden" asp-for="precioFinal" id="precioFinalInput" value="@reserva.precioVuelo" />
 
-                <div class="form-group">
-                    <label asp-for="correoFacturaPago">Correo para Factura</label>
-                    <input asp-for="correoFacturaPago" type="email" class="form-control" required />
-                    <span asp-validation-for="correoFacturaPago" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="metodoPago">Método de Pago</label>
+                        <select asp-for="metodoPago" class="form-control" required onchange="calcularDescuento()">
+                            <option value="">Seleccione un método de pago</option>
+                            <option value="Visa">Visa</option>
+                            <option value="Mastercard">Mastercard</option>
+                        </select>
+                        <span class="text-danger-custom" id="error-metodoPago"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label asp-for="bancoTarjetaPago">Banco/Tarjeta</label>
-                    <select asp-for="bancoTarjetaPago" class="form-control" required>
-                        <option value="">Seleccione un banco</option>
-                        <option value="BCP">BCP</option>
-                        <option value="BBVA">BBVA</option>
-                        <option value="Interbank">Interbank</option>
-                        <option value="Scotiabank">Scotiabank</option>
-                    </select>
-                    <span asp-validation-for="bancoTarjetaPago" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="nombreTitularPago">Nombre del Titular</label>
+                        <input asp-for="nombreTitularPago" class="form-control" required />
+                        <span class="text-danger-custom" id="error-nombreTitularPago"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label asp-for="numeroTarjetaPago">Número de Tarjeta</label>
-                    <input asp-for="numeroTarjetaPago" class="form-control" maxlength="16" required />
-                    <span asp-validation-for="numeroTarjetaPago" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="correoFacturaPago">Correo para Factura</label>
+                        <input asp-for="correoFacturaPago" type="email" class="form-control" required />
+                        <span class="text-danger-custom" id="error-correoFacturaPago"></span>
+                    </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="fechaExpiracionPago">Fecha de Expiración</label>
-                            <input asp-for="fechaExpiracionPago" class="form-control" placeholder="MM/AA" maxlength="5" required />
-                            <span asp-validation-for="fechaExpiracionPago" class="text-danger"></span>
+                    <div class="form-group">
+                        <label asp-for="bancoTarjetaPago">Banco/Tarjeta</label>
+                        <select asp-for="bancoTarjetaPago" class="form-control" required>
+                            <option value="">Seleccione un banco</option>
+                            <option value="BCP">BCP</option>
+                            <option value="BBVA">BBVA</option>
+                            <option value="Interbank">Interbank</option>
+                            <option value="Scotiabank">Scotiabank</option>
+                        </select>
+                        <span class="text-danger-custom" id="error-bancoTarjetaPago"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="numeroTarjetaPago">Número de Tarjeta</label>
+                        <input asp-for="numeroTarjetaPago" class="form-control" maxlength="16" required />
+                        <span class="text-danger-custom" id="error-numeroTarjetaPago"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="fechaExpiracionPago">Fecha de Expiración</label>
+                                <input asp-for="fechaExpiracionPago" class="form-control" placeholder="MM/AA" maxlength="5" required />
+                                <span class="text-danger-custom" id="error-fechaExpiracionPago"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="cvvCvcPago">CVV/CVC</label>
+                                <input asp-for="cvvCvcPago" class="form-control" maxlength="3" required />
+                                <span class="text-danger-custom" id="error-cvvCvcPago"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="cvvCvcPago">CVV/CVC</label>
-                            <input asp-for="cvvCvcPago" class="form-control" maxlength="3" required />
-                            <span asp-validation-for="cvvCvcPago" class="text-danger"></span>
+
+                    <div class="form-group">
+                        <label asp-for="numCelularPago">Número de Celular</label>
+                        <input asp-for="numCelularPago" class="form-control" maxlength="9" required />
+                        <span class="text-danger-custom" id="error-numCelularPago"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="aceptoDatos" required />
+                            <label class="form-check-label" for="aceptoDatos">
+                                Autorizo que mis datos personales sean utilizados para el procesamiento del pago y la emisión de la factura correspondiente.
+                            </label>
                         </div>
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input" id="aceptoTerminosCheck" required />
+                            <label class="form-check-label" for="aceptoTerminosCheck">
+                                Acepto los términos y condiciones del servicio.
+                            </label>
+                        </div>
+                        <input type="hidden" asp-for="aceptoTerminos" id="aceptoTerminosHidden" value="false" />
+                        <span class="text-danger-custom" id="error-aceptoTerminos"></span>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label asp-for="numCelularPago">Número de Celular</label>
-                    <input asp-for="numCelularPago" class="form-control" maxlength="9" required />
-                    <span asp-validation-for="numCelularPago" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-check">
-                        <input asp-for="aceptoTerminos" class="form-check-input" required />
-                        <label class="form-check-label" for="aceptoTerminos">
-                            Autorizo que mis datos personales sean utilizados para el procesamiento del pago y la emisión de la factura correspondiente. 
-                            Acepto los términos y condiciones del servicio.
-                        </label>
-                    </div>
-                    <span asp-validation-for="aceptoTerminos" class="text-danger"></span>
-                </div>
-
-                <button type="submit" class="btn btn-success">Realizar Pago</button>
-            </form>
+                    <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-secondary-custom">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                    <button type="submit" class="btn btn-success">Realizar Pago</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
@@ -253,33 +304,69 @@
             this.value = value;
         });
 
-        // Validación del formulario
         $(document).ready(function() {
-            $('#formPago').on('submit', function(e) {
-                e.preventDefault();
-                
-                if ($(this).valid()) {
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            if (response.success) {
-                                window.location.href = response.redirectUrl;
-                            } else {
-                                let mensajeError = response.message;
-                                if (response.errors && response.errors.length > 0) {
-                                    mensajeError += '\n\nErrores específicos:\n' + response.errors.join('\n');
-                                }
-                                alert(mensajeError);
-                            }
-                        },
-                        error: function() {
-                            alert('Error al procesar el pago. Por favor, intente nuevamente.');
+            const aceptoDatosCheckbox = document.getElementById('aceptoDatos');
+            const aceptoTerminosCheck = document.getElementById('aceptoTerminosCheck');
+            const aceptoTerminosHidden = document.getElementById('aceptoTerminosHidden');
+            const formPago = $('#formPago');
+
+            function updateAceptoTerminosHidden() {
+                aceptoTerminosHidden.value = (aceptoDatosCheckbox.checked && aceptoTerminosCheck.checked).toString();
+                // Ocultar todos los mensajes de error existentes
+                document.querySelectorAll('.text-danger-custom').forEach(el => el.textContent = '');
+            }
+
+            $(aceptoDatosCheckbox).on('change', updateAceptoTerminosHidden);
+            $(aceptoTerminosCheck).on('change', updateAceptoTerminosHidden);
+            updateAceptoTerminosHidden(); // Inicializar al cargar la página
+
+            $.validator.setDefaults({
+                ignore: [], // Asegurarse de que los campos ocultos no sean ignorados si es necesario
+                errorClass: "text-danger-custom",
+                errorElement: "span",
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid').addClass('is-valid');
+                },
+                errorPlacement: function(error, element) {
+                    if (element.attr("type") === "checkbox") {
+                        error.appendTo(element.parent().parent().next('.text-danger-custom').length ? element.parent().parent().next('.text-danger-custom') : element.parent().parent().find('.text-danger-custom'));
+                    } else if (element.attr("id") && element.attr("id").startsWith("acepto")) {
+                        error.appendTo(`#error-aceptoTerminos`);
+                    } else {
+                        const errorSpan = $(`#error-${element.attr('name')}`);
+                        if (errorSpan.length) {
+                            error.appendTo(errorSpan);
+                        } else {
+                            error.insertAfter(element);
                         }
-                    });
+                    }
+                }
+            });
+
+            formPago.validate({
+                rules: {
+                    aceptoTerminos: {
+                        required: true
+                    }
+                },
+                messages: {
+                    aceptoTerminos: {
+                        required: "Debe aceptar ambas condiciones para continuar."
+                    }
+                },
+                submitHandler: function(form) {
+                    // Forzar la validación de los checkboxes antes de enviar
+                    if (!aceptoDatosCheckbox.checked || !aceptoTerminosCheck.checked) {
+                        document.getElementById('error-aceptoTerminos').textContent = 'Debe aceptar ambas condiciones';
+                        return false; // No enviar el formulario si los checkboxes no están marcados
+                    }
+                    form.submit();
                 }
             });
         });
     </script>
-}
+</body>
+</html>

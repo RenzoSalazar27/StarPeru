@@ -117,17 +117,17 @@
         var imagenAvion = "";
         switch (avion.claseAvion)
         {
-            case "E": // Económica
+            case "Económica":
                 imagenAvion = "avionEconomico.png";
                 break;
-            case "P": // Premium
+            case "Ejecutiva":
                 imagenAvion = "avionEjecutivo.png";
                 break;
-            case "F": // Primera Clase
+            case "Primera clase":
                 imagenAvion = "avionPrimera.png";
                 break;
             default:
-                imagenAvion = "defaultAvion.png"; // Una imagen por defecto si la clase no coincide
+                imagenAvion = "flotaBarato.png"; // Usar una imagen existente como por defecto
                 break;
         }
 
