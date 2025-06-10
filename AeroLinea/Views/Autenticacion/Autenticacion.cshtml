@@ -8,18 +8,165 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="~/css/Autenticacion/Autenticacion.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .auth-container {
+            display: flex;
+            width: 900px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .login-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-section {
+            flex: 1;
+            background: #e14a4a;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .login-section h2 {
+            color: #e14a4a;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #e14a4a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(225, 74, 74, 0.1);
+        }
+
+        .forgot-password {
+            display: block;
+            color: #e14a4a;
+            text-decoration: none;
+            margin: 10px 0 20px;
+            font-size: 14px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #e14a4a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .register-section p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .register-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #e14a4a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .register-btn:hover {
+            background: #f8f8f8;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @@media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                width: 90%;
+                height: auto;
+            }
+
+            .login-section, .register-section {
+                padding: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="auth-container">
         <div class="login-section">
             <h2>Iniciar Sesión</h2>
-            <div class="social-login">
-                <button class="social-btn facebook">f</button>
-                <button class="social-btn google">G</button>
-                <button class="social-btn linkedin">in</button>
-            </div>
-            <p>o usa tu email</p>
             @if (TempData["Success"] != null)
             {
                 <div class="alert alert-success">
@@ -34,21 +181,20 @@
             }
             <form method="post" asp-controller="Home" asp-action="Login">
                 <div class="form-group">
-                    <input type="email" id="email" name="email" placeholder="Email" required />
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" required />
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" name="password" placeholder="Password" required />
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required />
                 </div>
-                <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                <a href="@Url.Action("RecuperarContrasena", "Home", new { area = "Autenticacion" })" class="forgot-password">¿Olvidaste tu contraseña?</a>
                 <button type="submit" class="login-btn">Iniciar Sesión</button>
             </form>
         </div>
         <div class="register-section">
-            <h2>Hola!!!</h2>
-            <p>Crear tu cuenta</p>
-            <a asp-controller="Home" asp-action="Registro" class="register-btn">Registrar</a>
-            &nbsp;
-            <a asp-controller="Home" asp-action="Index" class="register-btn">Inicio</a>
+            <h2>¡Bienvenido!</h2>
+            <p>¿No tienes una cuenta? Regístrate ahora</p>
+            <a asp-controller="Home" asp-action="Registro" class="register-btn">Registrarse</a>
+            <a asp-controller="Home" asp-action="Index" class="register-btn">Volver al Inicio</a>
         </div>
     </div>
 </body>

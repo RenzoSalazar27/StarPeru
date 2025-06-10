@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Servicios al Cliente";
     var userType = Context.Session.GetString("UserType");
+    var userId = Context.Session.GetInt32("UserId");
 }
 
 @if (userType == "admin")
@@ -9,6 +10,17 @@
         <div class="row justify-content-center">
             <div class="col-12 text-center">
                 <h1 class="display-4 fw-bold text-white">Usted tiene rol administrador</h1>
+            </div>
+        </div>
+    </div>
+}
+else if (userId == null)
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold text-white">Debe iniciar sesión para acceder a esta sección</h1>
+                <a href="/Home/Login" class="btn btn-primary mt-3">Ir a Iniciar Sesión</a>
             </div>
         </div>
     </div>

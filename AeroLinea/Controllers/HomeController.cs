@@ -161,6 +161,47 @@ namespace AeroLinea.Controllers
         }
         public IActionResult Oficinas() => View();
         public IActionResult Autenticacion() => View("~/Views/Autenticacion/Autenticacion.cshtml");
+
+        [HttpGet]
+        [Route("Autenticacion/RecuperarContrasena")]
+        public IActionResult RecuperarContrasena()
+        {
+            return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
+        }
+
+        [HttpPost]
+        [Route("Autenticacion/RecuperarContrasena")]
+        public async Task<IActionResult> RecuperarContrasena(string email, string dni, string nuevaContrasena, string confirmarContrasena)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(nuevaContrasena) || string.IsNullOrEmpty(confirmarContrasena))
+            {
+                TempData["Error"] = "Por favor complete todos los campos";
+                return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
+            }
+
+            if (nuevaContrasena != confirmarContrasena)
+            {
+                TempData["Error"] = "Las contraseñas no coinciden";
+                return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
+            }
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.correoUsuario == email && u.identificacionUsuario == dni);
+
+            if (usuario == null)
+            {
+                TempData["Error"] = "No se encontró una cuenta con esas credenciales";
+                return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
+            }
+
+            // Actualizar la contraseña
+            usuario.contrasenaUsuario = nuevaContrasena;
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Contraseña actualizada correctamente";
+            return RedirectToAction("Autenticacion");
+        }
+
         public IActionResult panelAdministrador()
         {
             if (HttpContext.Session.GetString("UserType") != "admin")

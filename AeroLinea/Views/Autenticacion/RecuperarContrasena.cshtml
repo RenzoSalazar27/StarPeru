@@ -1,0 +1,174 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .recovery-container {
+            width: 400px;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-size: 2em;
+            font-weight: bold;
+            color: #e14a4a;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #e14a4a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(225, 74, 74, 0.1);
+        }
+
+        .recovery-btn {
+            width: 100%;
+            padding: 12px;
+            background: #e14a4a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recovery-btn:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            color: #e14a4a;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .text-danger {
+            color: #e14a4a !important;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="recovery-container">
+        <h2>Recuperar Contraseña</h2>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+        <form method="post" asp-controller="Home" asp-action="RecuperarContrasena">
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" name="email" class="form-control" maxlength="30" 
+                       placeholder="ejemplo@correo.com" 
+                       title="Ingrese un correo electrónico válido" required />
+            </div>
+            <div class="form-group">
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" name="dni" class="form-control" maxlength="8" minlength="8" 
+                       placeholder="Ingrese su DNI" 
+                       title="El DNI debe tener 8 dígitos" required />
+            </div>
+            <div class="form-group">
+                <label for="nuevaContrasena">Nueva Contraseña</label>
+                <input type="password" id="nuevaContrasena" name="nuevaContrasena" class="form-control" maxlength="20" minlength="6" 
+                       placeholder="Ingrese su nueva contraseña" 
+                       title="La contraseña debe tener entre 6 y 20 caracteres" required />
+            </div>
+            <div class="form-group">
+                <label for="confirmarContrasena">Confirmar Contraseña</label>
+                <input type="password" id="confirmarContrasena" name="confirmarContrasena" class="form-control" maxlength="20" minlength="6" 
+                       placeholder="Confirme su nueva contraseña" 
+                       title="La contraseña debe tener entre 6 y 20 caracteres" required />
+            </div>
+            <button type="submit" class="recovery-btn">Actualizar Contraseña</button>
+        </form>
+        <a asp-controller="Home" asp-action="Autenticacion" class="back-link">Volver al inicio de sesión</a>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html> 

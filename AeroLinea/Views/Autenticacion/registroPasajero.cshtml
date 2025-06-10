@@ -1,6 +1,6 @@
 @model AeroLinea.Models.Usuario
 @{
-    Layout = "_Layout";
+    Layout = null;
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -11,6 +11,83 @@
     <link rel="stylesheet" href="~/css/Autenticacion/registroPasajero.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .register-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .register-container h2 {
+            color: #e14a4a;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #e14a4a;
+            box-shadow: 0 0 0 0.2rem rgba(225, 74, 74, 0.25);
+        }
+        .btn-primary {
+            background-color: #e14a4a;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+        .mt-3 a {
+            color: #e14a4a;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .mt-3 a:hover {
+            color: #ff6b6b;
+            text-decoration: underline;
+        }
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .text-danger {
+            color: #e14a4a !important;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+    </style>
 </head>
 <body>
     <div class="register-container">
@@ -31,37 +108,50 @@
         <form asp-action="registroPasajero" asp-controller="Home" method="post" id="registroForm">
             <div class="form-group">
                 <label for="nombresUsuario">Nombres</label>
-                <input asp-for="nombresUsuario" class="form-control" maxlength="30" minlength="5" required />
+                <input asp-for="nombresUsuario" class="form-control" maxlength="30" minlength="5" 
+                       placeholder="Ingrese sus nombres" 
+                       title="Los nombres deben tener entre 5 y 30 caracteres" required />
                 <span asp-validation-for="nombresUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="apellidosUsuario">Apellidos</label>
-                <input asp-for="apellidosUsuario" class="form-control" maxlength="30" minlength="5" required />
+                <input asp-for="apellidosUsuario" class="form-control" maxlength="30" minlength="5" 
+                       placeholder="Ingrese sus apellidos" 
+                       title="Los apellidos deben tener entre 5 y 30 caracteres" required />
                 <span asp-validation-for="apellidosUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="nacimientoUsuario">Fecha de Nacimiento</label>
-                <input asp-for="nacimientoUsuario" type="date" class="form-control" required />
+                <input asp-for="nacimientoUsuario" type="date" class="form-control" 
+                       title="Seleccione su fecha de nacimiento" required />
                 <span asp-validation-for="nacimientoUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="telefonoUsuario">Teléfono</label>
-                <input asp-for="telefonoUsuario" class="form-control" pattern="[0-9]{9}" maxlength="9" minlength="9" required />
+                <input asp-for="telefonoUsuario" class="form-control" pattern="[0-9]{9}" maxlength="9" minlength="9" 
+                       placeholder="Ingrese su número de teléfono" 
+                       title="El teléfono debe tener 9 dígitos" required />
                 <span asp-validation-for="telefonoUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="identificacionUsuario">Tipo de Documento (DNI/Pasaporte)</label>
-                <input asp-for="identificacionUsuario" class="form-control" maxlength="8" minlength="8" required />
+                <label for="identificacionUsuario">DNI</label>
+                <input asp-for="identificacionUsuario" class="form-control" maxlength="8" minlength="8" 
+                       placeholder="Ingrese su DNI" 
+                       title="El DNI debe tener 8 dígitos" required />
                 <span asp-validation-for="identificacionUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="correoUsuario">Correo</label>
-                <input asp-for="correoUsuario" type="email" class="form-control" maxlength="30" required />
+                <label for="correoUsuario">Correo Electrónico</label>
+                <input asp-for="correoUsuario" type="email" class="form-control" maxlength="30" 
+                       placeholder="ejemplo@correo.com" 
+                       title="Ingrese un correo electrónico válido" required />
                 <span asp-validation-for="correoUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="contrasenaUsuario">Contraseña</label>
-                <input asp-for="contrasenaUsuario" type="password" class="form-control" maxlength="20" minlength="6" required />
+                <input asp-for="contrasenaUsuario" type="password" class="form-control" maxlength="20" minlength="6" 
+                       placeholder="Ingrese su contraseña" 
+                       title="La contraseña debe tener entre 6 y 20 caracteres" required />
                 <span asp-validation-for="contrasenaUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
