@@ -5,13 +5,39 @@
     <div class="row">
         @foreach (var vuelo in Model)
         {
+            var imagenAvion = "";
+            if (vuelo.Avion != null) // Asegúrate de que el objeto Avion no sea nulo
+            {
+                switch (vuelo.Avion.claseAvion)
+                {
+                    case "Económica":
+                        imagenAvion = "avionEconomico.png";
+                        break;
+                    case "Ejecutiva":
+                        imagenAvion = "avionEjecutivo.png";
+                        break;
+                    case "Primera clase":
+                        imagenAvion = "avionPrimera.png";
+                        break;
+                    default:
+                        imagenAvion = "flotaBarato.png"; // Imagen por defecto si la clase no coincide
+                        break;
+                }
+            }
+            else
+            {
+                imagenAvion = "flotaBarato.png"; // Imagen por defecto si el Avion es nulo
+            }
+
             <div class="col-md-6 mb-4">
                 <div class="card">
+                    <img src="~/img/@(imagenAvion)" class="card-img-top" alt="Avión" style="height: 180px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title">Vuelo de @vuelo.origenVuelo a @vuelo.destinoVuelo</h5>
                         <p class="card-text">
                             <strong>Fecha:</strong> @vuelo.fechaVuelo.ToString("dd/MM/yyyy HH:mm")<br>
-                            <strong>Precio:</strong> S/ @vuelo.precioVuelo.ToString("N2")
+                            <strong>Precio:</strong> S/ @vuelo.precioVuelo.ToString("N2")<br>
+                            <strong>Clase:</strong> @(vuelo.Avion?.claseAvion ?? "N/A")
                         </p>
                         @if (User.IsInRole("Admin"))
                         {

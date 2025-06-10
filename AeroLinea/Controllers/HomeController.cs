@@ -133,6 +133,7 @@ namespace AeroLinea.Controllers
         {
             var vuelos = _context.Vuelo
                 .Where(v => v.destinoVuelo == destino)
+                .Include(v => v.Avion)
                 .ToList();
             
             ViewBag.Destino = destino;
@@ -143,6 +144,7 @@ namespace AeroLinea.Controllers
         {
             var vuelos = _context.Vuelo
                 .Where(v => v.precioVuelo < 300.00m)
+                .Include(v => v.Avion)
                 .ToList();
             
             ViewBag.Destino = "FLOTA BARATO";
