@@ -4,8 +4,140 @@
     ViewData["Title"] = "Reservar Vuelo";
 }
 
+<style>
+    body {
+        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+        min-height: 100vh;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        margin-bottom: 30px;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .card-title {
+        color: #e14a4a;
+        font-size: 1.8em;
+        font-weight: 600;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ff6b6b;
+        padding-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 1.1em;
+        color: #444;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 12px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #e14a4a;
+        box-shadow: 0 0 0 0.2rem rgba(225, 74, 74, 0.25);
+    }
+
+    label {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    .btn-primary {
+        background: #e14a4a;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .btn-primary:hover {
+        background: #ff6b6b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
+    }
+
+    #precioTotal {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #e14a4a;
+        font-size: 1.2em;
+    }
+
+    .pasajero-grupo {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #eee;
+    }
+
+    .pasajero-grupo h6 {
+        color: #e14a4a;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    select.form-control {
+        cursor: pointer;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+        }
+    }
+</style>
+
 <div class="container mt-4">
-    <h2>Reservar Vuelo</h2>
+    <h2 class="text-center text-white mb-4">Reservar Vuelo</h2>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Vuelo de @Model.origenVuelo a @Model.destinoVuelo</h5>
@@ -48,17 +180,20 @@
         if (numPasajeros > 1) {
             for (let i = 1; i < numPasajeros; i++) {
                 camposPasajeros.innerHTML += `
-                    <div class="form-group">
-                        <label for="nombre${i}">Nombre del Pasajero Adicional ${i}:</label>
-                        <input type="text" class="form-control" id="nombre${i}" name="nombre${i}" maxlength="50" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="dni${i}">DNI del Pasajero Adicional ${i}:</label>
-                        <input type="text" class="form-control" id="dni${i}" name="dni${i}" maxlength="8" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="edad${i}">Edad del Pasajero Adicional ${i}:</label>
-                        <input type="number" class="form-control" id="edad${i}" name="edad${i}" min="0" max="120" required />
+                    <div class="pasajero-grupo">
+                        <h6>Pasajero Adicional ${i}</h6>
+                        <div class="form-group">
+                            <label for="nombre${i}">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre${i}" name="nombre${i}" maxlength="50" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="dni${i}">DNI:</label>
+                            <input type="text" class="form-control" id="dni${i}" name="dni${i}" maxlength="8" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="edad${i}">Edad:</label>
+                            <input type="number" class="form-control" id="edad${i}" name="edad${i}" min="0" max="120" required />
+                        </div>
                     </div>
                 `;
             }
