@@ -7,10 +7,120 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
-    <link href="~/css/Home/equipaje.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
+        .header-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .header-section .title {
+            color: white;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .equipaje-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .equipaje-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .equipaje-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .equipaje-header {
+            background: #e14a4a;
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .equipaje-header:hover {
+            background: #ff6b6b;
+        }
+
+        .equipaje-header h4 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .equipaje-content {
+            padding: 25px;
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .equipaje-content p {
+            margin: 12px 0;
+        }
+
+        .equipaje-content strong {
+            color: #e14a4a;
+            font-weight: 600;
+        }
+
+        @@media (max-width: 768px) {
+            .header-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .header-section .title {
+                font-size: 2em;
+            }
+
+            .equipaje-container {
+                padding: 10px;
+            }
+
+            .equipaje-header h4 {
+                font-size: 1.1em;
+            }
+
+            .equipaje-content {
+                padding: 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
 </head>
 <body>
-
     <section class="header-section">
         <h1 class="title">Información de Equipaje</h1>
     </section>
@@ -66,7 +176,6 @@
         </div>
     </div>
 
-    <!-- Script para manejo de despliegue -->
     <script>
         function toggleSection(sectionId) {
             var content = document.getElementById(sectionId);
@@ -75,12 +184,13 @@
             if (content.style.display === "none" || content.style.display === "") {
                 content.style.display = "block";
                 icon.innerHTML = "&#9650;";  // Flecha hacia arriba
+                icon.style.transform = "rotate(180deg)";
             } else {
                 content.style.display = "none";
                 icon.innerHTML = "&#9662;";  // Flecha hacia abajo
+                icon.style.transform = "rotate(0deg)";
             }
         }
     </script>
-
 </body>
 </html>

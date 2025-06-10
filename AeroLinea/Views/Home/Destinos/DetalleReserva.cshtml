@@ -4,27 +4,234 @@
     ViewData["Title"] = "Detalles de la Reserva";
 }
 
+<style>
+    body {
+        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+        min-height: 100vh;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: #e14a4a;
+        border: none;
+        padding: 20px 30px;
+    }
+
+    .card-header h3 {
+        color: white;
+        margin: 0;
+        font-size: 1.8em;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .info-section {
+        background: rgba(225, 74, 74, 0.05);
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    .info-section h4 {
+        color: #e14a4a;
+        font-size: 1.4em;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .info-item {
+        display: flex;
+        margin-bottom: 15px;
+        align-items: center;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #555;
+        width: 180px;
+        flex-shrink: 0;
+    }
+
+    .info-value {
+        color: #333;
+        flex-grow: 1;
+    }
+
+    .table-responsive {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: #e14a4a;
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+        color: #555;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .table tbody tr:hover {
+        background: rgba(225, 74, 74, 0.05);
+    }
+
+    .btn {
+        padding: 12px 25px;
+        font-size: 1.1em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .btn-success {
+        background: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    .status-badge {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.9em;
+    }
+
+    .status-paid {
+        background: #28a745;
+        color: white;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #000;
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+        }
+
+        .card-header h3 {
+            font-size: 1.5em;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .info-section {
+            padding: 15px;
+        }
+
+        .info-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .info-label {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+            margin-right: 0;
+        }
+    }
+</style>
+
 <div class="container mt-4">
     <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Detalles de la Reserva</h3>
+        <div class="card-header">
+            <h3>Detalles de la Reserva</h3>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <h4>Información del Vuelo</h4>
-                    <p><strong>Origen:</strong> @Model.origenResVue</p>
-                    <p><strong>Destino:</strong> @Model.destinoVuelo</p>
-                    <p><strong>Número de Personas:</strong> @Model.personasResVue</p>
-                    <p><strong>Mascotas:</strong> @Model.mascotasResVue</p>
-                    <p><strong>Precio Total:</strong> S/ @Model.precioVuelo.ToString("N2")</p>
-                    <p><strong>Estado de Pago:</strong> @(Model.pagadoVuelo ? "Pagado" : "Pendiente")</p>
+            <div class="info-section">
+                <h4>Información del Vuelo</h4>
+                <div class="info-item">
+                    <span class="info-label">Origen:</span>
+                    <span class="info-value">@Model.origenResVue</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Destino:</span>
+                    <span class="info-value">@Model.destinoVuelo</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Número de Personas:</span>
+                    <span class="info-value">@Model.personasResVue</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Mascotas:</span>
+                    <span class="info-value">@Model.mascotasResVue</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Precio Total:</span>
+                    <span class="info-value">S/ @Model.precioVuelo.ToString("N2")</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Estado de Pago:</span>
+                    <span class="info-value">
+                        <span class="status-badge @(Model.pagadoVuelo ? "status-paid" : "status-pending")">
+                            @(Model.pagadoVuelo ? "Pagado" : "Pendiente")
+                        </span>
+                    </span>
                 </div>
             </div>
 
-            <h4 class="mt-4">Pasajeros</h4>
+            <h4 class="mt-4" style="color: #e14a4a; font-weight: 600;">Pasajeros</h4>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -40,7 +247,11 @@
                                 <td>@pasajero.Nombre</td>
                                 <td>@pasajero.DNI</td>
                                 <td>@pasajero.Edad</td>
-                                <td>@(pasajero.EsMenorEdad ? "Menor de edad" : "Adulto")</td>
+                                <td>
+                                    <span class="status-badge @(pasajero.EsMenorEdad ? "status-pending" : "status-paid")">
+                                        @(pasajero.EsMenorEdad ? "Menor de edad" : "Adulto")
+                                    </span>
+                                </td>
                             </tr>
                         }
                     </tbody>

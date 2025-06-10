@@ -4,81 +4,6 @@
     var userId = Context.Session.GetInt32("UserId");
 }
 
-@if (userType == "admin")
-{
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 text-center">
-                <h1 class="display-4 fw-bold text-white">Usted tiene rol administrador</h1>
-            </div>
-        </div>
-    </div>
-}
-else if (userId == null)
-{
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 text-center">
-                <h1 class="display-4 fw-bold text-white">Debe iniciar sesión para acceder a esta sección</h1>
-                <a href="/Home/Login" class="btn btn-primary mt-3">Ir a Iniciar Sesión</a>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Contacto</h5>
-                        <p class="card-text">
-                            <strong>Teléfono:</strong> (01) 123-4567<br>
-                            <strong>Email:</strong> servicio@starperu.com<br>
-                            <strong>Horario de atención:</strong> Lunes a Domingo de 8:00 AM a 8:00 PM
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Envíanos tu consulta</h5>
-                        <form method="post" asp-action="RegistrarConsulta">
-                            <div class="mb-3">
-                                <label for="motivoConsulta" class="form-label">Motivo de la consulta</label>
-                                <select class="form-select" id="motivoConsulta" name="motivoConsulta" required>
-                                    <option value="">Seleccione un motivo</option>
-                                    <option value="Información de vuelos">Información de vuelos</option>
-                                    <option value="Cambios y cancelaciones">Cambios y cancelaciones</option>
-                                    <option value="Reclamos">Reclamos</option>
-                                    <option value="Sugerencias">Sugerencias</option>
-                                    <option value="Otros">Otros</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="descripcionConsultas" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="descripcionConsultas" name="descripcionConsultas" rows="3" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="urgencia" class="form-label">Nivel de urgencia</label>
-                                <select class="form-select" id="urgencia" name="urgencia" required>
-                                    <option value="">Seleccione el nivel de urgencia</option>
-                                    <option value="Bajo">Bajo</option>
-                                    <option value="Medio">Medio</option>
-                                    <option value="Alto">Alto</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Enviar consulta</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -86,76 +11,323 @@ else
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
     <title>Servicio al Cliente - AeroLinea</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/Home/servicios_al_cliente.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .card-title {
+            color: #e14a4a;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 10px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #e14a4a;
+            box-shadow: 0 0 0 0.2rem rgba(225, 74, 74, 0.25);
+        }
+
+        .btn-primary {
+            background: #e14a4a;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
+        }
+
+        .titulo-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .titulo-panel h1 {
+            color: white;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .accordion {
+            margin-bottom: 30px;
+        }
+
+        .accordion-item {
+            border: none;
+            margin-bottom: 15px;
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+
+        .accordion-button {
+            background: rgba(255, 255, 255, 0.95);
+            color: #e14a4a;
+            font-weight: 500;
+            padding: 20px;
+            border-radius: 10px !important;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: #e14a4a;
+            color: white;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(225, 74, 74, 0.25);
+        }
+
+        .accordion-body {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            color: #555;
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.95);
+            color: white;
+        }
+
+        .alert-danger {
+            background: rgba(220, 53, 69, 0.95);
+            color: white;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .admin-message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .admin-message h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .titulo-panel h1 {
+                font-size: 2em;
+            }
+
+            .card-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="titulo-panel mb-4">
-        <h1 class="mb-0">Servicio al Cliente</h1>
-    </div>
-
-    <!-- Mensajes de alerta -->
-    @if (TempData["Mensaje"] != null)
+    @if (userType == "admin")
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Mensaje"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="admin-message">
+                        <h1 class="display-4 fw-bold">Usted tiene rol administrador</h1>
+                    </div>
+                </div>
+            </div>
         </div>
     }
-    @if (TempData["Error"] != null)
+    else if (userId == null)
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="admin-message">
+                        <h1 class="display-4 fw-bold">Debe iniciar sesión para acceder a esta sección</h1>
+                        <a href="/Home/Login" class="btn btn-primary mt-3">Ir a Iniciar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container mt-4">
+            <div class="titulo-panel">
+                <h1>Servicio al Cliente</h1>
+            </div>
+
+            <!-- Mensajes de alerta -->
+            @if (TempData["Mensaje"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Mensaje"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Envíanos tu consulta</h5>
+                            <form method="post" asp-action="RegistrarConsulta">
+                                <div class="mb-3">
+                                    <label for="motivoConsulta" class="form-label">Motivo de la consulta</label>
+                                    <select class="form-select" id="motivoConsulta" name="motivoConsulta" required>
+                                        <option value="">Seleccione un motivo</option>
+                                        <option value="Información de vuelos">Información de vuelos</option>
+                                        <option value="Cambios y cancelaciones">Cambios y cancelaciones</option>
+                                        <option value="Reclamos">Reclamos</option>
+                                        <option value="Sugerencias">Sugerencias</option>
+                                        <option value="Otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="descripcionConsultas" class="form-label">Descripción</label>
+                                    <textarea class="form-control" id="descripcionConsultas" name="descripcionConsultas" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="urgencia" class="form-label">Nivel de urgencia</label>
+                                    <select class="form-select" id="urgencia" name="urgencia" required>
+                                        <option value="">Seleccione el nivel de urgencia</option>
+                                        <option value="Bajo">Bajo</option>
+                                        <option value="Medio">Medio</option>
+                                        <option value="Alto">Alto</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Enviar consulta</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="titulo-panel">
+                <h1>Preguntas Frecuentes</h1>
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            ¿Cómo puedo cambiar mi vuelo?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Puedes cambiar tu vuelo a través de nuestra página web en la sección "Mis Reservas".
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                            ¿Qué debo hacer si perdí mi boleto?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Si perdiste tu boleto, por favor contáctanos a nuestro servicio al cliente para asistencia.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                            ¿Cómo puedo obtener un reembolso?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Para solicitar un reembolso, visita la sección de "Reembolsos" en nuestra página web.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     }
 
-    <!-- Acordeón de Preguntas Frecuentes -->
-    <div class="titulo-panel mb-4">
-        <h1 class="mb-0">Preguntas Frecuentes</h1>
-    </div>
-    <div class="accordion" id="faqAccordion">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                    ¿Cómo puedo cambiar mi vuelo?
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                    Puedes cambiar tu vuelo a través de nuestra página web en la sección "Mis Reservas".
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                    ¿Qué debo hacer si perdí mi boleto?
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                    Si perdiste tu boleto, por favor contáctanos a nuestro servicio al cliente para asistencia.
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                    ¿Cómo puedo obtener un reembolso?
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                    Para solicitar un reembolso, visita la sección de "Reembolsos" en nuestra página web.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div style="height: 60px;"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Hacer que los mensajes desaparezcan automáticamente después de 5 segundos
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 var alerts = document.querySelectorAll('.alert');
