@@ -1,0 +1,295 @@
+@model AeroLinea.Models.Usuario
+@{
+    ViewData["Title"] = "Perfil de Usuario";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+        min-height: 100vh;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        margin-bottom: 30px;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: #e14a4a !important;
+        border-radius: 15px 15px 0 0 !important;
+        padding: 20px;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .form-floating > .form-control,
+    .form-floating > .form-control-plaintext {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 12px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+
+    .form-floating > .form-control:focus {
+        border-color: #e14a4a;
+        box-shadow: 0 0 0 0.2rem rgba(225, 74, 74, 0.25);
+    }
+
+    .form-floating > label {
+        padding: 12px;
+    }
+
+    .btn-primary {
+        background: #e14a4a;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #ff6b6b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid #e14a4a;
+        color: #e14a4a;
+        padding: 12px 30px;
+        font-size: 1.1em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background: #e14a4a;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
+    }
+
+    .form-check-input:checked {
+        background-color: #e14a4a;
+        border-color: #e14a4a;
+    }
+
+    .alert {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .alert-success {
+        background: rgba(40, 167, 69, 0.95);
+        color: white;
+    }
+
+    .alert-danger {
+        background: rgba(220, 53, 69, 0.95);
+        color: white;
+    }
+
+    .btn-close {
+        filter: brightness(0) invert(1);
+    }
+
+    .titulo-panel {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .titulo-panel h1 {
+        color: white;
+        font-size: 2.5em;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .titulo-panel h1 {
+            font-size: 2em;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="titulo-panel">
+        <h1>Mi Perfil</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form asp-action="ActualizarPerfil" method="post" class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="idUsuario" />
+                        <input type="hidden" asp-for="esAdmin" />
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="nombresUsuario" class="form-control" placeholder="Nombres" />
+                                    <label asp-for="nombresUsuario">Nombres</label>
+                                    <span asp-validation-for="nombresUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="apellidosUsuario" class="form-control" placeholder="Apellidos" />
+                                    <label asp-for="apellidosUsuario">Apellidos</label>
+                                    <span asp-validation-for="apellidosUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="nacimientoUsuario" class="form-control" type="date" />
+                                    <label asp-for="nacimientoUsuario">Fecha de Nacimiento</label>
+                                    <span asp-validation-for="nacimientoUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="telefonoUsuario" class="form-control" placeholder="Teléfono" />
+                                    <label asp-for="telefonoUsuario">Teléfono</label>
+                                    <span asp-validation-for="telefonoUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="identificacionUsuario" class="form-control" readonly />
+                                    <label asp-for="identificacionUsuario">DNI</label>
+                                    <span asp-validation-for="identificacionUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="correoUsuario" class="form-control" placeholder="Correo Electrónico" />
+                                    <label asp-for="correoUsuario">Correo Electrónico</label>
+                                    <span asp-validation-for="correoUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="contrasenaUsuario" class="form-control" type="password" placeholder="Contraseña" />
+                                    <label asp-for="contrasenaUsuario">Contraseña</label>
+                                    <span asp-validation-for="contrasenaUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch mt-4">
+                                    <input asp-for="discapacidad" class="form-check-input" type="checkbox" role="switch" id="discapacidadSwitch" />
+                                    <label class="form-check-label" for="discapacidadSwitch">
+                                        <i class="bi bi-wheelchair me-2"></i>Tengo una discapacidad
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left me-2"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-2"></i>Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Validación del formulario
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // Auto-cerrar alertas después de 5 segundos
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+    </script>
+}

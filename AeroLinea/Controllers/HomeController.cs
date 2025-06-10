@@ -1120,5 +1120,63 @@ namespace AeroLinea.Controllers
                 return Json(new { success = false, message = "Error al obtener detalles del vuelo: " + ex.Message });
             }
         }
+
+        public IActionResult perfilPasajero()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var usuario = _context.Usuarios.Find(userId.Value);
+            if (usuario == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View(usuario);
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarPerfil(Usuario usuario)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View("perfilPasajero", usuario);
+                }
+
+                var usuarioExistente = _context.Usuarios.Find(usuario.idUsuario);
+                if (usuarioExistente == null)
+                {
+                    TempData["Error"] = "Usuario no encontrado";
+                    return RedirectToAction("perfilPasajero");
+                }
+
+                // Actualizar los datos del usuario
+                usuarioExistente.nombresUsuario = usuario.nombresUsuario;
+                usuarioExistente.apellidosUsuario = usuario.apellidosUsuario;
+                usuarioExistente.nacimientoUsuario = usuario.nacimientoUsuario;
+                usuarioExistente.telefonoUsuario = usuario.telefonoUsuario;
+                usuarioExistente.correoUsuario = usuario.correoUsuario;
+                usuarioExistente.contrasenaUsuario = usuario.contrasenaUsuario;
+                usuarioExistente.discapacidad = usuario.discapacidad;
+
+                _context.SaveChanges();
+
+                // Actualizar la sesión
+                HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
+
+                TempData["Success"] = "Perfil actualizado correctamente";
+                return RedirectToAction("perfilPasajero");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error al actualizar el perfil: " + ex.Message;
+                return View("perfilPasajero", usuario);
+            }
+        }
     }
 }
