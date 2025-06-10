@@ -1,0 +1,54 @@
+@model AeroLinea.Models.ReservaVuelo
+
+@{
+    ViewData["Title"] = "Confirmación de Reserva";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">¡Reserva Confirmada!</h3>
+        </div>
+        <div class="card-body">
+            <h4>Detalles de la Reserva</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Origen:</strong> @Model.origenResVue</p>
+                    <p><strong>Destino:</strong> @Model.destinoVuelo</p>
+                    <p><strong>Número de Personas:</strong> @Model.personasResVue</p>
+                    <p><strong>Mascotas:</strong> @Model.mascotasResVue</p>
+                    <p><strong>Precio Total:</strong> S/ @Model.precioVuelo.ToString("N2")</p>
+                </div>
+            </div>
+
+            <h4 class="mt-4">Pasajeros</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Edad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pasajero in Model.Pasajeros)
+                        {
+                            <tr>
+                                <td>@pasajero.Nombre</td>
+                                <td>@pasajero.DNI</td>
+                                <td>@pasajero.Edad</td>
+                                <td>@(pasajero.Edad < 18 ? "Menor de edad" : "Adulto")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Volver al Inicio</a>
+            </div>
+        </div>
+    </div>
+</div> 

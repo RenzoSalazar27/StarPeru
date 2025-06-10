@@ -1,6 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Destinos";
+    var userType = Context.Session.GetString("UserType");
 }
+
+@if (userType == "admin")
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold text-white">Usted tiene rol administrador</h1>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Destinos Disponibles</h2>
+        <div id="vuelosContainer"></div>
+    </div>
+}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,6 +42,10 @@
     <!-- Contenido principal de destinos -->
     <div class="container">
         <div class="gallery">
+            <a href="#" onclick="mostrarVuelos('Lima')" class="image-box lima">
+                <img src="~/img/lima.jpeg" alt="Lima">
+                <p>LIMA</p>
+            </a>
             <a href="#" onclick="mostrarVuelos('Chiclayo')" class="image-box chiclayo">
                 <img src="~/img/chiclayo.jpeg" alt="Chiclayo">
                 <p>CHICLAYO</p>
@@ -33,10 +57,6 @@
             <a href="#" onclick="mostrarVuelos('Huanuco')" class="image-box huanuco">
                 <img src="~/img/huanuco.jpeg" alt="Huánuco">
                 <p>HUÁNUCO</p>
-            </a>
-            <a href="#" onclick="mostrarVuelos('Lima')" class="image-box lima">
-                <img src="~/img/lima.jpeg" alt="Lima">
-                <p>LIMA</p>
             </a>
             <a href="#" onclick="mostrarVuelos('Iquitos')" class="image-box iquitos">
                 <img src="~/img/iquitos.jpeg" alt="Iquitos">

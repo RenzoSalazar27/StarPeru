@@ -13,7 +13,15 @@
                             <strong>Fecha:</strong> @vuelo.fechaVuelo.ToString("dd/MM/yyyy HH:mm")<br>
                             <strong>Precio:</strong> S/ @vuelo.precioVuelo.ToString("N2")
                         </p>
-                        <button class="btn btn-primary" onclick="volar(@vuelo.idVuelo)">Volar</button>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <button class="btn btn-primary" disabled>Volar</button>
+                            <span class="text-danger">Los administradores no pueden reservar vuelos.</span>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("ReservarVuelo", "Home", new { idVuelo = vuelo.idVuelo })" class="btn btn-primary">Volar</a>
+                        }
                     </div>
                 </div>
             </div>

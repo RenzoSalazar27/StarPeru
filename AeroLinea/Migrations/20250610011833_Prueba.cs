@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AeroLinea.Migrations
 {
     /// <inheritdoc />
-    public partial class CamposAvionPilotoNullable : Migration
+    public partial class Prueba : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -152,10 +152,87 @@ namespace AeroLinea.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "reservaVuelos",
+                columns: table => new
+                {
+                    idResVuelo = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    origenResVue = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    destinoVuelo = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    personasResVue = table.Column<int>(type: "int", nullable: false),
+                    mascotasResVue = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    precioVuelo = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    pagadoVuelo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    idVuelo = table.Column<int>(type: "int", nullable: false),
+                    idUsuario = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_reservaVuelos", x => x.idResVuelo);
+                    table.ForeignKey(
+                        name: "FK_reservaVuelos_Usuarios_idUsuario",
+                        column: x => x.idUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "idUsuario",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_reservaVuelos_Vuelo_idVuelo",
+                        column: x => x.idVuelo,
+                        principalTable: "Vuelo",
+                        principalColumn: "idVuelo",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Pasajeros",
+                columns: table => new
+                {
+                    idPasajero = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DNI = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Nombre = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Edad = table.Column<int>(type: "int", nullable: false),
+                    EsMenorEdad = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ReservaVueloId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pasajeros", x => x.idPasajero);
+                    table.ForeignKey(
+                        name: "FK_Pasajeros_reservaVuelos_ReservaVueloId",
+                        column: x => x.ReservaVueloId,
+                        principalTable: "reservaVuelos",
+                        principalColumn: "idResVuelo",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Consultas_idUsuario",
                 table: "Consultas",
                 column: "idUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pasajeros_ReservaVueloId",
+                table: "Pasajeros",
+                column: "ReservaVueloId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_reservaVuelos_idUsuario",
+                table: "reservaVuelos",
+                column: "idUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_reservaVuelos_idVuelo",
+                table: "reservaVuelos",
+                column: "idVuelo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vuelo_idAvion",
@@ -175,10 +252,16 @@ namespace AeroLinea.Migrations
                 name: "Consultas");
 
             migrationBuilder.DropTable(
-                name: "Vuelo");
+                name: "Pasajeros");
+
+            migrationBuilder.DropTable(
+                name: "reservaVuelos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Vuelo");
 
             migrationBuilder.DropTable(
                 name: "Flota");

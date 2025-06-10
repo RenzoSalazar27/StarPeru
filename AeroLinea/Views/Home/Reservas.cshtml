@@ -1,0 +1,92 @@
+@model List<AeroLinea.Models.ReservaVuelo>
+
+@{
+    ViewData["Title"] = "Mis Reservas";
+    var userId = Context.Session.GetInt32("UserId");
+    var userType = Context.Session.GetString("UserType");
+}
+
+@if (userType == "admin")
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold text-white">Usted tiene rol administrador</h1>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <h2>Mis Reservas</h2>
+
+        @if (!userId.HasValue)
+        {
+            <div class="alert alert-info">
+                <h4>Debes iniciar sesión para ver tus reservas</h4>
+                <p>Por favor, inicia sesión para acceder a tus reservas de vuelo.</p>
+                <a href="@Url.Action("Login", "Home")" class="btn btn-primary">Iniciar Sesión</a>
+            </div>
+        }
+        else if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-info">
+                <h4>No tienes reservas</h4>
+                <p>Aún no has realizado ninguna reserva de vuelo.</p>
+                <a href="@Url.Action("Destinos", "Home")" class="btn btn-primary">Ver Vuelos Disponibles</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Pasajeros</th>
+                            <th>Mascotas</th>
+                            <th>Precio Total</th>
+                            <th>Estado de Pago</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reserva in Model)
+                        {
+                            <tr>
+                                <td>@reserva.idResVuelo</td>
+                                <td>@reserva.origenResVue</td>
+                                <td>@reserva.destinoVuelo</td>
+                                <td>@reserva.personasResVue</td>
+                                <td>@reserva.mascotasResVue</td>
+                                <td>S/ @reserva.precioVuelo.ToString("N2")</td>
+                                <td>@(reserva.pagadoVuelo ? "Pagado" : "Pendiente")</td>
+                                <td>
+                                    <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-info btn-sm">Ver Detalles</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function realizarPago(idReserva) {
+            // Aquí implementaremos la lógica de pago
+            if (confirm('¿Desea proceder con el pago de esta reserva?')) {
+                window.location.href = `/Home/RealizarPago/${idReserva}`;
+            }
+        }
+
+        function verDetalles(idReserva) {
+            window.location.href = `/Home/DetallesReserva/${idReserva}`;
+        }
+    </script>
+} 

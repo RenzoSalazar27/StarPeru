@@ -1,0 +1,71 @@
+@model AeroLinea.Models.ReservaVuelo
+
+@{
+    ViewData["Title"] = "Detalles de la Reserva";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Detalles de la Reserva</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Información del Vuelo</h4>
+                    <p><strong>Origen:</strong> @Model.origenResVue</p>
+                    <p><strong>Destino:</strong> @Model.destinoVuelo</p>
+                    <p><strong>Número de Personas:</strong> @Model.personasResVue</p>
+                    <p><strong>Mascotas:</strong> @Model.mascotasResVue</p>
+                    <p><strong>Precio Total:</strong> S/ @Model.precioVuelo.ToString("N2")</p>
+                    <p><strong>Estado de Pago:</strong> @(Model.pagadoVuelo ? "Pagado" : "Pendiente")</p>
+                </div>
+            </div>
+
+            <h4 class="mt-4">Pasajeros</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Edad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pasajero in Model.Pasajeros)
+                        {
+                            <tr>
+                                <td>@pasajero.Nombre</td>
+                                <td>@pasajero.DNI</td>
+                                <td>@pasajero.Edad</td>
+                                <td>@(pasajero.EsMenorEdad ? "Menor de edad" : "Adulto")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                @if (!Model.pagadoVuelo)
+                {
+                    <button class="btn btn-success" onclick="realizarPago(@Model.idResVuelo)">
+                        Realizar Pago
+                    </button>
+                }
+                <a href="@Url.Action("Reservas", "Home")" class="btn btn-secondary">Volver a Mis Reservas</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function realizarPago(idReserva) {
+            if (confirm('¿Desea proceder con el pago de esta reserva?')) {
+                window.location.href = `/Home/RealizarPago/${idReserva}`;
+            }
+        }
+    </script>
+} 

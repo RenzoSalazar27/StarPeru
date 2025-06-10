@@ -95,6 +95,40 @@ namespace AeroLinea.Migrations
                     b.ToTable("Flota");
                 });
 
+            modelBuilder.Entity("AeroLinea.Models.Pasajero", b =>
+                {
+                    b.Property<int>("idPasajero")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idPasajero"));
+
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
+
+                    b.Property<int>("Edad")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("EsMenorEdad")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("ReservaVueloId")
+                        .HasColumnType("int");
+
+                    b.HasKey("idPasajero");
+
+                    b.HasIndex("ReservaVueloId");
+
+                    b.ToTable("Pasajeros");
+                });
+
             modelBuilder.Entity("AeroLinea.Models.Piloto", b =>
                 {
                     b.Property<int>("idPiloto")
@@ -140,6 +174,52 @@ namespace AeroLinea.Migrations
                     b.HasKey("idPiloto");
 
                     b.ToTable("Pilotos");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.ReservaVuelo", b =>
+                {
+                    b.Property<int>("idResVuelo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idResVuelo"));
+
+                    b.Property<string>("destinoVuelo")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
+
+                    b.Property<int>("idUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("idVuelo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("mascotasResVue")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("origenResVue")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
+
+                    b.Property<bool>("pagadoVuelo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("personasResVue")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("precioVuelo")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("idResVuelo");
+
+                    b.HasIndex("idUsuario");
+
+                    b.HasIndex("idVuelo");
+
+                    b.ToTable("reservaVuelos");
                 });
 
             modelBuilder.Entity("AeroLinea.Models.Usuario", b =>
@@ -244,6 +324,36 @@ namespace AeroLinea.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("AeroLinea.Models.Pasajero", b =>
+                {
+                    b.HasOne("AeroLinea.Models.ReservaVuelo", "ReservaVuelo")
+                        .WithMany("Pasajeros")
+                        .HasForeignKey("ReservaVueloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReservaVuelo");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.ReservaVuelo", b =>
+                {
+                    b.HasOne("AeroLinea.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("idUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AeroLinea.Models.Vuelo", "Vuelo")
+                        .WithMany()
+                        .HasForeignKey("idVuelo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+
+                    b.Navigation("Vuelo");
+                });
+
             modelBuilder.Entity("AeroLinea.Models.Vuelo", b =>
                 {
                     b.HasOne("AeroLinea.Models.Flota", "Avion")
@@ -261,6 +371,11 @@ namespace AeroLinea.Migrations
                     b.Navigation("Avion");
 
                     b.Navigation("Piloto");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.ReservaVuelo", b =>
+                {
+                    b.Navigation("Pasajeros");
                 });
 
             modelBuilder.Entity("AeroLinea.Models.Usuario", b =>

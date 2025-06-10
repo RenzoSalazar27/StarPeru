@@ -1,7 +1,72 @@
 ﻿@{
     ViewData["Title"] = "Servicios al Cliente";
-    var usuarioLogueado = Context.Session.GetString("UserType") != null;
+    var userType = Context.Session.GetString("UserType");
 }
+
+@if (userType == "admin")
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold text-white">Usted tiene rol administrador</h1>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Contacto</h5>
+                        <p class="card-text">
+                            <strong>Teléfono:</strong> (01) 123-4567<br>
+                            <strong>Email:</strong> servicio@starperu.com<br>
+                            <strong>Horario de atención:</strong> Lunes a Domingo de 8:00 AM a 8:00 PM
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Envíanos tu consulta</h5>
+                        <form method="post" asp-action="RegistrarConsulta">
+                            <div class="mb-3">
+                                <label for="motivoConsulta" class="form-label">Motivo de la consulta</label>
+                                <select class="form-select" id="motivoConsulta" name="motivoConsulta" required>
+                                    <option value="">Seleccione un motivo</option>
+                                    <option value="Información de vuelos">Información de vuelos</option>
+                                    <option value="Cambios y cancelaciones">Cambios y cancelaciones</option>
+                                    <option value="Reclamos">Reclamos</option>
+                                    <option value="Sugerencias">Sugerencias</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcionConsultas" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcionConsultas" name="descripcionConsultas" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="urgencia" class="form-label">Nivel de urgencia</label>
+                                <select class="form-select" id="urgencia" name="urgencia" required>
+                                    <option value="">Seleccione el nivel de urgencia</option>
+                                    <option value="Bajo">Bajo</option>
+                                    <option value="Medio">Medio</option>
+                                    <option value="Alto">Alto</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar consulta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,59 +96,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-
-    <!-- Panel del Formulario -->
-    <div class="card p-4 mb-5">
-        <h2 class="mb-4">Contáctanos</h2>
-        @if (usuarioLogueado)
-        {
-            <form id="consultaForm" method="post" action="/Home/RegistrarConsulta">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="motivoConsulta" class="form-label">Motivo de la Consulta</label>
-                        <select class="form-select" id="motivoConsulta" name="motivoConsulta" required>
-                            <option value="">Seleccione un motivo</option>
-                            <option value="Reserva">Reserva</option>
-                            <option value="Cancelacion">Cancelación</option>
-                            <option value="Reembolso">Reembolso</option>
-                            <option value="Equipaje">Equipaje</option>
-                            <option value="Vuelo">Vuelo</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="urgencia" class="form-label">Nivel de Urgencia</label>
-                        <select class="form-select" id="urgencia" name="urgencia" required>
-                            <option value="">Seleccione urgencia</option>
-                            <option value="Alto">Alto</option>
-                            <option value="Medio">Medio</option>
-                            <option value="Bajo">Bajo</option>
-                        </select>
-                    </div>
-                    <div class="col-12">
-                        <label for="descripcionConsultas" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcionConsultas" name="descripcionConsultas" rows="5" required></textarea>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-custom">Enviar Consulta</button>
-                </div>
-            </form>
-        }
-        else
-        {
-            <div class="alert alert-info" role="alert">
-                <h4 class="alert-heading">¡Inicio de sesión requerido!</h4>
-                <p>Para enviar una consulta, necesitas iniciar sesión en tu cuenta.</p>
-                <hr>
-                <p class="mb-0">
-                    <a href="/Home/SelectLogin" class="btn btn-primary">Iniciar Sesión</a>
-                    o
-                    <a href="/Home/Registro" class="btn btn-outline-primary">Registrarse</a>
-                </p>
-            </div>
-        }
-    </div>
 
     <!-- Acordeón de Preguntas Frecuentes -->
     <div class="titulo-panel mb-4">

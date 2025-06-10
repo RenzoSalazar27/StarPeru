@@ -15,5 +15,7 @@ namespace Data
         public DbSet<Piloto> Pilotos { get; set; }
         public DbSet<Flota> Flota { get; set; }
         public DbSet<Vuelo> Vuelo { get; set; }
+        public DbSet<ReservaVuelo> ReservaVuelos { get; set; }
+        public DbSet<Pasajero> Pasajeros { get; set; }
     }
 } 

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace AeroLinea.Controllers
 {
@@ -56,6 +59,10 @@ namespace AeroLinea.Controllers
                     HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
                     HttpContext.Session.SetString("UserType", usuario.esAdmin ? "admin" : "user");
                     HttpContext.Session.SetInt32("UserId", usuario.idUsuario);
+                    
+                    // Asegurarse de que la sesión se guarde
+                    HttpContext.Session.CommitAsync().Wait();
+                    
                     return RedirectToAction("Index", "Home");
                 }
                 TempData["Error"] = "El correo o contraseña no son correctos";
@@ -799,6 +806,212 @@ namespace AeroLinea.Controllers
         {
             public int id { get; set; }
             public string estado { get; set; }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReservarVuelo(int idVuelo, int numPasajeros, string mascotas)
+        {
+            try
+            {
+                // Validar que el usuario esté autenticado
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (!userId.HasValue)
+                {
+                    TempData["Error"] = "Debe iniciar sesión para realizar una reserva";
+                    return RedirectToAction("Login", "Home");
+                }
+
+                // Validar que el usuario no sea administrador
+                var usuario = await _context.Usuarios.FindAsync(userId.Value);
+                if (usuario == null)
+                {
+                    TempData["Error"] = "Usuario no encontrado";
+                    return RedirectToAction("Login", "Home");
+                }
+
+                if (usuario.esAdmin)
+                {
+                    TempData["Error"] = "Los administradores no pueden realizar reservas";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Validar el número máximo de reservas (3)
+                var totalReservasUsuario = await _context.ReservaVuelos
+                    .Where(r => r.idUsuario == userId.Value)
+                    .CountAsync();
+
+                if (totalReservasUsuario >= 3)
+                {
+                    TempData["Error"] = "Ha alcanzado el límite máximo de 3 reservas";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Validar el vuelo
+                var vuelo = await _context.Vuelo.FindAsync(idVuelo);
+                if (vuelo == null)
+                {
+                    TempData["Error"] = "El vuelo seleccionado no existe";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Validar que el vuelo no esté en el pasado
+                if (vuelo.fechaVuelo < DateTime.Now)
+                {
+                    TempData["Error"] = "No se pueden reservar vuelos en el pasado";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Validar número de pasajeros
+                if (numPasajeros < 1 || numPasajeros > 8)
+                {
+                    TempData["Error"] = "El número de pasajeros debe estar entre 1 y 8";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Validar que haya suficientes asientos disponibles
+                var reservasExistentes = await _context.ReservaVuelos
+                    .Where(r => r.idVuelo == idVuelo)
+                    .SumAsync(r => r.personasResVue);
+
+                var avion = await _context.Flota.FindAsync(vuelo.idAvion);
+                if (avion == null)
+                {
+                    TempData["Error"] = "Error al verificar la capacidad del avión";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (reservasExistentes + numPasajeros > avion.capacidadAvion)
+                {
+                    TempData["Error"] = "No hay suficientes asientos disponibles para este vuelo";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Validar datos de pasajeros adicionales
+                if (numPasajeros > 1)
+                {
+                    for (int i = 1; i < numPasajeros; i++)
+                    {
+                        var nombre = Request.Form[$"nombre{i}"].ToString();
+                        var dni = Request.Form[$"dni{i}"].ToString();
+                        var edadStr = Request.Form[$"edad{i}"].ToString();
+
+                        if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(edadStr))
+                        {
+                            TempData["Error"] = "Debe completar todos los datos de los pasajeros adicionales";
+                            return RedirectToAction("Index", "Home");
+                        }
+
+                        if (!int.TryParse(edadStr, out int edad) || edad < 0 || edad > 120)
+                        {
+                            TempData["Error"] = "La edad de los pasajeros debe ser válida";
+                            return RedirectToAction("Index", "Home");
+                        }
+
+                        if (dni.Length != 8 || !dni.All(char.IsDigit))
+                        {
+                            TempData["Error"] = "El DNI debe tener 8 dígitos numéricos";
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+
+                var reserva = new ReservaVuelo
+                {
+                    idVuelo = idVuelo,
+                    origenResVue = vuelo.origenVuelo,
+                    destinoVuelo = vuelo.destinoVuelo,
+                    personasResVue = numPasajeros,
+                    mascotasResVue = mascotas,
+                    precioVuelo = vuelo.precioVuelo * numPasajeros + (mascotas.ToLower() == "si" ? 50 : 0),
+                    pagadoVuelo = false,
+                    idUsuario = userId.Value
+                };
+
+                _context.ReservaVuelos.Add(reserva);
+                await _context.SaveChangesAsync();
+
+                // Guardar el pasajero principal (usuario logueado)
+                var pasajeroPrincipal = new Pasajero
+                {
+                    Nombre = $"{usuario.nombresUsuario} {usuario.apellidosUsuario}",
+                    DNI = usuario.identificacionUsuario,
+                    Edad = DateTime.Now.Year - usuario.nacimientoUsuario.Year,
+                    EsMenorEdad = DateTime.Now.Year - usuario.nacimientoUsuario.Year < 18,
+                    ReservaVueloId = reserva.idResVuelo
+                };
+                _context.Pasajeros.Add(pasajeroPrincipal);
+
+                // Guardar los pasajeros adicionales
+                for (int i = 1; i < numPasajeros; i++)
+                {
+                    var nombre = Request.Form[$"nombre{i}"].ToString();
+                    var dni = Request.Form[$"dni{i}"].ToString();
+                    var edad = int.Parse(Request.Form[$"edad{i}"].ToString());
+                    var esMenorEdad = edad < 18;
+
+                    var pasajero = new Pasajero
+                    {
+                        Nombre = nombre,
+                        DNI = dni,
+                        Edad = edad,
+                        EsMenorEdad = esMenorEdad,
+                        ReservaVueloId = reserva.idResVuelo
+                    };
+                    _context.Pasajeros.Add(pasajero);
+                }
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Reserva realizada con éxito";
+                return RedirectToAction("DetalleReserva", new { id = reserva.idResVuelo });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al crear la reserva: {ex.Message}");
+                TempData["Error"] = "Error al crear la reserva. Por favor, intente nuevamente.";
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public async Task<IActionResult> DetalleReserva(int id)
+        {
+            var reserva = await _context.ReservaVuelos
+                .Include(r => r.Vuelo)
+                .Include(r => r.Pasajeros)
+                .FirstOrDefaultAsync(r => r.idResVuelo == id);
+
+            if (reserva == null)
+            {
+                TempData["Error"] = "Reserva no encontrada";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View("~/Views/Home/Destinos/DetalleReserva.cshtml", reserva);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReservarVuelo(int idVuelo)
+        {
+            var vuelo = await _context.Vuelo.FindAsync(idVuelo);
+            if (vuelo == null)
+            {
+                return NotFound();
+            }
+            return View("~/Views/Home/Destinos/ReservarVuelo.cshtml", vuelo);
+        }
+
+        public IActionResult Reservas()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
+            {
+                return View(new List<ReservaVuelo>());
+            }
+
+            var reservas = _context.ReservaVuelos
+                .Where(r => r.idUsuario == userId.Value)
+                .ToList();
+
+            return View(reservas);
         }
     }
 }
