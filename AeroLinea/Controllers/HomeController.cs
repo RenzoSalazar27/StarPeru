@@ -65,11 +65,11 @@ namespace AeroLinea.Controllers
                     
                     return RedirectToAction("Index", "Home");
                 }
-                TempData["Error"] = "El correo o contraseña no son correctos";
+                TempData["AuthError"] = "El correo o contraseña no son correctos";
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al iniciar sesión: " + ex.Message;
+                TempData["AuthError"] = "Error al iniciar sesión: " + ex.Message;
             }
             return View("~/Views/Autenticacion/Autenticacion.cshtml");
         }
@@ -187,13 +187,13 @@ namespace AeroLinea.Controllers
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(nuevaContrasena) || string.IsNullOrEmpty(confirmarContrasena))
             {
-                TempData["Error"] = "Por favor complete todos los campos";
+                TempData["AuthError"] = "Por favor complete todos los campos";
                 return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
             }
 
             if (nuevaContrasena != confirmarContrasena)
             {
-                TempData["Error"] = "Las contraseñas no coinciden";
+                TempData["AuthError"] = "Las contraseñas no coinciden";
                 return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
             }
 
@@ -202,7 +202,7 @@ namespace AeroLinea.Controllers
 
             if (usuario == null)
             {
-                TempData["Error"] = "No se encontró una cuenta con esas credenciales";
+                TempData["AuthError"] = "No se encontró una cuenta con esas credenciales";
                 return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
             }
 
@@ -210,7 +210,7 @@ namespace AeroLinea.Controllers
             usuario.contrasenaUsuario = nuevaContrasena;
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = "Contraseña actualizada correctamente";
+            TempData["AuthSuccess"] = "Contraseña actualizada correctamente";
             return RedirectToAction("Autenticacion");
         }
 
@@ -1099,6 +1099,26 @@ namespace AeroLinea.Controllers
                 .ToList();
 
             return View(reservas);
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerDetallesVuelo(int id)
+        {
+            try
+            {
+                var reservas = _context.ReservaVuelos
+                    .Include(r => r.Usuario)
+                    .Include(r => r.Vuelo)
+                    .Where(r => r.Vuelo.idVuelo == id)
+                    .OrderByDescending(r => r.Vuelo.fechaVuelo)
+                    .ToList();
+
+                return Json(new { success = true, data = reservas });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al obtener detalles del vuelo: " + ex.Message });
+            }
         }
     }
 }

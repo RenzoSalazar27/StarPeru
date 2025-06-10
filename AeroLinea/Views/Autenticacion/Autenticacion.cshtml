@@ -167,16 +167,16 @@
     <div class="auth-container">
         <div class="login-section">
             <h2>Iniciar Sesión</h2>
-            @if (TempData["Success"] != null)
+            @if (TempData["AuthSuccess"] != null)
             {
                 <div class="alert alert-success">
-                    @TempData["Success"]
+                    @TempData["AuthSuccess"]
                 </div>
             }
-            @if (TempData["Error"] != null)
+            @if (TempData["AuthError"] != null)
             {
                 <div class="alert alert-danger">
-                    @TempData["Error"]
+                    @TempData["AuthError"]
                 </div>
             }
             <form method="post" asp-controller="Home" asp-action="Login">

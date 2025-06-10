@@ -114,8 +114,25 @@
 <div class="aircraft">
     @foreach (var avion in Model)
     {
+        var imagenAvion = "";
+        switch (avion.claseAvion)
+        {
+            case "E": // Económica
+                imagenAvion = "avionEconomico.png";
+                break;
+            case "P": // Premium
+                imagenAvion = "avionEjecutivo.png";
+                break;
+            case "F": // Primera Clase
+                imagenAvion = "avionPrimera.png";
+                break;
+            default:
+                imagenAvion = "defaultAvion.png"; // Una imagen por defecto si la clase no coincide
+                break;
+        }
+
         <div class="aircraft-item">
-            <img src="~/img/@(avion.modeloAvion.ToLower()).jpg" alt="@avion.modeloAvion">
+            <img src="~/img/@(imagenAvion)" alt="@avion.modeloAvion">
             <div class="aircraft-info">
                 <h2>@avion.modeloAvion</h2>
                 <p><strong>Fabricante:</strong> @avion.fabricanteAvion</p>

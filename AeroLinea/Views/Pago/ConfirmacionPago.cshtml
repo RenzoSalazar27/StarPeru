@@ -1,86 +1,181 @@
 @{
     ViewData["Title"] = "Confirmación de Pago";
+    Layout = null;
 }
 
-<style>
-    body {
-        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
-        min-height: 100vh;
-        padding: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StarPeru</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AeroLinea.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
 
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-    }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        overflow: hidden;
-        text-align: center;
-        padding: 40px 20px;
-    }
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .success-icon {
-        color: #28a745;
-        font-size: 80px;
-        margin-bottom: 20px;
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            text-align: center;
+            padding: 50px 30px;
+            position: relative;
+        }
 
-    .card h2 {
-        color: #333;
-        font-size: 2em;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #e14a4a, #ff6b6b);
+        }
 
-    .card p {
-        color: #666;
-        font-size: 1.2em;
-        margin-bottom: 30px;
-        line-height: 1.6;
-    }
+        .success-icon {
+            color: #28a745;
+            font-size: 90px;
+            margin-bottom: 25px;
+            animation: scaleIn 0.5s ease-out;
+        }
 
-    .btn-hecho {
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 12px 30px;
-        font-size: 1.1em;
-        font-weight: 500;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-    }
+        @@keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
 
-    .btn-hecho:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-        color: white;
-    }
-</style>
+        .card h2 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
 
-<div class="container mt-5">
-    <div class="card">
-        <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
+        .card p {
+            color: #34495e;
+            font-size: 1.3em;
+            margin-bottom: 35px;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+
+        .btn-hecho {
+            background: linear-gradient(135deg, #28a745 0%, #34c759 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-hecho:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            color: white;
+        }
+
+        .btn-hecho:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-hecho::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-hecho:hover::after {
+            opacity: 1;
+        }
+
+        @@media (max-width: 576px) {
+            .card {
+                padding: 30px 20px;
+            }
+
+            .card h2 {
+                font-size: 1.8em;
+            }
+
+            .card p {
+                font-size: 1.1em;
+            }
+
+            .btn-hecho {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <div class="card">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>¡Pago Realizado con Éxito!</h2>
+            <p>
+                Gracias por su preferencia. Su pago ha sido procesado correctamente.
+            </p>
+            <a href="@Url.Action("DetalleReserva", "Home", new { id = ViewBag.IdReserva })" class="btn-hecho">
+                Hecho
+            </a>
         </div>
-        <h2>¡Pago Realizado con Éxito!</h2>
-        <p>
-            Gracias por su preferencia. Su pago ha sido procesado correctamente.<br>
-        </p>
-        <a href="@Url.Action("DetalleReserva", "Home", new { id = ViewBag.IdReserva })" class="btn-hecho">
-            Hecho
-        </a>
     </div>
-</div>
 
-@section Scripts {
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-} 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html> 
