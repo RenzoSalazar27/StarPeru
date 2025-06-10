@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610011833_Prueba")]
-    partial class Prueba
+    [Migration("20250610070658_FixPagoModel")]
+    partial class FixPagoModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,6 +96,76 @@ namespace AeroLinea.Migrations
                     b.HasKey("idAvion");
 
                     b.ToTable("Flota");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.Pago", b =>
+                {
+                    b.Property<int>("idPago")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idPago"));
+
+                    b.Property<bool>("aceptoTerminos")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("bancoTarjetaPago")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("correoFacturaPago")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("cvvCvcPago")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<string>("fechaExpiracionPago")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<DateTime>("fechaPago")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("idReserva")
+                        .HasColumnType("int");
+
+                    b.Property<string>("metodoPago")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("nombreTitularPago")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("numCelularPago")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("varchar(9)");
+
+                    b.Property<string>("numeroTarjetaPago")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<decimal>("precioFinal")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("precioTotal")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("idPago");
+
+                    b.HasIndex("idReserva");
+
+                    b.ToTable("Pagos");
                 });
 
             modelBuilder.Entity("AeroLinea.Models.Pasajero", b =>
@@ -325,6 +395,17 @@ namespace AeroLinea.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AeroLinea.Models.Pago", b =>
+                {
+                    b.HasOne("AeroLinea.Models.ReservaVuelo", "ReservaVuelo")
+                        .WithMany()
+                        .HasForeignKey("idReserva")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReservaVuelo");
                 });
 
             modelBuilder.Entity("AeroLinea.Models.Pasajero", b =>

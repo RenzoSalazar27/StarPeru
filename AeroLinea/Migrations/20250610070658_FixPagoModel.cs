@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AeroLinea.Migrations
 {
     /// <inheritdoc />
-    public partial class Prueba : Migration
+    public partial class FixPagoModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -189,6 +189,46 @@ namespace AeroLinea.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Pagos",
+                columns: table => new
+                {
+                    idPago = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    idReserva = table.Column<int>(type: "int", nullable: false),
+                    metodoPago = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    nombreTitularPago = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    correoFacturaPago = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    bancoTarjetaPago = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    numeroTarjetaPago = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    fechaExpiracionPago = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    cvvCvcPago = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    numCelularPago = table.Column<string>(type: "varchar(9)", maxLength: 9, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    precioTotal = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    precioFinal = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    aceptoTerminos = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    fechaPago = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pagos", x => x.idPago);
+                    table.ForeignKey(
+                        name: "FK_Pagos_reservaVuelos_idReserva",
+                        column: x => x.idReserva,
+                        principalTable: "reservaVuelos",
+                        principalColumn: "idResVuelo",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Pasajeros",
                 columns: table => new
                 {
@@ -218,6 +258,11 @@ namespace AeroLinea.Migrations
                 name: "IX_Consultas_idUsuario",
                 table: "Consultas",
                 column: "idUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pagos_idReserva",
+                table: "Pagos",
+                column: "idReserva");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pasajeros_ReservaVueloId",
@@ -250,6 +295,9 @@ namespace AeroLinea.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Consultas");
+
+            migrationBuilder.DropTable(
+                name: "Pagos");
 
             migrationBuilder.DropTable(
                 name: "Pasajeros");

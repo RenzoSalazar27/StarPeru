@@ -17,5 +17,6 @@ namespace Data
         public DbSet<Vuelo> Vuelo { get; set; }
         public DbSet<ReservaVuelo> ReservaVuelos { get; set; }
         public DbSet<Pasajero> Pasajeros { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
     }
 } 

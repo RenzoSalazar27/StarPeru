@@ -123,6 +123,7 @@
             <div class="form-group">
                 <label for="nacimientoUsuario">Fecha de Nacimiento</label>
                 <input asp-for="nacimientoUsuario" type="date" class="form-control" 
+                       max="2025-12-31"
                        title="Seleccione su fecha de nacimiento" required />
                 <span asp-validation-for="nacimientoUsuario" class="text-danger"></span>
             </div>
