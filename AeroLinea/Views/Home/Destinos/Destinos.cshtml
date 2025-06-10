@@ -4,42 +4,199 @@
     var userId = Context.Session.GetInt32("UserId");
 }
 
-@if (userType == "admin")
-{
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 text-center">
-                <h1 class="display-4 fw-bold text-white">Usted tiene rol administrador</h1>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Destinos Disponibles</h2>
-        <div id="vuelosContainer"></div>
-    </div>
-}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destinos en Perú</title>
-    <link rel="stylesheet" href="~/css/Home/Destinos/destinos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #e14a4a;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
             min-height: 100vh;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .image-box {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: white;
+            height: 300px;
+        }
+
+        .image-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-box:hover img {
+            transform: scale(1.1);
+        }
+
+        .image-box p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            font-size: 1.4em;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: #e14a4a;
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+        }
+
+        .login-error-modal .modal-content {
+            background: white;
+        }
+
+        .login-error-modal .modal-header {
+            background: #dc3545;
+        }
+
+        .login-error-modal .btn-primary {
+            background: #e14a4a;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-error-modal .btn-primary:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .login-error-modal .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-error-modal .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .admin-message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .admin-message h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        @@media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .image-box {
+                height: 250px;
+            }
+
+            .image-box p {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+
+            .admin-message h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
+    @if (userType == "admin")
+    {
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="admin-message">
+                        <h1 class="display-4 fw-bold">Usted tiene rol administrador</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container mt-4">
+            <h2 class="text-center mb-4 text-white">Destinos Disponibles</h2>
+            <div id="vuelosContainer"></div>
+        </div>
+    }
+
     <!-- Contenido principal de destinos -->
     <div class="container">
         <div class="gallery">
@@ -94,7 +251,7 @@ else
     </div>
 
     <!-- Modal para mensaje de error de inicio de sesión -->
-    <div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+    <div class="modal fade login-error-modal" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
