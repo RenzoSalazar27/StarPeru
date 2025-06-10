@@ -970,7 +970,22 @@
                 hayErrores = true;
             }
 
-            if (hayErrores) return;
+            if (!idAvion) {
+                document.getElementById('errorAvion').textContent = 'El avión es obligatorio';
+                document.getElementById('errorAvion').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!idPiloto) {
+                document.getElementById('errorPiloto').textContent = 'El piloto es obligatorio';
+                document.getElementById('errorPiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (hayErrores) {
+                $('#modalRegistrarVuelo').modal('hide'); // Cierra el modal si hay errores del lado del cliente
+                return;
+            }
 
             const vuelo = {
                 origenVuelo: origen,
@@ -992,7 +1007,6 @@
             .then(data => {
                 if (data.success) {
                     document.getElementById('formVuelo').reset();
-                    document.querySelector('#modalRegistrarVuelo').modal('hide');
                     cargarVuelos();
                 } else {
                     if (data.errors) {
@@ -1008,11 +1022,13 @@
                         document.getElementById('errorGeneral').style.display = 'block';
                     }
                 }
+                $('#modalRegistrarVuelo').modal('hide'); // Cierra el modal después de la respuesta del servidor
             })
             .catch(error => {
                 console.error('Error:', error);
                 document.getElementById('errorGeneral').textContent = 'Error al registrar el vuelo';
                 document.getElementById('errorGeneral').style.display = 'block';
+                $('#modalRegistrarVuelo').modal('hide'); // Cierra el modal si hay un error en la petición
             });
         }
 
