@@ -150,7 +150,19 @@ namespace AeroLinea.Controllers
         }
 
         public IActionResult Equipaje() => View();
-        public IActionResult Servicios_al_cliente() => View();
+        public IActionResult Servicios_al_cliente()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                var consultas = _context.Consultas
+                    .Where(c => c.idUsuario == userId.Value)
+                    .OrderByDescending(c => c.idConsulta)
+                    .ToList();
+                ViewBag.Consultas = consultas;
+            }
+            return View();
+        }
         public IActionResult Cargo() => View();
         public IActionResult Promociones() => View();
         public IActionResult Alianzas() => View();
@@ -347,6 +359,39 @@ namespace AeroLinea.Controllers
 
             try
             {
+                // Validar campos requeridos
+                if (string.IsNullOrEmpty(motivoConsulta) || string.IsNullOrEmpty(urgencia))
+                {
+                    TempData["Error"] = "El motivo y la urgencia son campos requeridos";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
+                // Validar longitud de campos
+                if (motivoConsulta.Length > 15)
+                {
+                    TempData["Error"] = "El motivo no puede tener más de 15 caracteres";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
+                if (descripcionConsultas != null && descripcionConsultas.Length > 200)
+                {
+                    TempData["Error"] = "La descripción no puede tener más de 200 caracteres";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
+                if (urgencia.Length > 10)
+                {
+                    TempData["Error"] = "La urgencia no puede tener más de 10 caracteres";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
+                // Validar valores permitidos para urgencia
+                if (!new[] { "Alto", "Medio", "Bajo" }.Contains(urgencia))
+                {
+                    TempData["Error"] = "La urgencia debe ser Alto, Medio o Bajo";
+                    return RedirectToAction("Servicios_al_cliente");
+                }
+
                 var userId = HttpContext.Session.GetInt32("UserId");
                 if (!userId.HasValue)
                 {
@@ -379,7 +424,8 @@ namespace AeroLinea.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al registrar la consulta: " + ex.Message;
+                _logger.LogError($"Error al registrar consulta: {ex.Message}");
+                TempData["Error"] = "Error al registrar la consulta. Por favor, intente nuevamente.";
                 return RedirectToAction("Servicios_al_cliente");
             }
         }

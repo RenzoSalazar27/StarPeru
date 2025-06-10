@@ -2,6 +2,7 @@
     ViewData["Title"] = "Servicios al Cliente";
     var userType = Context.Session.GetString("UserType");
     var userId = Context.Session.GetInt32("UserId");
+    var consultas = ViewBag.Consultas as List<AeroLinea.Models.Consulta>;
 }
 
 <!DOCTYPE html>
@@ -193,6 +194,61 @@
                 font-size: 1.5em;
             }
         }
+
+        /* Estilos para la tabla de consultas */
+        .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: #e14a4a;
+            color: white;
+            font-weight: 500;
+            padding: 15px;
+            border: none;
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(225, 74, 74, 0.05);
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .bg-success {
+            background: #28a745 !important;
+        }
+
+        .bg-warning {
+            background: #ffc107 !important;
+            color: #000;
+        }
+
+        .bg-danger {
+            background: #dc3545 !important;
+        }
+
+        .bg-info {
+            background: #17a2b8 !important;
+        }
+
+        .alert-info {
+            background: rgba(23, 162, 184, 0.1);
+            color: #17a2b8;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 20px;
+        }
     </style>
 </head>
 <body>
@@ -254,8 +310,8 @@
                                     <label for="motivoConsulta" class="form-label">Motivo de la consulta</label>
                                     <select class="form-select" id="motivoConsulta" name="motivoConsulta" required>
                                         <option value="">Seleccione un motivo</option>
-                                        <option value="Información de vuelos">Información de vuelos</option>
-                                        <option value="Cambios y cancelaciones">Cambios y cancelaciones</option>
+                                        <option value="Vuelos">Vuelos</option>
+                                        <option value="Cambios">Cambios</option>
                                         <option value="Reclamos">Reclamos</option>
                                         <option value="Sugerencias">Sugerencias</option>
                                         <option value="Otros">Otros</option>
@@ -276,6 +332,61 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary">Enviar consulta</button>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nueva sección para mostrar las consultas del usuario -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Mis Consultas</h5>
+                            @if (consultas != null && consultas.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Motivo</th>
+                                                <th>Descripción</th>
+                                                <th>Urgencia</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var consulta in consultas)
+                                            {
+                                                <tr>
+                                                    <td>@consulta.idConsulta</td>
+                                                    <td>@consulta.motivoConsulta</td>
+                                                    <td>@consulta.descripcionConsultas</td>
+                                                    <td>
+                                                        <span class="badge @(consulta.urgencia == "Alto" ? "bg-danger" : 
+                                                                        consulta.urgencia == "Medio" ? "bg-warning" : 
+                                                                        "bg-info")">
+                                                            @consulta.urgencia
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge @(consulta.estado == "Resuelto" ? "bg-success" : "bg-warning")">
+                                                            @consulta.estado
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    No tienes consultas registradas.
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
