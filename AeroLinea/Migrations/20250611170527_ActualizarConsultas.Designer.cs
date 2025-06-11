@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610070658_FixPagoModel")]
-    partial class FixPagoModel
+    [Migration("20250611170527_ActualizarConsultas")]
+    partial class ActualizarConsultas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,10 @@ namespace AeroLinea.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idConsulta"));
+
+                    b.Property<string>("comentarioConsulta")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("descripcionConsultas")
                         .IsRequired()

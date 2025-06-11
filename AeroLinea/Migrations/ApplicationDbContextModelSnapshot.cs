@@ -30,6 +30,10 @@ namespace AeroLinea.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idConsulta"));
 
+                    b.Property<string>("comentarioConsulta")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
                     b.Property<string>("descripcionConsultas")
                         .IsRequired()
                         .HasMaxLength(200)

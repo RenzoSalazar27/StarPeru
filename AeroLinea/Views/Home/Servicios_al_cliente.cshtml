@@ -354,6 +354,7 @@
                                                 <th>Descripción</th>
                                                 <th>Urgencia</th>
                                                 <th>Estado</th>
+                                                <th>Respuesta</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -374,6 +375,16 @@
                                                         <span class="badge @(consulta.estado == "Resuelto" ? "bg-success" : "bg-warning")">
                                                             @consulta.estado
                                                         </span>
+                                                    </td>
+                                                    <td>
+                                                        @if (consulta.estado == "Resuelto")
+                                                        {
+                                                            @(string.IsNullOrEmpty(consulta.comentarioConsulta) ? "Sin comentarios" : consulta.comentarioConsulta)
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted">Pendiente de respuesta</span>
+                                                        }
                                                     </td>
                                                 </tr>
                                             }

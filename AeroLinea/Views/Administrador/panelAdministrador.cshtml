@@ -510,6 +510,15 @@
         }
 
         function marcarResuelto(id) {
+            document.getElementById('idConsulta').value = id;
+            document.getElementById('comentario').value = '';
+            $('#modalComentario').modal('show');
+        }
+
+        function confirmarResuelto() {
+            const id = document.getElementById('idConsulta').value;
+            const comentario = document.getElementById('comentario').value;
+
             fetch('/Home/ActualizarEstadoConsulta', {
                 method: 'POST',
                 headers: {
@@ -517,20 +526,27 @@
                 },
                 body: JSON.stringify({
                     id: id,
-                    estado: 'Resuelto'
+                    estado: 'Resuelto',
+                    comentarioConsulta: comentario
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
-                    mostrarMensajeExito('Consulta marcada como resuelta');
+                    $('#modalComentario').modal('hide');
+                    mostrarMensajeExito('Consulta actualizada correctamente');
                     location.reload();
                 } else {
-                    mostrarMensajeError(data.message || 'Error al actualizar estado', 'mensajeErrorConsultas');
+                    mostrarMensajeError(data.message || 'Error al actualizar consulta', 'errorComentario');
                 }
             })
             .catch(error => {
-                mostrarMensajeError('Error al actualizar estado: ' + error.message, 'mensajeErrorConsultas');
+                mostrarMensajeError('Error al actualizar consulta: ' + error.message, 'errorComentario');
             });
         }
 
@@ -1123,6 +1139,43 @@
                     mostrarMensajeError('Error al cargar detalles del vuelo: ' + error.message, 'errorDetallesVuelo');
                 });
         }
+
+        function eliminarConsulta(id) {
+            document.getElementById('eliminarConsultaId').value = id;
+            $('#modalEliminarConsulta').modal('show');
+        }
+
+        function confirmarEliminacionConsulta() {
+            const id = document.getElementById('eliminarConsultaId').value;
+
+            fetch('/Home/EliminarConsulta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    $('#modalEliminarConsulta').modal('hide');
+                    mostrarMensajeExito('Consulta eliminada correctamente');
+                    location.reload();
+                } else {
+                    mostrarMensajeError(data.message || 'Error al eliminar consulta', 'errorEliminarConsulta');
+                }
+            })
+            .catch(error => {
+                mostrarMensajeError('Error al eliminar consulta: ' + error.message, 'errorEliminarConsulta');
+            });
+        }
     </script>
 </head>
 <body>
@@ -1235,6 +1288,12 @@
                                             </button>
                                             <button class="btn btn-sm btn-warning" onclick="marcarPendiente(@consulta.idConsulta)">
                                                 <i class="fas fa-clock"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-info" onclick="marcarResuelto(@consulta.idConsulta)">
+                                                <i class="fas fa-comment"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="eliminarConsulta(@consulta.idConsulta)">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -1722,6 +1781,55 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agregar el modal para comentarios -->
+    <div class="modal fade" id="modalComentario" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Comentario</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorComentario" class="alert alert-danger" style="display: none;"></div>
+                    <input type="hidden" id="idConsulta">
+                    <div class="form-group">
+                        <label for="comentario">Comentario (opcional)</label>
+                        <textarea class="form-control" id="comentario" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="confirmarResuelto()">Marcar como Resuelto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Consulta -->
+    <div class="modal fade" id="modalEliminarConsulta" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Consulta</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="errorEliminarConsulta" class="alert alert-danger" style="display: none;"></div>
+                    <input type="hidden" id="eliminarConsultaId">
+                    <p>¿Está seguro que desea eliminar esta consulta?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmarEliminacionConsulta()">Confirmar Eliminación</button>
                 </div>
             </div>
         </div>

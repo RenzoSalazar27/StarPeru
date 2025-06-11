@@ -24,6 +24,9 @@ namespace AeroLinea.Models
         [StringLength(10)]
         public string estado { get; set; }
 
+        [StringLength(200)]
+        public string? comentarioConsulta { get; set; }
+
         [Required]
         [ForeignKey("Usuario")]
         public int idUsuario { get; set; }

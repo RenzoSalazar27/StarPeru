@@ -444,6 +444,7 @@ namespace AeroLinea.Controllers
                 }
 
                 consulta.estado = model.estado;
+                consulta.comentarioConsulta = model.comentarioConsulta;
                 _context.SaveChanges();
 
                 return Json(new { success = true, message = "Estado actualizado correctamente" });
@@ -895,6 +896,33 @@ namespace AeroLinea.Controllers
         {
             public int id { get; set; }
             public string estado { get; set; }
+            public string comentarioConsulta { get; set; }
+        }
+
+        [HttpPost]
+        public IActionResult EliminarConsulta([FromBody] EliminarConsultaModel model)
+        {
+            try
+            {
+                var consulta = _context.Consultas.Find(model.id);
+                if (consulta == null)
+                {
+                    return Json(new { success = false, message = "Consulta no encontrada" });
+                }
+
+                _context.Consultas.Remove(consulta);
+                _context.SaveChanges();
+                return Json(new { success = true, message = "Consulta eliminada exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al eliminar consulta: " + ex.Message });
+            }
+        }
+
+        public class EliminarConsultaModel
+        {
+            public int id { get; set; }
         }
 
         [HttpPost]
