@@ -1208,5 +1208,55 @@ namespace AeroLinea.Controllers
                 return View("perfilPasajero", usuario);
             }
         }
+
+        [HttpPost]
+        public IActionResult RegistrarUsuario([FromBody] Usuario usuario)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Verificar si el correo ya existe
+                    var usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == usuario.correoUsuario);
+                    if (usuarioExistente != null)
+                    {
+                        return Json(new { success = false, message = "El correo electrónico ya está registrado" });
+                    }
+
+                    // Verificar si el DNI ya existe
+                    usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.identificacionUsuario == usuario.identificacionUsuario);
+                    if (usuarioExistente != null)
+                    {
+                        return Json(new { success = false, message = "El DNI ya está registrado" });
+                    }
+
+                    // Si el usuario tiene discapacidad, establecer la condición como "Daltonismo"
+                    if (usuario.discapacidad)
+                    {
+                        usuario.condicionUsuario = "Daltonismo";
+                    }
+                    else
+                    {
+                        usuario.condicionUsuario = null;
+                    }
+
+                    _context.Usuarios.Add(usuario);
+                    _context.SaveChanges();
+
+                    return Json(new { success = true, message = "Usuario registrado exitosamente" });
+                }
+
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new { success = false, message = "Error en la validación", errors = errors });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al registrar usuario: " + ex.Message });
+            }
+        }
     }
 }

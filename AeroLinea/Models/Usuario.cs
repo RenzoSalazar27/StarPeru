@@ -41,6 +41,10 @@ namespace AeroLinea.Models
         [Required(ErrorMessage = "Debe indicar si tiene discapacidad")]
         public bool discapacidad { get; set; }
 
+        [Required(ErrorMessage = "Debe indicar la condición del usuario")]
+        [StringLength(50, ErrorMessage = "La condición no puede exceder los 50 caracteres")]
+        public string? condicionUsuario { get; set; }
+
         [Required]
         public bool esAdmin { get; set; }
 

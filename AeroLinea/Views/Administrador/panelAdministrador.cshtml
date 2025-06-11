@@ -405,25 +405,17 @@
 
         function guardarEdicion() {
             const usuario = {
-                idUsuario: document.getElementById('editId').value
+                idUsuario: document.getElementById('editId').value,
+                nombresUsuario: document.getElementById('editNombres').value,
+                apellidosUsuario: document.getElementById('editApellidos').value,
+                nacimientoUsuario: document.getElementById('editNacimiento').value,
+                telefonoUsuario: document.getElementById('editTelefono').value,
+                identificacionUsuario: document.getElementById('editIdentificacion').value,
+                correoUsuario: document.getElementById('editCorreo').value,
+                discapacidad: document.getElementById('editDiscapacidad').value === 'true',
+                condicionUsuario: document.getElementById('editDiscapacidad').value === 'true' ? 
+                    document.getElementById('editCondicion').value : null
             };
-
-            // Solo agregar campos que no estén vacíos
-            const nombres = document.getElementById('editNombres').value;
-            const apellidos = document.getElementById('editApellidos').value;
-            const nacimiento = document.getElementById('editNacimiento').value;
-            const telefono = document.getElementById('editTelefono').value;
-            const identificacion = document.getElementById('editIdentificacion').value;
-            const correo = document.getElementById('editCorreo').value;
-            const discapacidad = document.getElementById('editDiscapacidad').value;
-
-            if (nombres) usuario.nombresUsuario = nombres;
-            if (apellidos) usuario.apellidosUsuario = apellidos;
-            if (nacimiento) usuario.nacimientoUsuario = nacimiento;
-            if (telefono) usuario.telefonoUsuario = telefono;
-            if (identificacion) usuario.identificacionUsuario = identificacion;
-            if (correo) usuario.correoUsuario = correo;
-            usuario.discapacidad = discapacidad === 'true';
 
             fetch('/Home/ActualizarUsuario', {
                 method: 'POST',
@@ -1183,6 +1175,15 @@
                 mostrarMensajeError('Error al eliminar consulta: ' + error.message, 'errorEliminarConsulta');
             });
         }
+
+        function mostrarCondicion(valor) {
+            const condicionGroup = document.getElementById('condicionGroup');
+            if (valor === 'true') {
+                condicionGroup.style.display = 'block';
+            } else {
+                condicionGroup.style.display = 'none';
+            }
+        }
     </script>
 </head>
 <body>
@@ -1440,9 +1441,15 @@
                     </div>
                     <div class="form-group">
                         <label>Discapacidad</label>
-                        <select class="form-control" id="editDiscapacidad">
+                        <select class="form-control" id="editDiscapacidad" onchange="mostrarCondicion(this.value)">
                             <option value="false">No</option>
                             <option value="true">Sí</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="condicionGroup" style="display: none;">
+                        <label>Condición</label>
+                        <select class="form-control" id="editCondicion">
+                            <option value="Daltonismo">Daltonismo</option>
                         </select>
                     </div>
                 </div>
