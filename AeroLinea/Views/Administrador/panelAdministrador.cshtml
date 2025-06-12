@@ -299,6 +299,13 @@
             font-size: 16px;
             line-height: 48px;
         }
+
+        /* Estilos existentes */
+        .form-group select {
+            height: 38px;
+            padding: 8px 12px;
+            line-height: 1.5;
+        }
     </style>
 
     <script>
@@ -396,6 +403,12 @@
                     document.getElementById('editIdentificacion').value = usuario.identificacionUsuario;
                     document.getElementById('editCorreo').value = usuario.correoUsuario;
                     document.getElementById('editDiscapacidad').value = usuario.discapacidad;
+                    if (usuario.discapacidad) {
+                        document.getElementById('condicionGroup').style.display = 'block';
+                        document.getElementById('editCondicion').value = usuario.condicionUsuario;
+                    } else {
+                        document.getElementById('condicionGroup').style.display = 'none';
+                    }
                     $('#modalEditar').modal('show');
                 })
                 .catch(error => {
@@ -1184,6 +1197,220 @@
                 condicionGroup.style.display = 'none';
             }
         }
+
+        function validarPiloto() {
+            let esValido = true;
+            const hoy = new Date();
+            
+            // Validar Nombre
+            const nombre = document.getElementById('nombrePiloto').value;
+            if (!nombre || nombre.length < 5 || nombre.length > 30 || !/^[A-Za-zÀ-ÿ\s]+$/.test(nombre)) {
+                document.getElementById('errorNombrePiloto').textContent = 'El nombre debe tener entre 5 y 30 caracteres y solo letras';
+                document.getElementById('errorNombrePiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorNombrePiloto').style.display = 'none';
+            }
+
+            // Validar Apellido
+            const apellido = document.getElementById('apellidoPiloto').value;
+            if (!apellido || apellido.length < 5 || apellido.length > 30 || !/^[A-Za-zÀ-ÿ\s]+$/.test(apellido)) {
+                document.getElementById('errorApellidoPiloto').textContent = 'El apellido debe tener entre 5 y 30 caracteres y solo letras';
+                document.getElementById('errorApellidoPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorApellidoPiloto').style.display = 'none';
+            }
+
+            // Validar Fecha de Nacimiento
+            const nacimiento = new Date(document.getElementById('nacimientoPiloto').value);
+            if (!document.getElementById('nacimientoPiloto').value || nacimiento >= hoy || nacimiento.getFullYear() === 0) {
+                document.getElementById('errorNacimientoPiloto').textContent = 'La fecha de nacimiento debe ser válida y no puede ser futura';
+                document.getElementById('errorNacimientoPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorNacimientoPiloto').style.display = 'none';
+            }
+
+            // Validar Teléfono
+            const telefono = document.getElementById('telefonoPiloto').value;
+            if (!telefono || !/^\d{9}$/.test(telefono)) {
+                document.getElementById('errorTelefonoPiloto').textContent = 'El teléfono debe tener 9 dígitos';
+                document.getElementById('errorTelefonoPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorTelefonoPiloto').style.display = 'none';
+            }
+
+            // Validar DNI
+            const dni = document.getElementById('dniPiloto').value;
+            if (!dni || !/^\d{8}$/.test(dni)) {
+                document.getElementById('errorDniPiloto').textContent = 'El DNI debe tener 8 dígitos';
+                document.getElementById('errorDniPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorDniPiloto').style.display = 'none';
+            }
+
+            // Validar Licencia
+            const licencia = document.getElementById('licenciaPiloto').value;
+            if (!licencia || !/^\d{9}$/.test(licencia)) {
+                document.getElementById('errorLicenciaPiloto').textContent = 'La licencia debe tener 9 dígitos';
+                document.getElementById('errorLicenciaPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorLicenciaPiloto').style.display = 'none';
+            }
+
+            // Validar Tipo de Licencia
+            const tipoLic = document.getElementById('tipoLicPiloto').value;
+            if (!tipoLic) {
+                document.getElementById('errorTipoLicPiloto').textContent = 'Debe seleccionar un tipo de licencia';
+                document.getElementById('errorTipoLicPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorTipoLicPiloto').style.display = 'none';
+            }
+
+            // Validar Fecha de Emisión de Licencia
+            const fechaEmision = new Date(document.getElementById('fechaEmiLic').value);
+            if (!document.getElementById('fechaEmiLic').value || fechaEmision >= hoy || fechaEmision.getFullYear() === 0) {
+                document.getElementById('errorFechaEmiLic').textContent = 'La fecha de emisión debe ser válida y no puede ser futura';
+                document.getElementById('errorFechaEmiLic').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorFechaEmiLic').style.display = 'none';
+            }
+
+            return esValido;
+        }
+
+        function validarAvion() {
+            let esValido = true;
+
+            // Validar Modelo
+            const modelo = document.getElementById('modeloAvion').value;
+            if (!modelo || modelo.length < 5 || modelo.length > 15) {
+                document.getElementById('errorModeloAvion').textContent = 'El modelo debe tener entre 5 y 15 caracteres';
+                document.getElementById('errorModeloAvion').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorModeloAvion').style.display = 'none';
+            }
+
+            // Validar Fabricante
+            const fabricante = document.getElementById('fabricanteAvion').value;
+            if (!fabricante || fabricante.length > 10) {
+                document.getElementById('errorFabricanteAvion').textContent = 'El fabricante no puede tener más de 10 caracteres';
+                document.getElementById('errorFabricanteAvion').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorFabricanteAvion').style.display = 'none';
+            }
+
+            // Validar Matrícula
+            const matricula = document.getElementById('matriculaAvion').value;
+            if (!matricula || matricula.length < 3 || matricula.length > 8) {
+                document.getElementById('errorMatriculaAvion').textContent = 'La matrícula debe tener entre 3 y 8 caracteres';
+                document.getElementById('errorMatriculaAvion').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorMatriculaAvion').style.display = 'none';
+            }
+
+            // Validar Capacidad
+            const capacidad = document.getElementById('capacidadAvion').value;
+            if (!capacidad || capacidad < 10 || capacidad > 200) {
+                document.getElementById('errorCapacidadAvion').textContent = 'La capacidad debe estar entre 10 y 200 pasajeros';
+                document.getElementById('errorCapacidadAvion').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorCapacidadAvion').style.display = 'none';
+            }
+
+            // Validar Clase
+            const clase = document.getElementById('claseAvion').value;
+            if (!clase) {
+                document.getElementById('errorClaseAvion').textContent = 'Debe seleccionar una clase';
+                document.getElementById('errorClaseAvion').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorClaseAvion').style.display = 'none';
+            }
+
+            return esValido;
+        }
+
+        function validarVuelo() {
+            let esValido = true;
+
+            // Validar Origen
+            const origen = document.getElementById('origenVuelo').value;
+            if (!origen) {
+                document.getElementById('errorOrigen').textContent = 'Debe seleccionar un origen';
+                document.getElementById('errorOrigen').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorOrigen').style.display = 'none';
+            }
+
+            // Validar Destino
+            const destino = document.getElementById('destinoVuelo').value;
+            if (!destino) {
+                document.getElementById('errorDestino').textContent = 'Debe seleccionar un destino';
+                document.getElementById('errorDestino').style.display = 'block';
+                esValido = false;
+            } else if (destino === origen) {
+                document.getElementById('errorDestino').textContent = 'El destino no puede ser igual al origen';
+                document.getElementById('errorDestino').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorDestino').style.display = 'none';
+            }
+
+            // Validar Fecha
+            const fecha = new Date(document.getElementById('fechaVuelo').value);
+            const hoy = new Date();
+            if (!document.getElementById('fechaVuelo').value || fecha <= hoy) {
+                document.getElementById('errorFecha').textContent = 'La fecha debe ser futura';
+                document.getElementById('errorFecha').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorFecha').style.display = 'none';
+            }
+
+            // Validar Precio
+            const precio = document.getElementById('precioVuelo').value;
+            if (!precio || precio <= 0) {
+                document.getElementById('errorPrecio').textContent = 'El precio debe ser mayor a 0';
+                document.getElementById('errorPrecio').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorPrecio').style.display = 'none';
+            }
+
+            // Validar Avión
+            const avion = document.getElementById('idAvion').value;
+            if (!avion) {
+                document.getElementById('errorAvion').textContent = 'Debe seleccionar un avión';
+                document.getElementById('errorAvion').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorAvion').style.display = 'none';
+            }
+
+            // Validar Piloto
+            const piloto = document.getElementById('idPiloto').value;
+            if (!piloto) {
+                document.getElementById('errorPiloto').textContent = 'Debe seleccionar un piloto';
+                document.getElementById('errorPiloto').style.display = 'block';
+                esValido = false;
+            } else {
+                document.getElementById('errorPiloto').style.display = 'none';
+            }
+
+            return esValido;
+        }
     </script>
 </head>
 <body>
@@ -1404,7 +1631,7 @@
 
     <!-- Modal Editar Usuario -->
     <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Usuario</h5>
@@ -1415,42 +1642,54 @@
                 <div class="modal-body">
                     <div id="errorEdicion" class="alert alert-danger" style="display: none;"></div>
                     <input type="hidden" id="editId">
-                    <div class="form-group">
-                        <label>Nombres</label>
-                        <input type="text" class="form-control" id="editNombres" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Apellidos</label>
-                        <input type="text" class="form-control" id="editApellidos" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" id="editNacimiento" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="text" class="form-control" id="editTelefono" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Identificación</label>
-                        <input type="text" class="form-control" id="editIdentificacion" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo</label>
-                        <input type="email" class="form-control" id="editCorreo" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Discapacidad</label>
-                        <select class="form-control" id="editDiscapacidad" onchange="mostrarCondicion(this.value)">
-                            <option value="false">No</option>
-                            <option value="true">Sí</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="condicionGroup" style="display: none;">
-                        <label>Condición</label>
-                        <select class="form-control" id="editCondicion">
-                            <option value="Daltonismo">Daltonismo</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nombres</label>
+                                <input type="text" class="form-control" id="editNombres" required>
+                                <small class="text-danger" id="errorEditNombres" style="display: none;"></small>
+                            </div>
+                            <div class="form-group">
+                                <label>Apellidos</label>
+                                <input type="text" class="form-control" id="editApellidos" required>
+                                <small class="text-danger" id="errorEditApellidos" style="display: none;"></small>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="editNacimiento" required>
+                                <small class="text-danger" id="errorEditNacimiento" style="display: none;"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="text" class="form-control" id="editTelefono" required>
+                                <small class="text-danger" id="errorEditTelefono" style="display: none;"></small>
+                            </div>
+                            <div class="form-group">
+                                <label>Identificación</label>
+                                <input type="text" class="form-control" id="editIdentificacion" required>
+                                <small class="text-danger" id="errorEditIdentificacion" style="display: none;"></small>
+                            </div>
+                            <div class="form-group">
+                                <label>Correo</label>
+                                <input type="email" class="form-control" id="editCorreo" required>
+                                <small class="text-danger" id="errorEditCorreo" style="display: none;"></small>
+                            </div>
+                            <div class="form-group">
+                                <label>Discapacidad</label>
+                                <select class="form-control" id="editDiscapacidad" onchange="mostrarCondicion(this.value)">
+                                    <option value="false">No</option>
+                                    <option value="true">Sí</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="condicionGroup" style="display: none;">
+                                <label>Condición</label>
+                                <select class="form-control" id="editCondicion">
+                                    <option value="Daltonismo">Daltonismo</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1510,10 +1749,10 @@
 
     <!-- Modal Registrar Piloto -->
     <div class="modal fade" id="modalRegistrarPiloto" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar Nuevo Piloto</h5>
+                    <h5 class="modal-title">Registrar Piloto</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -1521,49 +1760,62 @@
                 <div class="modal-body">
                     <div id="errorRegistroPiloto" class="alert alert-danger" style="display: none;"></div>
                     <form id="formRegistrarPiloto">
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" class="form-control" id="nombrePiloto" required maxlength="30">
-                        </div>
-                        <div class="form-group">
-                            <label>Apellido</label>
-                            <input type="text" class="form-control" id="apellidoPiloto" required maxlength="30">
-                        </div>
-                        <div class="form-group">
-                            <label>Fecha de Nacimiento</label>
-                            <input type="date" class="form-control" id="nacimientoPiloto" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <input type="number" class="form-control" id="telefonoPiloto" required>
-                        </div>
-                        <div class="form-group">
-                            <label>DNI</label>
-                            <input type="text" class="form-control" id="dniPiloto" required maxlength="8">
-                        </div>
-                        <div class="form-group">
-                            <label>Licencia de Piloto</label>
-                            <input type="text" class="form-control" id="licenciaPiloto" required maxlength="9">
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo de Licencia</label>
-                            <select class="form-control" id="tipoLicPiloto" required>
-                                <option value="">Seleccione un tipo</option>
-                                <option value="Privado">Privado</option>
-                                <option value="Comercial">Comercial</option>
-                                <option value="Ligeras">Ligeras</option>
-                                <option value="Linea Aerea">Línea Aérea</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Fecha de Emisión de Licencia</label>
-                            <input type="date" class="form-control" id="fechaEmiLic" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nombre</label>
+                                    <input type="text" class="form-control" id="nombrePiloto" required maxlength="30" minlength="5" pattern="[A-Za-zÀ-ÿ\s]+">
+                                    <small class="text-danger" id="errorNombrePiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Apellido</label>
+                                    <input type="text" class="form-control" id="apellidoPiloto" required maxlength="30" minlength="5" pattern="[A-Za-zÀ-ÿ\s]+">
+                                    <small class="text-danger" id="errorApellidoPiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="nacimientoPiloto" required>
+                                    <small class="text-danger" id="errorNacimientoPiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Teléfono</label>
+                                    <input type="text" class="form-control" id="telefonoPiloto" required maxlength="12">
+                                    <small class="text-danger" id="errorTelefonoPiloto" style="display: none;"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>DNI</label>
+                                    <input type="text" class="form-control" id="dniPiloto" required pattern="^\d{8}$" maxlength="8">
+                                    <small class="text-danger" id="errorDniPiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Licencia de Piloto</label>
+                                    <input type="text" class="form-control" id="licenciaPiloto" required pattern="^\d{9}$" maxlength="9">
+                                    <small class="text-danger" id="errorLicenciaPiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tipo de Licencia</label>
+                                    <select class="form-control" id="tipoLicPiloto" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="Comercial">Comercial</option>
+                                        <option value="Privada">Privada</option>
+                                        <option value="Recreativa">Recreativa</option>
+                                    </select>
+                                    <small class="text-danger" id="errorTipoLicPiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha de Emisión de Licencia</label>
+                                    <input type="date" class="form-control" id="fechaEmiLic" required>
+                                    <small class="text-danger" id="errorFechaEmiLic" style="display: none;"></small>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="registrarPiloto()">Registrar Piloto</button>
+                    <button type="button" class="btn btn-primary" onclick="registrarPiloto()">Registrar</button>
                 </div>
             </div>
         </div>
@@ -1594,10 +1846,10 @@
 
     <!-- Modal Registrar Avión -->
     <div class="modal fade" id="modalRegistrarAvion" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar Nuevo Avión</h5>
+                    <h5 class="modal-title">Registrar Avión</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -1605,36 +1857,47 @@
                 <div class="modal-body">
                     <div id="errorRegistroAvion" class="alert alert-danger" style="display: none;"></div>
                     <form id="formRegistrarAvion">
-                        <div class="form-group">
-                            <label>Modelo</label>
-                            <input type="text" class="form-control" id="modeloAvion" required maxlength="15" minlength="5">
-                        </div>
-                        <div class="form-group">
-                            <label>Fabricante</label>
-                            <input type="text" class="form-control" id="fabricanteAvion" required maxlength="10">
-                        </div>
-                        <div class="form-group">
-                            <label>Matrícula</label>
-                            <input type="text" class="form-control" id="matriculaAvion" required maxlength="8" minlength="3">
-                        </div>
-                        <div class="form-group">
-                            <label>Capacidad</label>
-                            <input type="number" class="form-control" id="capacidadAvion" required min="10" max="200">
-                        </div>
-                        <div class="form-group">
-                            <label>Clase</label>
-                            <select class="form-control" id="claseAvion" required>
-                                <option value="">Seleccione una clase</option>
-                                <option value="Economica">Económica</option>
-                                <option value="Ejecutiva">Ejecutiva</option>
-                                <option value="Primera clase">Primera clase</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Modelo</label>
+                                    <input type="text" class="form-control" id="modeloAvion" required maxlength="15" minlength="5">
+                                    <small class="text-danger" id="errorModeloAvion" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fabricante</label>
+                                    <input type="text" class="form-control" id="fabricanteAvion" required maxlength="10">
+                                    <small class="text-danger" id="errorFabricanteAvion" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Matrícula</label>
+                                    <input type="text" class="form-control" id="matriculaAvion" required maxlength="8" minlength="3">
+                                    <small class="text-danger" id="errorMatriculaAvion" style="display: none;"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Capacidad</label>
+                                    <input type="number" class="form-control" id="capacidadAvion" required min="10" max="200">
+                                    <small class="text-danger" id="errorCapacidadAvion" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Clase</label>
+                                    <select class="form-control" id="claseAvion" required>
+                                        <option value="">Seleccione una clase</option>
+                                        <option value="Económica">Económica</option>
+                                        <option value="Ejecutiva">Ejecutiva</option>
+                                        <option value="Primera clase">Primera clase</option>
+                                    </select>
+                                    <small class="text-danger" id="errorClaseAvion" style="display: none;"></small>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="registrarAvion()">Registrar Avión</button>
+                    <button type="button" class="btn btn-primary" onclick="registrarAvion()">Registrar</button>
                 </div>
             </div>
         </div>
@@ -1665,10 +1928,10 @@
 
     <!-- Modal Registrar Vuelo -->
     <div class="modal fade" id="modalRegistrarVuelo" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar Nuevo Vuelo</h5>
+                    <h5 class="modal-title">Registrar Vuelo</h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
@@ -1676,64 +1939,70 @@
                 <div class="modal-body">
                     <div id="errorRegistroVuelo" class="alert alert-danger" style="display: none;"></div>
                     <form id="formRegistrarVuelo">
-                        <div class="form-group">
-                            <label for="origenVuelo">Origen</label>
-                            <select class="form-control" id="origenVuelo" name="origenVuelo" required>
-                                <option value="">Seleccione una ciudad</option>
-                                <option value="Chiclayo">Chiclayo</option>
-                                <option value="Cajamarca">Cajamarca</option>
-                                <option value="Huanuco">Huanuco</option>
-                                <option value="Lima">Lima</option>
-                                <option value="Iquitos">Iquitos</option>
-                                <option value="Tarapoto">Tarapoto</option>
-                                <option value="Pucallpa">Pucallpa</option>
-                            </select>
-                            <small class="text-danger" id="errorOrigen" style="display: none;"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="destinoVuelo">Destino</label>
-                            <select class="form-control" id="destinoVuelo" name="destinoVuelo" required>
-                                <option value="">Seleccione una ciudad</option>
-                                <option value="Chiclayo">Chiclayo</option>
-                                <option value="Cajamarca">Cajamarca</option>
-                                <option value="Huanuco">Huanuco</option>
-                                <option value="Lima">Lima</option>
-                                <option value="Iquitos">Iquitos</option>
-                                <option value="Tarapoto">Tarapoto</option>
-                                <option value="Pucallpa">Pucallpa</option>
-                            </select>
-                            <small class="text-danger" id="errorDestino" style="display: none;"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="fechaVuelo">Fecha</label>
-                            <input type="datetime-local" class="form-control" id="fechaVuelo" required>
-                            <small class="text-danger" id="errorFecha" style="display: none;"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="precioVuelo">Precio</label>
-                            <input type="number" class="form-control" id="precioVuelo" required>
-                            <small class="text-danger" id="errorPrecio" style="display: none;"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="idAvion">Avión</label>
-                            <select class="form-control" id="idAvion">
-                                <option value="">Seleccione un avión</option>
-                            </select>
-                            <small class="text-danger" id="errorAvion" style="display: none;"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="idPiloto">Piloto</label>
-                            <select class="form-control" id="idPiloto">
-                                <option value="">Seleccione un piloto</option>
-                            </select>
-                            <small class="text-danger" id="errorPiloto" style="display: none;"></small>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="origenVuelo">Origen</label>
+                                    <select class="form-control" id="origenVuelo" required>
+                                        <option value="">Seleccione una ciudad</option>
+                                        <option value="Chiclayo">Chiclayo</option>
+                                        <option value="Cajamarca">Cajamarca</option>
+                                        <option value="Huanuco">Huanuco</option>
+                                        <option value="Lima">Lima</option>
+                                        <option value="Iquitos">Iquitos</option>
+                                        <option value="Tarapoto">Tarapoto</option>
+                                        <option value="Pucallpa">Pucallpa</option>
+                                    </select>
+                                    <small class="text-danger" id="errorOrigen" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="destinoVuelo">Destino</label>
+                                    <select class="form-control" id="destinoVuelo" required>
+                                        <option value="">Seleccione una ciudad</option>
+                                        <option value="Chiclayo">Chiclayo</option>
+                                        <option value="Cajamarca">Cajamarca</option>
+                                        <option value="Huanuco">Huanuco</option>
+                                        <option value="Lima">Lima</option>
+                                        <option value="Iquitos">Iquitos</option>
+                                        <option value="Tarapoto">Tarapoto</option>
+                                        <option value="Pucallpa">Pucallpa</option>
+                                    </select>
+                                    <small class="text-danger" id="errorDestino" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fechaVuelo">Fecha</label>
+                                    <input type="datetime-local" class="form-control" id="fechaVuelo" required>
+                                    <small class="text-danger" id="errorFecha" style="display: none;"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="precioVuelo">Precio</label>
+                                    <input type="number" class="form-control" id="precioVuelo" required min="0" step="0.01">
+                                    <small class="text-danger" id="errorPrecio" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="idAvion">Avión</label>
+                                    <select class="form-control" id="idAvion" required>
+                                        <option value="">Seleccione un avión</option>
+                                    </select>
+                                    <small class="text-danger" id="errorAvion" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="idPiloto">Piloto</label>
+                                    <select class="form-control" id="idPiloto" required>
+                                        <option value="">Seleccione un piloto</option>
+                                    </select>
+                                    <small class="text-danger" id="errorPiloto" style="display: none;"></small>
+                                </div>
+                            </div>
                         </div>
                         <small class="text-danger" id="errorGeneral" style="display: none;"></small>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="registrarVuelo()">Registrar Vuelo</button>
+                    <button type="button" class="btn btn-primary" onclick="registrarVuelo()">Registrar</button>
                 </div>
             </div>
         </div>
