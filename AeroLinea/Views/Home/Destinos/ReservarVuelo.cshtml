@@ -140,38 +140,76 @@
     <h2 class="text-center text-white mb-4">Reservar Vuelo</h2>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Vuelo de @Model.origenVuelo a @Model.destinoVuelo</h5>
-            <p class="card-text">
-                <strong>Fecha:</strong> @Model.fechaVuelo.ToString("dd/MM/yyyy HH:mm")<br>
-                <strong>Precio por Pasajero:</strong> S/ @Model.precioVuelo.ToString("N2")
-            </p>
-            <form asp-action="ReservarVuelo" method="post">
-                <input type="hidden" name="idVuelo" value="@Model.idVuelo" />
-                <div class="form-group">
-                    <label for="numPasajeros">Número de Pasajeros:</label>
-                    <input type="number" class="form-control" id="numPasajeros" name="numPasajeros" min="1" max="8" required onchange="actualizarCamposPasajeros()" />
+            <div class="row">
+                <!-- Columna izquierda: Información del vuelo -->
+                <div class="col-md-4">
+                    <div class="text-center mb-4">
+                        <img src="~/img/@(Model.destinoVuelo.ToUpper()).jpeg" 
+                             alt="@Model.destinoVuelo" 
+                             class="img-fluid rounded" 
+                             style="max-height: 200px; width: 100%; object-fit: cover;" />
+                    </div>
+                    <h5 class="card-title">Detalles del Vuelo</h5>
+                    <div class="card-text">
+                        <p><strong>Origen:</strong> @Model.origenVuelo</p>
+                        <p><strong>Destino:</strong> @Model.destinoVuelo</p>
+                        <p><strong>Fecha:</strong> @Model.fechaVuelo.ToString("dd/MM/yyyy HH:mm")</p>
+                        <p><strong>Precio por Pasajero:</strong> S/ @Model.precioVuelo.ToString("N2")</p>
+                    </div>
                 </div>
-                <div id="camposPasajeros">
-                    <!-- Los campos de pasajeros adicionales se generarán aquí dinámicamente -->
+
+                <!-- Columna derecha: Formulario de reserva -->
+                <div class="col-md-8">
+                    <form asp-action="ReservarVuelo" method="post" class="needs-validation" novalidate>
+                        <input type="hidden" name="idVuelo" value="@Model.idVuelo" />
+                        <div class="form-group">
+                            <label for="numPasajeros">Número de Pasajeros:</label>
+                            <input type="number" class="form-control" id="numPasajeros" name="numPasajeros" 
+                                   min="1" max="8" required 
+                                   onchange="validarNumPasajeros(this)" 
+                                   oninput="validarNumPasajeros(this)" />
+                            <div class="invalid-feedback">Seleccione entre 1 y 8 pasajeros</div>
+                        </div>
+
+                        <div id="camposPasajeros">
+                            <!-- Los campos de pasajeros adicionales se generarán aquí dinámicamente -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mascotas">¿Tiene mascotas?</label>
+                            <select class="form-control" id="mascotas" name="mascotas" required onchange="actualizarPrecioTotal()">
+                                <option value="No">No</option>
+                                <option value="Sí">Sí</option>
+                            </select>
+                            <div class="invalid-feedback">Seleccione una opción</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precioTotal">Precio Total:</label>
+                            <input type="text" class="form-control" id="precioTotal" readonly />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="mascotas">¿Tiene mascotas?</label>
-                    <select class="form-control" id="mascotas" name="mascotas" required onchange="actualizarPrecioTotal()">
-                        <option value="No">No</option>
-                        <option value="Sí">Sí</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="precioTotal">Precio Total:</label>
-                    <input type="text" class="form-control" id="precioTotal" readonly />
-                </div>
-                <button type="submit" class="btn btn-primary">Reservar</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+    function validarNumPasajeros(input) {
+        const valor = parseInt(input.value);
+        if (isNaN(valor) || valor < 1 || valor > 8) {
+            input.setCustomValidity('Seleccione entre 1 y 8 pasajeros');
+            input.classList.add('is-invalid');
+        } else {
+            input.setCustomValidity('');
+            input.classList.remove('is-invalid');
+            actualizarCamposPasajeros();
+        }
+    }
+
     function actualizarCamposPasajeros() {
         const numPasajeros = document.getElementById('numPasajeros').value;
         const camposPasajeros = document.getElementById('camposPasajeros');
@@ -184,15 +222,24 @@
                         <h6>Pasajero Adicional ${i}</h6>
                         <div class="form-group">
                             <label for="nombre${i}">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre${i}" name="nombre${i}" maxlength="50" required />
+                            <input type="text" class="form-control" id="nombre${i}" name="nombre${i}" 
+                                   maxlength="30" minlength="5" required 
+                                   oninput="validarNombre(this)" />
+                            <div class="invalid-feedback">El nombre debe tener entre 5 y 30 caracteres y solo letras</div>
                         </div>
                         <div class="form-group">
                             <label for="dni${i}">DNI:</label>
-                            <input type="text" class="form-control" id="dni${i}" name="dni${i}" maxlength="8" required />
+                            <input type="text" class="form-control" id="dni${i}" name="dni${i}" 
+                                   maxlength="8" minlength="8" required 
+                                   oninput="validarDNI(this)" />
+                            <div class="invalid-feedback">El DNI debe tener 8 dígitos</div>
                         </div>
                         <div class="form-group">
                             <label for="edad${i}">Edad:</label>
-                            <input type="number" class="form-control" id="edad${i}" name="edad${i}" min="0" max="120" required />
+                            <input type="number" class="form-control" id="edad${i}" name="edad${i}" 
+                                   min="0" max="120" required 
+                                   oninput="validarEdad(this)" />
+                            <div class="invalid-feedback">La edad debe estar entre 0 y 120 años</div>
                         </div>
                     </div>
                 `;
@@ -201,14 +248,56 @@
         actualizarPrecioTotal();
     }
 
+    function validarNombre(input) {
+        input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+        if (input.value.length < 5 || input.value.length > 30) {
+            input.setCustomValidity('El nombre debe tener entre 5 y 30 caracteres');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+
+    function validarDNI(input) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+        if (input.value.length !== 8) {
+            input.setCustomValidity('El DNI debe tener 8 dígitos');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+
+    function validarEdad(input) {
+        const edad = parseInt(input.value);
+        if (isNaN(edad) || edad < 0 || edad > 120) {
+            input.setCustomValidity('La edad debe estar entre 0 y 120 años');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+
     function actualizarPrecioTotal() {
         const numPasajeros = document.getElementById('numPasajeros').value;
         const mascotas = document.getElementById('mascotas').value;
         const precioPorPasajero = @Model.precioVuelo;
         let precioTotal = precioPorPasajero * numPasajeros;
         if (mascotas === 'Sí') {
-            precioTotal += 50; // 50 soles adicionales por mascota
+            precioTotal += 50;
         }
         document.getElementById('precioTotal').value = `S/ ${precioTotal.toFixed(2)}`;
     }
+
+    // Validación del formulario
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
 </script> 
