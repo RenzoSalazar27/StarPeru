@@ -138,6 +138,24 @@
             font-size: 0.875em;
             margin-top: 0.25rem;
         }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            padding-right: calc(1.5em + 0.75rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
+
+        .form-control.is-valid {
+            border-color: #198754;
+            padding-right: calc(1.5em + 0.75rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
     </style>
 </head>
 <body>
@@ -167,70 +185,76 @@
                     <input type="hidden" asp-for="precioTotal" value="@reserva.precioVuelo" />
                     <input type="hidden" asp-for="precioFinal" id="precioFinalInput" value="@reserva.precioVuelo" />
 
-                    <div class="form-group">
-                        <label asp-for="metodoPago">Método de Pago</label>
-                        <select asp-for="metodoPago" class="form-control" required onchange="calcularDescuento()">
-                            <option value="">Seleccione un método de pago</option>
-                            <option value="Visa">Visa</option>
-                            <option value="Mastercard">Mastercard</option>
-                        </select>
-                        <span class="text-danger-custom" id="error-metodoPago"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="nombreTitularPago">Nombre del Titular</label>
-                        <input asp-for="nombreTitularPago" class="form-control" required />
-                        <span class="text-danger-custom" id="error-nombreTitularPago"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="correoFacturaPago">Correo para Factura</label>
-                        <input asp-for="correoFacturaPago" type="email" class="form-control" required />
-                        <span class="text-danger-custom" id="error-correoFacturaPago"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="bancoTarjetaPago">Banco/Tarjeta</label>
-                        <select asp-for="bancoTarjetaPago" class="form-control" required>
-                            <option value="">Seleccione un banco</option>
-                            <option value="BCP">BCP</option>
-                            <option value="BBVA">BBVA</option>
-                            <option value="Interbank">Interbank</option>
-                            <option value="Scotiabank">Scotiabank</option>
-                        </select>
-                        <span class="text-danger-custom" id="error-bancoTarjetaPago"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="numeroTarjetaPago">Número de Tarjeta</label>
-                        <input asp-for="numeroTarjetaPago" class="form-control" maxlength="16" required />
-                        <span class="text-danger-custom" id="error-numeroTarjetaPago"></span>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="fechaExpiracionPago">Fecha de Expiración</label>
-                                <input asp-for="fechaExpiracionPago" class="form-control" placeholder="MM/AA" maxlength="5" required />
-                                <span class="text-danger-custom" id="error-fechaExpiracionPago"></span>
+                                <label asp-for="metodoPago">Método de Pago</label>
+                                <select asp-for="metodoPago" class="form-control" required onchange="calcularDescuento()">
+                                    <option value="">Seleccione un método de pago</option>
+                                    <option value="Visa">Visa</option>
+                                    <option value="Mastercard">Mastercard</option>
+                                </select>
+                                <span asp-validation-for="metodoPago" class="text-danger-custom"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="nombreTitularPago">Nombre del Titular</label>
+                                <input asp-for="nombreTitularPago" class="form-control" required />
+                                <span asp-validation-for="nombreTitularPago" class="text-danger-custom"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="correoFacturaPago">Correo para Factura</label>
+                                <input asp-for="correoFacturaPago" type="email" class="form-control" required />
+                                <span asp-validation-for="correoFacturaPago" class="text-danger-custom"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="bancoTarjetaPago">Banco/Tarjeta</label>
+                                <select asp-for="bancoTarjetaPago" class="form-control" required>
+                                    <option value="">Seleccione un banco</option>
+                                    <option value="BCP">BCP</option>
+                                    <option value="BBVA">BBVA</option>
+                                    <option value="Interbank">Interbank</option>
+                                    <option value="Scotiabank">Scotiabank</option>
+                                </select>
+                                <span asp-validation-for="bancoTarjetaPago" class="text-danger-custom"></span>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="cvvCvcPago">CVV/CVC</label>
-                                <input asp-for="cvvCvcPago" class="form-control" maxlength="3" required />
-                                <span class="text-danger-custom" id="error-cvvCvcPago"></span>
+                                <label asp-for="numeroTarjetaPago">Número de Tarjeta</label>
+                                <input asp-for="numeroTarjetaPago" class="form-control" maxlength="16" required />
+                                <span asp-validation-for="numeroTarjetaPago" class="text-danger-custom"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="fechaExpiracionPago">Fecha de Expiración</label>
+                                        <input asp-for="fechaExpiracionPago" class="form-control" placeholder="MM/AA" maxlength="5" required />
+                                        <span asp-validation-for="fechaExpiracionPago" class="text-danger-custom"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="cvvCvcPago">CVV/CVC</label>
+                                        <input asp-for="cvvCvcPago" class="form-control" maxlength="3" required />
+                                        <span asp-validation-for="cvvCvcPago" class="text-danger-custom"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="numCelularPago">Número de Celular</label>
+                                <input asp-for="numCelularPago" class="form-control" maxlength="9" required />
+                                <span asp-validation-for="numCelularPago" class="text-danger-custom"></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="numCelularPago">Número de Celular</label>
-                        <input asp-for="numCelularPago" class="form-control" maxlength="9" required />
-                        <span class="text-danger-custom" id="error-numCelularPago"></span>
-                    </div>
-
-                    <div class="form-group">
+                    <div class="form-group mt-4">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="aceptoDatos" required />
                             <label class="form-check-label" for="aceptoDatos">
@@ -244,13 +268,15 @@
                             </label>
                         </div>
                         <input type="hidden" asp-for="aceptoTerminos" id="aceptoTerminosHidden" value="false" />
-                        <span class="text-danger-custom" id="error-aceptoTerminos"></span>
+                        <span asp-validation-for="aceptoTerminos" class="text-danger-custom"></span>
                     </div>
 
-                    <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-secondary-custom">
-                        <i class="fas fa-arrow-left"></i> Volver
-                    </a>
-                    <button type="submit" class="btn btn-success">Realizar Pago</button>
+                    <div class="mt-4">
+                        <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-secondary-custom">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-success">Realizar Pago</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -312,16 +338,14 @@
 
             function updateAceptoTerminosHidden() {
                 aceptoTerminosHidden.value = (aceptoDatosCheckbox.checked && aceptoTerminosCheck.checked).toString();
-                // Ocultar todos los mensajes de error existentes
-                document.querySelectorAll('.text-danger-custom').forEach(el => el.textContent = '');
             }
 
             $(aceptoDatosCheckbox).on('change', updateAceptoTerminosHidden);
             $(aceptoTerminosCheck).on('change', updateAceptoTerminosHidden);
-            updateAceptoTerminosHidden(); // Inicializar al cargar la página
+            updateAceptoTerminosHidden();
 
             $.validator.setDefaults({
-                ignore: [], // Asegurarse de que los campos ocultos no sean ignorados si es necesario
+                ignore: [],
                 errorClass: "text-danger-custom",
                 errorElement: "span",
                 highlight: function (element, errorClass, validClass) {
@@ -329,39 +353,100 @@
                 },
                 unhighlight: function (element, errorClass, validClass) {
                     $(element).removeClass('is-invalid').addClass('is-valid');
-                },
-                errorPlacement: function(error, element) {
-                    if (element.attr("type") === "checkbox") {
-                        error.appendTo(element.parent().parent().next('.text-danger-custom').length ? element.parent().parent().next('.text-danger-custom') : element.parent().parent().find('.text-danger-custom'));
-                    } else if (element.attr("id") && element.attr("id").startsWith("acepto")) {
-                        error.appendTo(`#error-aceptoTerminos`);
-                    } else {
-                        const errorSpan = $(`#error-${element.attr('name')}`);
-                        if (errorSpan.length) {
-                            error.appendTo(errorSpan);
-                        } else {
-                            error.insertAfter(element);
-                        }
-                    }
                 }
             });
 
             formPago.validate({
                 rules: {
+                    metodoPago: {
+                        required: true
+                    },
+                    nombreTitularPago: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 100,
+                        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
+                    },
+                    correoFacturaPago: {
+                        required: true,
+                        email: true
+                    },
+                    bancoTarjetaPago: {
+                        required: true
+                    },
+                    numeroTarjetaPago: {
+                        required: true,
+                        minlength: 16,
+                        maxlength: 16,
+                        digits: true
+                    },
+                    fechaExpiracionPago: {
+                        required: true,
+                        pattern: /^(0[1-9]|1[0-2])\/([0-9]{2})$/
+                    },
+                    cvvCvcPago: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 3,
+                        digits: true
+                    },
+                    numCelularPago: {
+                        required: true,
+                        minlength: 9,
+                        maxlength: 9,
+                        digits: true
+                    },
                     aceptoTerminos: {
                         required: true
                     }
                 },
                 messages: {
+                    metodoPago: {
+                        required: "Debe seleccionar un método de pago"
+                    },
+                    nombreTitularPago: {
+                        required: "El nombre del titular es requerido",
+                        minlength: "El nombre debe tener al menos 5 caracteres",
+                        maxlength: "El nombre no puede exceder los 100 caracteres",
+                        pattern: "El nombre solo puede contener letras y espacios"
+                    },
+                    correoFacturaPago: {
+                        required: "El correo es requerido",
+                        email: "Ingrese un correo electrónico válido"
+                    },
+                    bancoTarjetaPago: {
+                        required: "Debe seleccionar un banco"
+                    },
+                    numeroTarjetaPago: {
+                        required: "El número de tarjeta es requerido",
+                        minlength: "El número de tarjeta debe tener 16 dígitos",
+                        maxlength: "El número de tarjeta debe tener 16 dígitos",
+                        digits: "Solo se permiten números"
+                    },
+                    fechaExpiracionPago: {
+                        required: "La fecha de expiración es requerida",
+                        pattern: "Formato inválido. Use MM/AA"
+                    },
+                    cvvCvcPago: {
+                        required: "El CVV/CVC es requerido",
+                        minlength: "El CVV/CVC debe tener 3 dígitos",
+                        maxlength: "El CVV/CVC debe tener 3 dígitos",
+                        digits: "Solo se permiten números"
+                    },
+                    numCelularPago: {
+                        required: "El número de celular es requerido",
+                        minlength: "El número de celular debe tener 9 dígitos",
+                        maxlength: "El número de celular debe tener 9 dígitos",
+                        digits: "Solo se permiten números"
+                    },
                     aceptoTerminos: {
-                        required: "Debe aceptar ambas condiciones para continuar."
+                        required: "Debe aceptar ambas condiciones para continuar"
                     }
                 },
                 submitHandler: function(form) {
-                    // Forzar la validación de los checkboxes antes de enviar
                     if (!aceptoDatosCheckbox.checked || !aceptoTerminosCheck.checked) {
                         document.getElementById('error-aceptoTerminos').textContent = 'Debe aceptar ambas condiciones';
-                        return false; // No enviar el formulario si los checkboxes no están marcados
+                        return false;
                     }
                     form.submit();
                 }
