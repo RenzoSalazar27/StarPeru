@@ -27,7 +27,7 @@
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 600px;
+            max-width: 1000px;
         }
         .register-container h2 {
             color: #e14a4a;
@@ -66,6 +66,34 @@
         .btn-primary:hover {
             background-color: #ff6b6b;
             transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .button-group .btn {
+            flex: 1;
         }
         .mt-3 a {
             color: #e14a4a;
@@ -106,71 +134,89 @@
             </div>
         }
         <form asp-action="registroPasajero" asp-controller="Home" method="post" id="registroForm">
-            <div class="form-group">
-                <label for="nombresUsuario">Nombres</label>
-                <input asp-for="nombresUsuario" class="form-control" maxlength="30" minlength="5" 
-                       placeholder="Ingrese sus nombres" 
-                       title="Los nombres deben tener entre 5 y 30 caracteres" required />
-                <span asp-validation-for="nombresUsuario" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombresUsuario">Nombres</label>
+                        <input asp-for="nombresUsuario" class="form-control" maxlength="30" minlength="5" 
+                               placeholder="Ingrese sus nombres" 
+                               title="Los nombres deben tener entre 5 y 30 caracteres" required />
+                        <span asp-validation-for="nombresUsuario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidosUsuario">Apellidos</label>
+                        <input asp-for="apellidosUsuario" class="form-control" maxlength="30" minlength="5" 
+                               placeholder="Ingrese sus apellidos" 
+                               title="Los apellidos deben tener entre 5 y 30 caracteres" required />
+                        <span asp-validation-for="apellidosUsuario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="nacimientoUsuario">Fecha de Nacimiento</label>
+                        <input asp-for="nacimientoUsuario" type="date" class="form-control" 
+                               max="@DateTime.Now.ToString("yyyy-MM-dd")"
+                               title="La fecha de nacimiento no puede ser posterior al día actual" required />
+                        <span asp-validation-for="nacimientoUsuario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefonoUsuario">Teléfono</label>
+                        <input asp-for="telefonoUsuario" class="form-control" maxlength="9" minlength="9" 
+                               placeholder="Ingrese su número de teléfono" 
+                               title="El teléfono debe tener 9 dígitos" required />
+                        <span asp-validation-for="telefonoUsuario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="identificacionUsuario">DNI</label>
+                        <input asp-for="identificacionUsuario" class="form-control" maxlength="8" minlength="8" 
+                               placeholder="Ingrese su DNI" 
+                               title="El DNI debe tener 8 dígitos" required />
+                        <span asp-validation-for="identificacionUsuario" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="correoUsuario">Correo Electrónico</label>
+                        <input asp-for="correoUsuario" type="email" class="form-control" maxlength="30" 
+                               placeholder="ejemplo@correo.com" 
+                               title="Ingrese un correo electrónico válido" required />
+                        <span asp-validation-for="correoUsuario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasenaUsuario">Contraseña</label>
+                        <input asp-for="contrasenaUsuario" type="password" class="form-control" 
+                               maxlength="20" minlength="6" 
+                               placeholder="Ingrese su contraseña" 
+                               title="La contraseña debe tener entre 6 y 20 caracteres, incluir letras, números y caracteres especiales" required />
+                        <span asp-validation-for="contrasenaUsuario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmarContrasena">Confirmar Contraseña</label>
+                        <input type="password" id="confirmarContrasena" name="confirmarContrasena" class="form-control" 
+                               maxlength="20" minlength="6" 
+                               placeholder="Confirme su contraseña" 
+                               title="Las contraseñas deben coincidir" required />
+                        <span class="text-danger" id="errorConfirmarContrasena"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="discapacidad">¿Tiene alguna discapacidad?</label>
+                        <select asp-for="discapacidad" class="form-control" onchange="mostrarCondicion(this.value)" required>
+                            <option value="false">No</option>
+                            <option value="true">Sí</option>
+                        </select>
+                        <span asp-validation-for="discapacidad" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="condicionGroup" style="display: none;">
+                        <label for="condicionUsuario">Condición</label>
+                        <select asp-for="condicionUsuario" class="form-control">
+                            <option value="Daltonismo">Daltonismo</option>
+                        </select>
+                        <span asp-validation-for="condicionUsuario" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="apellidosUsuario">Apellidos</label>
-                <input asp-for="apellidosUsuario" class="form-control" maxlength="30" minlength="5" 
-                       placeholder="Ingrese sus apellidos" 
-                       title="Los apellidos deben tener entre 5 y 30 caracteres" required />
-                <span asp-validation-for="apellidosUsuario" class="text-danger"></span>
+            <div class="button-group">
+                <a asp-controller="Home" asp-action="Autenticacion" class="btn btn-secondary">Atrás</a>
+                <button type="submit" class="btn btn-primary">Registrarse</button>
             </div>
-            <div class="form-group">
-                <label for="nacimientoUsuario">Fecha de Nacimiento</label>
-                <input asp-for="nacimientoUsuario" type="date" class="form-control" 
-                       max="2025-12-31"
-                       title="Seleccione su fecha de nacimiento" required />
-                <span asp-validation-for="nacimientoUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="telefonoUsuario">Teléfono</label>
-                <input asp-for="telefonoUsuario" class="form-control" pattern="[0-9]{9}" maxlength="9" minlength="9" 
-                       placeholder="Ingrese su número de teléfono" 
-                       title="El teléfono debe tener 9 dígitos" required />
-                <span asp-validation-for="telefonoUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="identificacionUsuario">DNI</label>
-                <input asp-for="identificacionUsuario" class="form-control" maxlength="8" minlength="8" 
-                       placeholder="Ingrese su DNI" 
-                       title="El DNI debe tener 8 dígitos" required />
-                <span asp-validation-for="identificacionUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="correoUsuario">Correo Electrónico</label>
-                <input asp-for="correoUsuario" type="email" class="form-control" maxlength="30" 
-                       placeholder="ejemplo@correo.com" 
-                       title="Ingrese un correo electrónico válido" required />
-                <span asp-validation-for="correoUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="contrasenaUsuario">Contraseña</label>
-                <input asp-for="contrasenaUsuario" type="password" class="form-control" maxlength="20" minlength="6" 
-                       placeholder="Ingrese su contraseña" 
-                       title="La contraseña debe tener entre 6 y 20 caracteres" required />
-                <span asp-validation-for="contrasenaUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="discapacidad">¿Tiene alguna discapacidad?</label>
-                <select asp-for="discapacidad" class="form-control" onchange="mostrarCondicion(this.value)" required>
-                    <option value="false">No</option>
-                    <option value="true">Sí</option>
-                </select>
-                <span asp-validation-for="discapacidad" class="text-danger"></span>
-            </div>
-            <div class="form-group" id="condicionGroup" style="display: none;">
-                <label for="condicionUsuario">Condición</label>
-                <select asp-for="condicionUsuario" class="form-control">
-                    <option value="Daltonismo">Daltonismo</option>
-                </select>
-                <span asp-validation-for="condicionUsuario" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Registrarse</button>
         </form>
         <div class="mt-3">
             <a asp-controller="Home" asp-action="Autenticacion">¿Ya tienes cuenta? Inicia sesión</a>
@@ -190,6 +236,60 @@
                 condicionGroup.style.display = 'none';
             }
         }
+
+        // Validación de nombres y apellidos (solo letras)
+        document.querySelectorAll('input[name="nombresUsuario"], input[name="apellidosUsuario"]').forEach(function(input) {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        });
+
+        // Validación de DNI (solo números)
+        document.querySelector('input[name="identificacionUsuario"]').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Validación de teléfono
+        document.querySelector('input[name="telefonoUsuario"]').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').substring(0, 9);
+        });
+
+        // Validación de contraseña
+        document.querySelector('input[name="contrasenaUsuario"]').addEventListener('input', function() {
+            const password = this.value;
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+            
+            if (!password) {
+                this.setCustomValidity('La contraseña es requerida');
+            } else if (password.length < 6) {
+                this.setCustomValidity('La contraseña debe tener al menos 6 caracteres');
+            } else if (password.length > 20) {
+                this.setCustomValidity('La contraseña no puede tener más de 20 caracteres');
+            } else if (!hasLetter || !hasNumber) {
+                this.setCustomValidity('La contraseña debe incluir letras y números');
+            } else if (!hasSpecial) {
+                this.setCustomValidity('La contraseña debe incluir al menos un carácter especial');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Validación de confirmación de contraseña
+        document.querySelector('input[name="confirmarContrasena"]').addEventListener('input', function() {
+            const password = document.querySelector('input[name="contrasenaUsuario"]').value;
+            const confirmPassword = this.value;
+            const errorSpan = document.getElementById('errorConfirmarContrasena');
+
+            if (password !== confirmPassword) {
+                this.setCustomValidity('Las contraseñas no coinciden');
+                errorSpan.textContent = 'Las contraseñas no coinciden';
+            } else {
+                this.setCustomValidity('');
+                errorSpan.textContent = '';
+            }
+        });
     </script>
 </body>
 </html> 
