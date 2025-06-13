@@ -184,11 +184,9 @@
                         <div class="switch-container">
                             <label class="switch">
                                 <input type="checkbox" id="voiceNavToggle">
-                                <span class="slider"></span>
+                                <span class="slider round"></span>
                             </label>
-                            <span class="switch-label">
-                                <i class="bi bi-megaphone"></i> Voz
-                            </span>
+                            <span class="switch-label">Reconocimiento de voz (di "activar" o "desactivar")</span>
                         </div>
                     </div>
                     @if (Context.Session.GetString("AdminUsername") != null)
@@ -288,7 +286,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/vozPorTexto.js" asp-append-version="true"></script>
-    <script src="~/js/voiceNavigation.js" asp-append-version="true"></script>
+    <script src="~/js/vozNavegacion.js" asp-append-version="true"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburger = document.querySelector('.hamburger');

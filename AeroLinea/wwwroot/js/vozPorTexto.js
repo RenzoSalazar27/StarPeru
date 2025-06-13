@@ -1,19 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const voiceToggle = document.getElementById('voiceToggle');
-    const voiceNavToggle = document.getElementById('voiceNavToggle');
     let isVoiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
-    let isVoiceNavEnabled = localStorage.getItem('voiceNavEnabled') === 'true';
     const speech = window.speechSynthesis;
 
-    // Establecer el estado inicial de los switches
+    // Establecer el estado inicial del switch
     if (voiceToggle) {
         voiceToggle.checked = isVoiceEnabled;
         if (isVoiceEnabled) {
             handleTextHover();
         }
-    }
-    if (voiceNavToggle) {
-        voiceNavToggle.checked = isVoiceNavEnabled;
     }
 
     function speakText(text) {
@@ -47,30 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 speakText('Lector por texto desactivado');
             }
         });
-    }
 
-    if (voiceNavToggle) {
-        voiceNavToggle.addEventListener('change', (e) => {
-            isVoiceNavEnabled = e.target.checked;
-            localStorage.setItem('voiceNavEnabled', isVoiceNavEnabled);
-            
-            if (isVoiceNavEnabled) {
-                speakText('Reconocimiento de voz activado');
-            } else {
-                speech.cancel();
-                speakText('Reconocimiento de voz desactivado');
-            }
-        });
-    }
-
-    // Atajo de teclado Alt + V
-    document.addEventListener('keydown', (e) => {
-        if (e.altKey && e.key === 'v') {
-            e.preventDefault();
-            if (voiceToggle) {
+        // Atajo de teclado Alt + V
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 'v') {
+                e.preventDefault();
                 voiceToggle.checked = !voiceToggle.checked;
                 voiceToggle.dispatchEvent(new Event('change'));
             }
-        }
-    });
+        });
+    }
 }); 
