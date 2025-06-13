@@ -35,7 +35,7 @@ namespace AeroLinea.Models
         public string correoUsuario { get; set; }
 
         [Required(ErrorMessage = "La contraseña es obligatoria")]
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "La contraseña debe tener entre 6 y 20 caracteres")]
+        [StringLength(255, MinimumLength = 6, ErrorMessage = "La contraseña debe tener entre 6 y 20 caracteres")]
         public string contrasenaUsuario { get; set; }
 
         [Required(ErrorMessage = "Debe indicar si tiene discapacidad")]

@@ -316,8 +316,8 @@ namespace AeroLinea.Migrations
 
                     b.Property<string>("contrasenaUsuario")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("correoUsuario")
                         .IsRequired()

@@ -297,8 +297,7 @@
             @if (userId == null)
             {
                 <text>
-                new bootstrap.Modal(document.getElementById('loginErrorModal')).show();
-                return;
+                window.location.href = '/Home/Autenticacion';
                 </text>
             }
             else
@@ -308,6 +307,26 @@
                 </text>
             }
         }
+
+        // Función para modificar el texto del botón en el modal
+        function modificarBotonVolar() {
+            const botonesVolar = document.querySelectorAll('button[onclick^="volar"]');
+            @if (userId == null)
+            {
+                <text>
+                botonesVolar.forEach(boton => {
+                    boton.textContent = 'Iniciar Sesión';
+                    boton.classList.remove('btn-primary');
+                    boton.classList.add('btn-success');
+                });
+                </text>
+            }
+        }
+
+        // Modificar el texto del botón cuando se abre el modal
+        document.getElementById('vuelosModal').addEventListener('shown.bs.modal', function () {
+            modificarBotonVolar();
+        });
     </script>
 </body>
 </html>

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "S1tc3LozSUE=",
+  "dgSpecHash": "lM65xVs+Dps=",
   "success": true,
   "projectFilePath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\renzo\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\renzo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\google.protobuf\\3.30.0\\google.protobuf.3.30.0.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",

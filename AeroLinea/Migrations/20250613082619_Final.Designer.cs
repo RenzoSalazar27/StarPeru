@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250611220339_ActualizarCondicionUsuario")]
-    partial class ActualizarCondicionUsuario
+    [Migration("20250613082619_Final")]
+    partial class Final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -319,8 +319,8 @@ namespace AeroLinea.Migrations
 
                     b.Property<string>("contrasenaUsuario")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("correoUsuario")
                         .IsRequired()

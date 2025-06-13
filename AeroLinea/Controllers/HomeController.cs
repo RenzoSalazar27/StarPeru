@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using BCrypt.Net;
 
 namespace AeroLinea.Controllers
 {
@@ -52,8 +53,8 @@ namespace AeroLinea.Controllers
         {
             try
             {
-                var usuario = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == email && u.contrasenaUsuario == password);
-                if (usuario != null)
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == email);
+                if (usuario != null && BCrypt.Net.BCrypt.Verify(password, usuario.contrasenaUsuario))
                 {
                     HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
                     HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
@@ -94,8 +95,24 @@ namespace AeroLinea.Controllers
                         return View("~/Views/Autenticacion/registroPasajero.cshtml", usuario);
                     }
 
+                    // Encriptar la contraseña antes de guardar
+                    usuario.contrasenaUsuario = BCrypt.Net.BCrypt.HashPassword(usuario.contrasenaUsuario);
+
                     _context.Usuarios.Add(usuario);
-                    _context.SaveChanges();
+                    try 
+                    {
+                        _context.SaveChanges();
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        var innerException = ex.InnerException;
+                        while (innerException != null)
+                        {
+                            TempData["Error"] = $"Error al guardar en la base de datos: {innerException.Message}";
+                            innerException = innerException.InnerException;
+                        }
+                        return View("~/Views/Autenticacion/registroPasajero.cshtml", usuario);
+                    }
 
                     HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
                     HttpContext.Session.SetString("UserName", usuario.nombresUsuario);
@@ -114,7 +131,7 @@ namespace AeroLinea.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al registrar: " + ex.Message;
+                TempData["Error"] = $"Error al registrar: {ex.Message} - {(ex.InnerException != null ? ex.InnerException.Message : "No hay detalles adicionales")}";
             }
 
             return View("~/Views/Autenticacion/registroPasajero.cshtml", usuario);
@@ -208,8 +225,8 @@ namespace AeroLinea.Controllers
                 return View("~/Views/Autenticacion/RecuperarContrasena.cshtml");
             }
 
-            // Actualizar la contraseña
-            usuario.contrasenaUsuario = nuevaContrasena;
+            // Encriptar la nueva contraseña antes de guardar
+            usuario.contrasenaUsuario = BCrypt.Net.BCrypt.HashPassword(nuevaContrasena);
             await _context.SaveChangesAsync();
 
             TempData["AuthSuccess"] = "Contraseña actualizada correctamente";
@@ -1191,7 +1208,13 @@ namespace AeroLinea.Controllers
                 usuarioExistente.nacimientoUsuario = usuario.nacimientoUsuario;
                 usuarioExistente.telefonoUsuario = usuario.telefonoUsuario;
                 usuarioExistente.correoUsuario = usuario.correoUsuario;
-                usuarioExistente.contrasenaUsuario = usuario.contrasenaUsuario;
+                
+                // Solo actualizar la contraseña si se proporcionó una nueva
+                if (!string.IsNullOrEmpty(usuario.contrasenaUsuario))
+                {
+                    usuarioExistente.contrasenaUsuario = BCrypt.Net.BCrypt.HashPassword(usuario.contrasenaUsuario);
+                }
+                
                 usuarioExistente.discapacidad = usuario.discapacidad;
 
                 _context.SaveChanges();
@@ -1229,6 +1252,9 @@ namespace AeroLinea.Controllers
                     {
                         return Json(new { success = false, message = "El DNI ya está registrado" });
                     }
+
+                    // Encriptar la contraseña antes de guardar
+                    usuario.contrasenaUsuario = BCrypt.Net.BCrypt.HashPassword(usuario.contrasenaUsuario);
 
                     // Si el usuario tiene discapacidad, establecer la condición como "Daltonismo"
                     if (usuario.discapacidad)
