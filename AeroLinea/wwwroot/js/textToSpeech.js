@@ -1,4 +1,4 @@
-let isVoiceEnabled = false;
+let isVoiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
 const speechSynthesis = window.speechSynthesis;
 
 // Función para hablar el texto
@@ -34,8 +34,19 @@ function handleTextHover() {
 document.addEventListener('DOMContentLoaded', () => {
     const voiceToggle = document.getElementById('voiceToggle');
     
+    // Establecer el estado inicial del switch
+    voiceToggle.checked = isVoiceEnabled;
+    
+    // Si está activado, inicializar los eventos de hover
+    if (isVoiceEnabled) {
+        handleTextHover();
+    }
+    
     voiceToggle.addEventListener('change', (e) => {
         isVoiceEnabled = e.target.checked;
+        // Guardar el estado en localStorage
+        localStorage.setItem('voiceEnabled', isVoiceEnabled);
+        
         if (isVoiceEnabled) {
             handleTextHover();
         } else {
