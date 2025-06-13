@@ -1,251 +1,169 @@
 // Navegación por voz
-let isVoiceNavigationEnabled = false;
+let isVoiceNavigationEnabled = localStorage.getItem('voiceNavEnabled') === 'true';
 let recognition = null;
 let isListening = false;
-let lastMessageTime = 0;
-let hasSaidListening = false;
+let lastSpokenTime = 0;
 let silenceCount = 0;
 let lastCommandTime = 0;
-let isSpeaking = false;
 const COMMAND_COOLDOWN = 2000; // 2 segundos entre comandos
 
-// Función para detener la voz
-function stopSpeaking() {
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        isSpeaking = false;
+// Función para calcular la similitud entre dos cadenas
+function calculateSimilarity(str1, str2) {
+    str1 = str1.toLowerCase().trim();
+    str2 = str2.toLowerCase().trim();
+    
+    // Si son exactamente iguales
+    if (str1 === str2) return 1;
+    
+    // Si uno contiene al otro
+    if (str1.includes(str2) || str2.includes(str1)) return 0.9;
+    
+    // Calcular similitud por palabras
+    const words1 = str1.split(/\s+/);
+    const words2 = str2.split(/\s+/);
+    
+    let matches = 0;
+    for (const word1 of words1) {
+        for (const word2 of words2) {
+            if (word1 === word2) matches++;
+        }
     }
+    
+    return matches / Math.max(words1.length, words2.length);
 }
 
-// Verificar permisos del micrófono
-async function checkMicrophonePermission() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach(track => track.stop());
-        console.log('Permiso de micrófono concedido');
-        return true;
-    } catch (error) {
-        console.error('Error al solicitar permiso del micrófono:', error);
-        return false;
-    }
+// Función para encontrar el elemento más similar al texto
+function findMatchingElement(text) {
+    const elements = document.querySelectorAll('a, button, input[type="submit"], [role="button"], [role="link"]');
+    let bestMatch = null;
+    let bestScore = 0.3; // Umbral mínimo de similitud
+    
+    elements.forEach(element => {
+        // Obtener texto del elemento
+        const elementText = element.textContent.trim() || element.value || element.placeholder || element.title || element.alt;
+        if (!elementText) return;
+        
+        // Calcular similitud
+        const score = calculateSimilarity(text, elementText);
+        
+        // Si es la mejor coincidencia hasta ahora
+        if (score > bestScore) {
+            bestScore = score;
+            bestMatch = element;
+        }
+    });
+    
+    return bestMatch;
 }
 
-// Función para hablar
-function speakText(text, force = false) {
-    console.log('Intentando hablar:', text);
-    if (!isVoiceNavigationEnabled && !force) return;
+// Función para hablar el texto
+function speakText(text) {
+    if (!isVoiceNavigationEnabled) return;
     
     const now = Date.now();
-    if (now - lastMessageTime < 1000 && !force) return;
+    if (now - lastSpokenTime < 1000) return;
+    lastSpokenTime = now;
     
-    stopSpeaking();
+    const speechSynthesis = window.speechSynthesis;
+    speechSynthesis.cancel();
     
-    if (window.speechSynthesis) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'es-ES';
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
-        
-        isSpeaking = true;
-        utterance.onend = () => {
-            isSpeaking = false;
-            lastMessageTime = Date.now();
-        };
-        
-        window.speechSynthesis.speak(utterance);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-ES';
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    speechSynthesis.speak(utterance);
+}
+
+// Función para procesar el comando de voz
+function processVoiceCommand(text) {
+    const now = Date.now();
+    if (now - lastCommandTime < COMMAND_COOLDOWN) return;
+    lastCommandTime = now;
+    
+    // Buscar elemento coincidente
+    const element = findMatchingElement(text);
+    
+    if (element) {
+        speakText(`Encontrado: ${element.textContent.trim()}`);
+        element.click();
+    } else {
+        speakText('No se encontró ningún elemento similar');
     }
 }
 
-// Inicializar el reconocimiento de voz
-async function initVoiceRecognition() {
+// Función para inicializar el reconocimiento de voz
+function initVoiceRecognition() {
     console.log('Iniciando reconocimiento de voz...');
     
-    // Verificar soporte del navegador
     if (!('webkitSpeechRecognition' in window)) {
         console.error('El reconocimiento de voz no está soportado en este navegador');
-        speakText('El reconocimiento de voz no está soportado en este navegador', true);
-        return false;
-    }
-
-    // Verificar permisos del micrófono
-    const hasPermission = await checkMicrophonePermission();
-    if (!hasPermission) {
-        console.error('No se pudo obtener permiso del micrófono');
-        speakText('Por favor, permite el acceso al micrófono para usar la navegación por voz', true);
-        return false;
+        speakText('El reconocimiento de voz no está soportado en este navegador');
+        return;
     }
 
     try {
-        // Crear nueva instancia de reconocimiento
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = 'es-ES';
-        recognition.maxAlternatives = 1;
 
-        // Evento cuando inicia el reconocimiento
-        recognition.onstart = function() {
+        recognition.onstart = () => {
             console.log('Reconocimiento de voz iniciado');
             isListening = true;
-            if (!hasSaidListening) {
-                speakText('Escuchando...', true);
-                hasSaidListening = true;
-            }
+            silenceCount = 0;
+            speakText('Escuchando');
         };
 
-        // Evento cuando se detecta voz
-        recognition.onresult = function(event) {
+        recognition.onresult = (event) => {
             console.log('Resultado de voz detectado');
             const result = event.results[event.results.length - 1];
-            const command = result[0].transcript.toLowerCase();
-            console.log('Comando detectado:', command);
+            const text = result[0].transcript.trim();
+            console.log('Texto detectado:', text);
             
             if (result.isFinal) {
-                const now = Date.now();
-                if (now - lastCommandTime < COMMAND_COOLDOWN) {
-                    console.log('Ignorando comando por cooldown');
-                    return;
-                }
-                
-                lastCommandTime = now;
-                silenceCount = 0;
-                processVoiceCommand(command);
+                processVoiceCommand(text);
             }
         };
 
-        // Evento de error
-        recognition.onerror = function(event) {
+        recognition.onerror = (event) => {
             console.error('Error en el reconocimiento de voz:', event.error);
-            isListening = false;
-            
-            switch(event.error) {
-                case 'no-speech':
-                    console.log('No se detectó voz');
-                    silenceCount++;
-                    if (silenceCount > 5) {
-                        speakText('Di ayuda para ver los comandos disponibles', true);
-                        silenceCount = 0;
-                    }
-                    break;
-                case 'audio-capture':
-                    speakText('No se pudo acceder al micrófono. Por favor, verifica que esté conectado y funcionando', true);
-                    break;
-                case 'not-allowed':
-                    speakText('Permiso de micrófono denegado. Por favor, permite el acceso al micrófono', true);
-                    break;
-                default:
-                    console.error('Error no manejado:', event.error);
+            if (event.error === 'no-speech') {
+                silenceCount++;
+                if (silenceCount > 3) {
+                    recognition.stop();
+                    setTimeout(() => {
+                        if (isVoiceNavigationEnabled) {
+                            recognition.start();
+                        }
+                    }, 1000);
+                }
             }
         };
 
-        // Evento cuando termina el reconocimiento
-        recognition.onend = function() {
+        recognition.onend = () => {
             console.log('Reconocimiento de voz finalizado');
             isListening = false;
-            
             if (isVoiceNavigationEnabled) {
                 console.log('Reiniciando reconocimiento de voz...');
                 setTimeout(() => {
-                    if (isVoiceNavigationEnabled && !isListening) {
-                        recognition.start();
-                    }
+                    recognition.start();
                 }, 1000);
             }
         };
 
         // Iniciar reconocimiento
-        console.log('Iniciando reconocimiento...');
         recognition.start();
-        return true;
+        console.log('Reconocimiento de voz iniciado correctamente');
     } catch (error) {
         console.error('Error al inicializar el reconocimiento de voz:', error);
-        speakText('Error al inicializar el reconocimiento de voz', true);
-        return false;
-    }
-}
-
-// Procesar comandos de voz
-function processVoiceCommand(command) {
-    console.log('Procesando comando:', command);
-    
-    // Normalizar el comando
-    command = command.toLowerCase().trim();
-    
-    // Si el comando está vacío o es muy corto, ignorarlo silenciosamente
-    if (!command || command.length < 2) {
-        console.log('Comando ignorado por ser muy corto o vacío');
-        return;
-    }
-
-    // Verificar si el comando es válido antes de procesarlo
-    const validCommands = [
-        'iniciar sesion', 'destinos', 'consultas', 'flota', 'reservas',
-        'abrir menu', 'cerrar menu', 'ayuda', 'cerrar', 'salir'
-    ];
-
-    // Si el comando no es válido, ignorarlo silenciosamente
-    if (!validCommands.some(cmd => command.includes(cmd))) {
-        console.log('Comando no válido:', command);
-        return;
-    }
-
-    // Función para navegar
-    function navigateTo(path) {
-        console.log('Navegando a:', path);
-        speakText('Navegando...', true);
-        setTimeout(() => {
-            window.location.href = path;
-        }, 1000);
-    }
-
-    // Función para manejar el menú
-    function toggleMenu(shouldOpen) {
-        const menuButton = document.querySelector('.navbar-toggler');
-        const menu = document.querySelector('.dropdown-menu');
-        
-        if (menuButton && menu) {
-            if (shouldOpen && !menu.classList.contains('show')) {
-                menuButton.click();
-                speakText('Abriendo menú', true);
-            } else if (!shouldOpen && menu.classList.contains('show')) {
-                menuButton.click();
-                speakText('Cerrando menú', true);
-            }
-        }
-    }
-
-    // Procesar comandos específicos
-    if (command.includes('iniciar sesion')) {
-        navigateTo('/Autenticacion/Autenticacion');
-    } else if (command.includes('destinos')) {
-        navigateTo('/Home/Destinos');
-    } else if (command.includes('servicio')) {
-        navigateTo('/Home/Servicios_al_cliente');
-    } else if (command.includes('flota')) {
-        navigateTo('/Home/Flota');
-    } else if (command.includes('reservas')) {
-        navigateTo('/Home/Reservas');
-    } else if (command.includes('abrir menu')) {
-        toggleMenu(true);
-    } else if (command.includes('cerrar menu')) {
-        toggleMenu(false);
-    } else if (command.includes('ayuda')) {
-        speakText('Comandos disponibles: iniciar sesion, destinos, servicio, flota, reservas, abrir menu, cerrar menu, ayuda, cerrar, salir', true);
-    } else if (command.includes('cerrar') || command.includes('salir')) {
-        speakText('Cerrando navegación por voz', true);
-        setTimeout(() => {
-            isVoiceNavigationEnabled = false;
-            if (recognition) {
-                recognition.stop();
-            }
-            document.getElementById('voiceNavToggle').checked = false;
-        }, 1000);
+        speakText('Error al inicializar el reconocimiento de voz');
     }
 }
 
 // Inicializar cuando el documento esté listo
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     console.log('Documento cargado, inicializando navegación por voz...');
     const voiceNavToggle = document.getElementById('voiceNavToggle');
     
@@ -253,26 +171,29 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('No se encontró el elemento voiceNavToggle');
         return;
     }
-
-    voiceNavToggle.addEventListener('change', async function() {
-        console.log('Cambio en el switch de navegación por voz:', this.checked);
+    
+    // Establecer el estado inicial del switch
+    voiceNavToggle.checked = isVoiceNavigationEnabled;
+    
+    // Si está activado, inicializar el reconocimiento
+    if (isVoiceNavigationEnabled) {
+        initVoiceRecognition();
+    }
+    
+    voiceNavToggle.addEventListener('change', (e) => {
+        console.log('Cambio en el switch de navegación por voz:', e.target.checked);
+        isVoiceNavigationEnabled = e.target.checked;
+        // Guardar el estado en localStorage
+        localStorage.setItem('voiceNavEnabled', isVoiceNavigationEnabled);
         
-        if (this.checked) {
-            isVoiceNavigationEnabled = true;
-            hasSaidListening = false;
-            const success = await initVoiceRecognition();
-            
-            if (!success) {
-                console.error('No se pudo inicializar el reconocimiento de voz');
-                this.checked = false;
-                isVoiceNavigationEnabled = false;
-            }
+        if (isVoiceNavigationEnabled) {
+            initVoiceRecognition();
+            speakText('Navegación por voz activada. Di cualquier texto para encontrar y activar elementos similares.');
         } else {
-            isVoiceNavigationEnabled = false;
             if (recognition) {
                 recognition.stop();
             }
-            stopSpeaking();
+            speakText('Navegación por voz desactivada');
         }
     });
 }); 

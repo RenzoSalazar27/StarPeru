@@ -4,7 +4,7 @@ const speechSynthesis = window.speechSynthesis;
 // Función para hablar el texto
 function speakText(text) {
     // Permitir que se reproduzca el mensaje de desactivación incluso si el modo está desactivado
-    if (!isVoiceEnabled && text !== 'Modo voz desactivado') return;
+    if (!isVoiceEnabled && text !== 'Lector de texto desactivado') return;
     
     // Cancelar cualquier síntesis de voz en curso
     speechSynthesis.cancel();
@@ -45,13 +45,13 @@ function toggleVoiceMode() {
         
         if (isVoiceEnabled) {
             handleTextHover();
-            speakText('Modo voz activado. Pase el cursor sobre el texto para escucharlo.');
+            speakText('Lector de texto activado. Pase el cursor sobre el texto para escucharlo.');
         } else {
             // Asegurarse de que no quede ninguna síntesis de voz activa
             speechSynthesis.cancel();
             // Esperar un momento antes de decir que está desactivado
             setTimeout(() => {
-                speakText('Modo voz desactivado');
+                speakText('Lector de texto desactivado');
             }, 100);
         }
     }
@@ -87,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (isVoiceEnabled) {
             handleTextHover();
-            speakText('Modo voz activado. Pase el cursor sobre el texto para escucharlo.');
+            speakText('Lector de texto activado. Pase el cursor sobre el texto para escucharlo.');
         } else {
             // Asegurarse de que no quede ninguna síntesis de voz activa
             speechSynthesis.cancel();
             // Esperar un momento antes de decir que está desactivado
             setTimeout(() => {
-                speakText('Modo voz desactivado');
+                speakText('Lector de texto desactivado');
             }, 100);
         }
     });
