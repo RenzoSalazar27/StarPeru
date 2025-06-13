@@ -54,7 +54,7 @@ namespace AeroLinea.Controllers
             try
             {
                 var usuario = _context.Usuarios.FirstOrDefault(u => u.correoUsuario == email);
-                if (usuario != null && BCrypt.Net.BCrypt.Verify(password, usuario.contrasenaUsuario))
+                if (usuario != null && (usuario.contrasenaUsuario == password || BCrypt.Net.BCrypt.Verify(password, usuario.contrasenaUsuario)))
                 {
                     HttpContext.Session.SetString("UserEmail", usuario.correoUsuario);
                     HttpContext.Session.SetString("UserName", usuario.nombresUsuario);

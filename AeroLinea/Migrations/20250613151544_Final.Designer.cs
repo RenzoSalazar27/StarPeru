@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250613082619_Final")]
+    [Migration("20250613151544_Final")]
     partial class Final
     {
         /// <inheritdoc />
