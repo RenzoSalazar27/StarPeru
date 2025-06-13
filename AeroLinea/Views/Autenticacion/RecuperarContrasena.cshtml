@@ -121,7 +121,30 @@
     </style>
 </head>
 <body>
-    <div class="recovery-container">
+    <div style="position: fixed; top: 0; left: 0; right: 0; background: #f8f9fa; padding: 10px; z-index: 1000; border-bottom: 1px solid #dee2e6;">
+        <div style="display: flex; justify-content: flex-end; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                    <input type="checkbox" id="voiceToggle" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;">
+                        <span style="position: absolute; content: ''; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                    </span>
+                </label>
+                <span style="color: #333; font-size: 14px;">Lector (Alt+V)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                    <input type="checkbox" id="voiceNavToggle" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;">
+                        <span style="position: absolute; content: ''; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                    </span>
+                </label>
+                <span style="color: #333; font-size: 14px;">Reconocimiento de voz</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="recovery-container" style="margin-top: 60px;">
         <h2>Recuperar Contraseña</h2>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (TempData["Success"] != null)
@@ -170,5 +193,51 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/vozPorTexto.js" asp-append-version="true"></script>
+    <script src="~/js/vozNavegacion.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const voiceToggle = document.getElementById('voiceToggle');
+            const voiceNavToggle = document.getElementById('voiceNavToggle');
+
+            // Función para actualizar el estado visual del switch
+            function updateSwitchState(checkbox, isChecked) {
+                const slider = checkbox.nextElementSibling;
+                const circle = slider.firstElementChild;
+                if (isChecked) {
+                    slider.style.backgroundColor = '#e14a4a';
+                    circle.style.transform = 'translateX(26px)';
+                } else {
+                    slider.style.backgroundColor = '#ccc';
+                    circle.style.transform = 'translateX(0)';
+                }
+            }
+
+            // Recuperar estado guardado
+            const savedVoiceState = localStorage.getItem('voiceToggle');
+            const savedNavState = localStorage.getItem('voiceNavToggle');
+
+            if (savedVoiceState === 'true') {
+                voiceToggle.checked = true;
+                updateSwitchState(voiceToggle, true);
+            }
+
+            if (savedNavState === 'true') {
+                voiceNavToggle.checked = true;
+                updateSwitchState(voiceNavToggle, true);
+            }
+
+            // Eventos para los switches
+            voiceToggle.addEventListener('change', function() {
+                localStorage.setItem('voiceToggle', this.checked);
+                updateSwitchState(this, this.checked);
+            });
+
+            voiceNavToggle.addEventListener('change', function() {
+                localStorage.setItem('voiceNavToggle', this.checked);
+                updateSwitchState(this, this.checked);
+            });
+        });
+    </script>
 </body>
 </html> 

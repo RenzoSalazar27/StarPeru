@@ -1,0 +1,260 @@
+@model List<AeroLinea.Models.ReservaVuelo>
+
+@{
+    ViewData["Title"] = "Mis Reservas";
+    var userId = Context.Session.GetInt32("UserId");
+    var userType = Context.Session.GetString("UserType");
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+        min-height: 100vh;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header-section {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .header-section h2 {
+        color: white;
+        font-size: 2.5em;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .alert {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .alert h4 {
+        color: #e14a4a;
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+
+    .alert p {
+        color: #555;
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background: #e14a4a;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #ff6b6b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
+    }
+
+    .table-responsive {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: #e14a4a;
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 15px;
+        font-size: 1.1em;
+    }
+
+    .table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+        color: #555;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .table tbody tr:hover {
+        background: rgba(225, 74, 74, 0.05);
+    }
+
+    .btn-info {
+        background: #e14a4a;
+        border: none;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-info:hover {
+        background: #ff6b6b;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(225, 74, 74, 0.2);
+    }
+
+    .admin-message {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px 0;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .admin-message h1 {
+        color: white;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .header-section {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header-section h2 {
+            font-size: 2em;
+        }
+
+        .table thead th {
+            font-size: 1em;
+            padding: 10px;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .btn-info {
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+    }
+</style>
+
+@if (userType == "admin")
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="admin-message">
+                    <h1 class="display-4 fw-bold">Usted tiene rol administrador</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <div class="header-section">
+            <h2>Mis Reservas</h2>
+        </div>
+
+        @if (!userId.HasValue)
+        {
+            <div class="alert">
+                <h4>Debes iniciar sesión para ver tus reservas</h4>
+                <p>Por favor, inicia sesión para acceder a tus reservas de vuelo.</p>
+                <a href="@Url.Action("Login", "Home")" class="btn btn-primary">Iniciar Sesión</a>
+            </div>
+        }
+        else if (Model == null || !Model.Any())
+        {
+            <div class="alert">
+                <h4>No tienes reservas</h4>
+                <p>Aún no has realizado ninguna reserva de vuelo.</p>
+                <a href="@Url.Action("Destinos", "Home")" class="btn btn-primary">Ver Vuelos Disponibles</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Pasajeros</th>
+                            <th>Mascotas</th>
+                            <th>Precio Total</th>
+                            <th>Estado de Pago</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reserva in Model)
+                        {
+                            <tr>
+                                <td>@reserva.idResVuelo</td>
+                                <td>@reserva.origenResVue</td>
+                                <td>@reserva.destinoVuelo</td>
+                                <td>@reserva.personasResVue</td>
+                                <td>@reserva.mascotasResVue</td>
+                                <td>S/ @reserva.precioVuelo.ToString("N2")</td>
+                                <td>
+                                    <span class="badge @(reserva.pagadoVuelo ? "bg-success" : "bg-warning")">
+                                        @(reserva.pagadoVuelo ? "Pagado" : "Pendiente")
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-info">Ver Detalles</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function realizarPago(idReserva) {
+            if (confirm('¿Desea proceder con el pago de esta reserva?')) {
+                window.location.href = `/Home/RealizarPago/${idReserva}`;
+            }
+        }
+
+        function verDetalles(idReserva) {
+            window.location.href = `/Home/DetallesReserva/${idReserva}`;
+        }
+    </script>
+} 
