@@ -3,7 +3,8 @@ const speechSynthesis = window.speechSynthesis;
 
 // Función para hablar el texto
 function speakText(text) {
-    if (!isVoiceEnabled) return;
+    // Permitir que se reproduzca el mensaje de desactivación incluso si el modo está desactivado
+    if (!isVoiceEnabled && text !== 'Modo voz desactivado') return;
     
     // Cancelar cualquier síntesis de voz en curso
     speechSynthesis.cancel();
@@ -30,6 +31,32 @@ function handleTextHover() {
     });
 }
 
+// Función para alternar el modo voz
+function toggleVoiceMode() {
+    const voiceToggle = document.getElementById('voiceToggle');
+    if (voiceToggle) {
+        // Cancelar cualquier síntesis de voz en curso antes de cambiar el estado
+        speechSynthesis.cancel();
+        
+        // Alternar el estado
+        voiceToggle.checked = !voiceToggle.checked;
+        isVoiceEnabled = voiceToggle.checked;
+        localStorage.setItem('voiceEnabled', isVoiceEnabled);
+        
+        if (isVoiceEnabled) {
+            handleTextHover();
+            speakText('Modo voz activado. Pase el cursor sobre el texto para escucharlo.');
+        } else {
+            // Asegurarse de que no quede ninguna síntesis de voz activa
+            speechSynthesis.cancel();
+            // Esperar un momento antes de decir que está desactivado
+            setTimeout(() => {
+                speakText('Modo voz desactivado');
+            }, 100);
+        }
+    }
+}
+
 // Inicializar cuando el documento esté listo
 document.addEventListener('DOMContentLoaded', () => {
     const voiceToggle = document.getElementById('voiceToggle');
@@ -42,15 +69,32 @@ document.addEventListener('DOMContentLoaded', () => {
         handleTextHover();
     }
     
+    // Agregar evento para el atajo de teclado (Alt + V)
+    document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key.toLowerCase() === 'v') {
+            e.preventDefault(); // Prevenir el comportamiento predeterminado
+            toggleVoiceMode();
+        }
+    });
+    
     voiceToggle.addEventListener('change', (e) => {
+        // Cancelar cualquier síntesis de voz en curso antes de cambiar el estado
+        speechSynthesis.cancel();
+        
         isVoiceEnabled = e.target.checked;
         // Guardar el estado en localStorage
         localStorage.setItem('voiceEnabled', isVoiceEnabled);
         
         if (isVoiceEnabled) {
             handleTextHover();
+            speakText('Modo voz activado. Pase el cursor sobre el texto para escucharlo.');
         } else {
+            // Asegurarse de que no quede ninguna síntesis de voz activa
             speechSynthesis.cancel();
+            // Esperar un momento antes de decir que está desactivado
+            setTimeout(() => {
+                speakText('Modo voz desactivado');
+            }, 100);
         }
     });
 }); 
