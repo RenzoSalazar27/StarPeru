@@ -634,23 +634,21 @@
         }
 
         function registrarPiloto() {
-            // Limpiar mensajes de error anteriores
-            document.querySelectorAll('.text-danger').forEach(el => {
-                el.style.display = 'none';
-                el.textContent = '';
-            });
-            document.getElementById('errorRegistroPiloto').style.display = 'none';
-            
             const pilotoId = document.querySelector('#modalRegistrarPiloto').dataset.pilotoId;
+            
+            // Asegurar que las fechas estén en formato ISO
+            const nacimiento = document.getElementById('nacimientoPiloto').value;
+            const fechaEmision = document.getElementById('fechaEmiLic').value;
+            
             const piloto = {
                 nombrePiloto: document.getElementById('nombrePiloto').value,
                 apellidoPiloto: document.getElementById('apellidoPiloto').value,
-                nacimientoPiloto: document.getElementById('nacimientoPiloto').value,
+                nacimientoPiloto: nacimiento ? new Date(nacimiento).toISOString() : null,
                 telefonoPiloto: parseInt(document.getElementById('telefonoPiloto').value),
                 dniPiloto: document.getElementById('dniPiloto').value,
                 licenciaPiloto: document.getElementById('licenciaPiloto').value,
                 tipoLicPiloto: document.getElementById('tipoLicPiloto').value,
-                fechaEmiLic: document.getElementById('fechaEmiLic').value
+                fechaEmiLic: fechaEmision ? new Date(fechaEmision).toISOString() : null
             };
 
             const url = pilotoId ? `/Home/ActualizarPiloto/${pilotoId}` : '/Home/RegistrarPiloto';
@@ -675,7 +673,6 @@
                     cargarPilotos();
                 } else {
                     if (data.errors) {
-                        // Mostrar errores de validación debajo de cada campo
                         Object.keys(data.errors).forEach(key => {
                             const errorElement = document.getElementById(`error${key.charAt(0).toUpperCase() + key.slice(1)}`);
                             if (errorElement) {
@@ -1472,8 +1469,12 @@
             // Obtener valores
             const nombre = document.getElementById('nombrePiloto').value;
             const apellido = document.getElementById('apellidoPiloto').value;
-            const edad = document.getElementById('edadPiloto').value;
+            const nacimiento = document.getElementById('nacimientoPiloto').value;
+            const telefono = document.getElementById('telefonoPiloto').value;
+            const dni = document.getElementById('dniPiloto').value;
+            const licencia = document.getElementById('licenciaPiloto').value;
             const tipoLicencia = document.getElementById('tipoLicPiloto').value;
+            const fechaEmision = document.getElementById('fechaEmiLic').value;
 
             // Validar campos requeridos
             let hayErrores = false;
@@ -1490,13 +1491,27 @@
                 hayErrores = true;
             }
 
-            if (!edad) {
-                document.getElementById('errorEdadPiloto').textContent = 'La edad es obligatoria';
-                document.getElementById('errorEdadPiloto').style.display = 'block';
+            if (!nacimiento) {
+                document.getElementById('errorNacimientoPiloto').textContent = 'La fecha de nacimiento es obligatoria';
+                document.getElementById('errorNacimientoPiloto').style.display = 'block';
                 hayErrores = true;
-            } else if (edad < 18 || edad > 65) {
-                document.getElementById('errorEdadPiloto').textContent = 'La edad debe estar entre 18 y 65 años';
-                document.getElementById('errorEdadPiloto').style.display = 'block';
+            }
+
+            if (!telefono) {
+                document.getElementById('errorTelefonoPiloto').textContent = 'El teléfono es obligatorio';
+                document.getElementById('errorTelefonoPiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!dni) {
+                document.getElementById('errorDniPiloto').textContent = 'El DNI es obligatorio';
+                document.getElementById('errorDniPiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!licencia) {
+                document.getElementById('errorLicenciaPiloto').textContent = 'La licencia es obligatoria';
+                document.getElementById('errorLicenciaPiloto').style.display = 'block';
                 hayErrores = true;
             }
 
@@ -1506,68 +1521,18 @@
                 hayErrores = true;
             }
 
+            if (!fechaEmision) {
+                document.getElementById('errorFechaEmiLic').textContent = 'La fecha de emisión es obligatoria';
+                document.getElementById('errorFechaEmiLic').style.display = 'block';
+                hayErrores = true;
+            }
+
             if (hayErrores) {
                 return;
             }
 
             // Si no hay errores, proceder con el registro
             registrarPiloto();
-        }
-
-        function registrarPiloto() {
-            const pilotoId = document.querySelector('#modalRegistrarPiloto').dataset.pilotoId;
-            const piloto = {
-                nombrePiloto: document.getElementById('nombrePiloto').value,
-                apellidoPiloto: document.getElementById('apellidoPiloto').value,
-                nacimientoPiloto: document.getElementById('nacimientoPiloto').value,
-                telefonoPiloto: parseInt(document.getElementById('telefonoPiloto').value),
-                dniPiloto: document.getElementById('dniPiloto').value,
-                licenciaPiloto: document.getElementById('licenciaPiloto').value,
-                tipoLicPiloto: document.getElementById('tipoLicPiloto').value,
-                fechaEmiLic: document.getElementById('fechaEmiLic').value
-            };
-
-            const url = pilotoId ? `/Home/ActualizarPiloto/${pilotoId}` : '/Home/RegistrarPiloto';
-            const method = pilotoId ? 'PUT' : 'POST';
-
-            fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(piloto)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    mostrarMensajeExito(pilotoId ? 'Piloto actualizado exitosamente' : 'Piloto registrado exitosamente');
-                    document.getElementById('formRegistrarPiloto').reset();
-                    document.querySelector('#modalRegistrarPiloto .modal-title').textContent = 'Registrar Piloto';
-                    document.querySelector('#modalRegistrarPiloto .btn-primary').textContent = 'Registrar';
-                    document.querySelector('#modalRegistrarPiloto').dataset.pilotoId = '';
-                    $('#modalRegistrarPiloto').modal('hide');
-                    cargarPilotos();
-                } else {
-                    if (data.errors) {
-                        Object.keys(data.errors).forEach(key => {
-                            const errorElement = document.getElementById(`error${key.charAt(0).toUpperCase() + key.slice(1)}`);
-                            if (errorElement) {
-                                errorElement.textContent = data.errors[key];
-                                errorElement.style.display = 'block';
-                            }
-                        });
-                    } else {
-                        const errorElement = document.getElementById('errorRegistroPiloto');
-                        errorElement.textContent = data.message || 'Error al procesar la solicitud';
-                        errorElement.style.display = 'block';
-                    }
-                }
-            })
-            .catch(error => {
-                const errorElement = document.getElementById('errorRegistroPiloto');
-                errorElement.textContent = 'Error al procesar la solicitud: ' + error.message;
-                errorElement.style.display = 'block';
-            });
         }
     </script>
 </head>
@@ -1931,7 +1896,6 @@
                                         <option value="">Seleccione un tipo</option>
                                         <option value="Comercial">Comercial</option>
                                         <option value="Privada">Privada</option>
-                                        <option value="Recreativa">Recreativa</option>
                                     </select>
                                     <small class="text-danger" id="errorTipoLicPiloto" style="display: none;"></small>
                                 </div>

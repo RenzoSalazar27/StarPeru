@@ -500,6 +500,12 @@ namespace AeroLinea.Controllers
                     return Json(new { success = false, errors = new Dictionary<string, string> { { "nacimientoPiloto", "El piloto debe tener al menos 25 años de edad" } } });
                 }
 
+                // Validar que la fecha de emisión no sea futura
+                if (piloto.fechaEmiLic > DateTime.Now)
+                {
+                    return Json(new { success = false, errors = new Dictionary<string, string> { { "fechaEmiLic", "La fecha de emisión no puede ser futura" } } });
+                }
+
                 // Verificar si ya existe un piloto con el mismo DNI
                 if (_context.Pilotos.Any(p => p.dniPiloto == piloto.dniPiloto))
                 {
