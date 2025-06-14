@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250614032333_Final")]
+    [Migration("20250614041109_Final")]
     partial class Final
     {
         /// <inheritdoc />
@@ -109,6 +109,12 @@ namespace AeroLinea.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idPago"));
+
+                    b.Property<int?>("Cuotas")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("PrecioPorCuota")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<bool>("aceptoTerminos")
                         .HasColumnType("tinyint(1)");

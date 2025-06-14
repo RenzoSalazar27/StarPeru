@@ -97,6 +97,30 @@ namespace AeroLinea.Controllers
                 // Establecer la fecha del pago
                 pago.fechaPago = DateTime.Now;
 
+                // Lógica para cuotas e intereses
+                if (pago.metodoPago == "Tarjeta de Credito")
+                {
+                    // precioTotal ya tiene el valor original
+                    // precioFinal ya viene con el 5% de interés desde el frontend
+                    if (pago.Cuotas.HasValue && pago.Cuotas.Value > 0)
+                    {
+                        pago.PrecioPorCuota = pago.precioFinal / pago.Cuotas.Value;
+                    }
+                    else
+                    {
+                        // Fallback: si no se envía cuotas o es 0, se asume 1 cuota
+                        pago.Cuotas = 1;
+                        pago.PrecioPorCuota = pago.precioFinal;
+                    }
+                }
+                else // Tarjeta de Debito
+                {
+                    pago.Cuotas = null;
+                    pago.PrecioPorCuota = null;
+                    // Para tarjeta de débito, el precio final es el precio total sin intereses
+                    pago.precioFinal = pago.precioTotal;
+                }
+
                 // Guardar el pago
                 _context.Pagos.Add(pago);
 

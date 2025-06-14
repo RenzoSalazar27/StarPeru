@@ -64,6 +64,12 @@ namespace AeroLinea.Models
         [Required]
         public DateTime fechaPago { get; set; }
 
+        // Nuevas propiedades para pagos con tarjeta de crédito
+        public int? Cuotas { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal? PrecioPorCuota { get; set; }
+
         public virtual ReservaVuelo? ReservaVuelo { get; set; }
     }
 } 

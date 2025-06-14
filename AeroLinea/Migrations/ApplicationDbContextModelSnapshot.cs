@@ -107,6 +107,12 @@ namespace AeroLinea.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idPago"));
 
+                    b.Property<int?>("Cuotas")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("PrecioPorCuota")
+                        .HasColumnType("decimal(10,2)");
+
                     b.Property<bool>("aceptoTerminos")
                         .HasColumnType("tinyint(1)");
 

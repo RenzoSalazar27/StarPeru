@@ -167,12 +167,8 @@
             <div class="card-body">
                 <div class="price-info">
                     <div class="price-item">
-                        <span>Precio Total:</span>
-                        <span>S/ @reserva.precioVuelo.ToString("N2")</span>
-                    </div>
-                    <div class="price-item">
-                        <span>Descuento:</span>
-                        <span id="descuento">S/ 0.00</span>
+                        <span>Precio Inicial:</span>
+                        <span id="precioTotalOriginal">S/ @reserva.precioVuelo.ToString("N2")</span>
                     </div>
                     <div class="price-item price-total">
                         <span>Precio Final:</span>
@@ -184,98 +180,112 @@
                     <input type="hidden" asp-for="idReserva" value="@reserva.idResVuelo" />
                     <input type="hidden" asp-for="precioTotal" value="@reserva.precioVuelo" />
                     <input type="hidden" asp-for="precioFinal" id="precioFinalInput" value="@reserva.precioVuelo" />
+                    <input type="hidden" asp-for="PrecioPorCuota" id="precioPorCuotaInput" value="0" />
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="metodoPago">Método de Pago</label>
-                                <select asp-for="metodoPago" class="form-control" required onchange="calcularDescuento()">
-                                    <option value="">Seleccione un método de pago</option>
-                                    <option value="Visa">Visa</option>
-                                    <option value="Mastercard">Mastercard</option>
-                                </select>
-                                <span asp-validation-for="metodoPago" class="text-danger-custom"></span>
-                            </div>
+                    <div class="form-group">
+                        <label asp-for="metodoPago">Método de Pago</label>
+                        <select asp-for="metodoPago" class="form-control" required onchange="actualizarCamposPago()">
+                            <option value="">Seleccione un método de pago</option>
+                            <option value="Tarjeta de Credito">Tarjeta de Crédito</option>
+                            <option value="Tarjeta de Debito">Tarjeta de Débito</option>
+                        </select>
+                        <span asp-validation-for="metodoPago" class="text-danger-custom"></span>
+                    </div>
 
-                            <div class="form-group">
-                                <label asp-for="nombreTitularPago">Nombre del Titular</label>
-                                <input asp-for="nombreTitularPago" class="form-control" required />
-                                <span asp-validation-for="nombreTitularPago" class="text-danger-custom"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label asp-for="correoFacturaPago">Correo para Factura</label>
-                                <input asp-for="correoFacturaPago" type="email" class="form-control" required />
-                                <span asp-validation-for="correoFacturaPago" class="text-danger-custom"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label asp-for="bancoTarjetaPago">Banco/Tarjeta</label>
-                                <select asp-for="bancoTarjetaPago" class="form-control" required>
-                                    <option value="">Seleccione un banco</option>
-                                    <option value="BCP">BCP</option>
-                                    <option value="BBVA">BBVA</option>
-                                    <option value="Interbank">Interbank</option>
-                                    <option value="Scotiabank">Scotiabank</option>
-                                </select>
-                                <span asp-validation-for="bancoTarjetaPago" class="text-danger-custom"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="numeroTarjetaPago">Número de Tarjeta</label>
-                                <input asp-for="numeroTarjetaPago" class="form-control" maxlength="16" required />
-                                <span asp-validation-for="numeroTarjetaPago" class="text-danger-custom"></span>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="fechaExpiracionPago">Fecha de Expiración</label>
-                                        <input asp-for="fechaExpiracionPago" class="form-control" placeholder="MM/AA" maxlength="5" required />
-                                        <span asp-validation-for="fechaExpiracionPago" class="text-danger-custom"></span>
-                                    </div>
+                    <div id="paymentDetails" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" id="cuotasGroup" style="display: none;">
+                                    <label asp-for="Cuotas">Cuotas</label>
+                                    <select asp-for="Cuotas" class="form-control" onchange="calcularCuotas()">
+                                        @for (int i = 1; i <= 36; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Cuotas" class="text-danger-custom"></span>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="cvvCvcPago">CVV/CVC</label>
-                                        <input asp-for="cvvCvcPago" class="form-control" maxlength="3" required />
-                                        <span asp-validation-for="cvvCvcPago" class="text-danger-custom"></span>
-                                    </div>
+
+                                <div class="form-group">
+                                    <label asp-for="nombreTitularPago">Nombre del Titular</label>
+                                    <input asp-for="nombreTitularPago" class="form-control" required />
+                                    <span asp-validation-for="nombreTitularPago" class="text-danger-custom"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="correoFacturaPago">Correo para Factura</label>
+                                    <input asp-for="correoFacturaPago" type="email" class="form-control" required />
+                                    <span asp-validation-for="correoFacturaPago" class="text-danger-custom"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="bancoTarjetaPago">Banco/Tarjeta</label>
+                                    <select asp-for="bancoTarjetaPago" class="form-control" required>
+                                        <option value="">Seleccione un banco</option>
+                                        <option value="BCP">BCP</option>
+                                        <option value="BBVA">BBVA</option>
+                                        <option value="Interbank">Interbank</option>
+                                        <option value="Scotiabank">Scotiabank</option>
+                                    </select>
+                                    <span asp-validation-for="bancoTarjetaPago" class="text-danger-custom"></span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="numCelularPago">Número de Celular</label>
-                                <input asp-for="numCelularPago" class="form-control" maxlength="9" required />
-                                <span asp-validation-for="numCelularPago" class="text-danger-custom"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="numeroTarjetaPago">Número de Tarjeta</label>
+                                    <input asp-for="numeroTarjetaPago" class="form-control" maxlength="16" required />
+                                    <span asp-validation-for="numeroTarjetaPago" class="text-danger-custom"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="fechaExpiracionPago">Fecha de Expiración</label>
+                                            <input asp-for="fechaExpiracionPago" class="form-control" placeholder="MM/AA" maxlength="5" required />
+                                            <span asp-validation-for="fechaExpiracionPago" class="text-danger-custom"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="cvvCvcPago">CVV/CVC</label>
+                                            <input asp-for="cvvCvcPago" class="form-control" maxlength="3" required />
+                                            <span asp-validation-for="cvvCvcPago" class="text-danger-custom"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="numCelularPago">Número de Celular</label>
+                                    <input asp-for="numCelularPago" class="form-control" maxlength="9" required />
+                                    <span asp-validation-for="numCelularPago" class="text-danger-custom"></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group mt-4">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="aceptoDatos" required />
-                            <label class="form-check-label" for="aceptoDatos">
-                                Autorizo que mis datos personales sean utilizados para el procesamiento del pago y la emisión de la factura correspondiente.
-                            </label>
+                        <div class="form-group mt-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="aceptoDatos" required />
+                                <label class="form-check-label" for="aceptoDatos">
+                                    Autorizo que mis datos personales sean utilizados para el procesamiento del pago y la emisión de la factura correspondiente.
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input type="checkbox" class="form-check-input" id="aceptoTerminosCheck" required />
+                                <label class="form-check-label" for="aceptoTerminosCheck">
+                                    Acepto los términos y condiciones del servicio.
+                                </label>
+                            </div>
+                            <input type="hidden" asp-for="aceptoTerminos" id="aceptoTerminosHidden" value="false" />
+                            <span asp-validation-for="aceptoTerminos" class="text-danger-custom"></span>
                         </div>
-                        <div class="form-check mt-2">
-                            <input type="checkbox" class="form-check-input" id="aceptoTerminosCheck" required />
-                            <label class="form-check-label" for="aceptoTerminosCheck">
-                                Acepto los términos y condiciones del servicio.
-                            </label>
-                        </div>
-                        <input type="hidden" asp-for="aceptoTerminos" id="aceptoTerminosHidden" value="false" />
-                        <span asp-validation-for="aceptoTerminos" class="text-danger-custom"></span>
-                    </div>
 
-                    <div class="mt-4">
-                        <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-secondary-custom">
-                            <i class="fas fa-arrow-left"></i> Volver
-                        </a>
-                        <button type="submit" class="btn btn-success">Realizar Pago</button>
+                        <div class="mt-4">
+                            <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-secondary-custom">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-success">Realizar Pago</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -287,23 +297,69 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        function calcularDescuento() {
-            const precioTotal = @reserva.precioVuelo;
+        const precioTotalOriginal = @reserva.precioVuelo;
+        let precioFinalCalculado = precioTotalOriginal;
+
+        function actualizarCamposPago() {
             const metodoPago = document.getElementById('metodoPago').value;
-            let descuento = 0;
-            let precioFinal = precioTotal;
+            const paymentDetails = document.getElementById('paymentDetails');
+            const cuotasGroup = document.getElementById('cuotasGroup');
+            const precioFinalSpan = document.getElementById('precioFinal');
+            const precioFinalInput = document.getElementById('precioFinalInput');
 
-            if (metodoPago === 'Visa') {
-                descuento = precioTotal * 0.10;
-                precioFinal = precioTotal - descuento;
-            } else if (metodoPago === 'Mastercard') {
-                descuento = precioTotal * 0.15;
-                precioFinal = precioTotal - descuento;
+            // Ocultar detalles de pago inicialmente
+            paymentDetails.style.display = 'none';
+            cuotasGroup.style.display = 'none';
+
+            // Resetear el precio final a su valor original antes de aplicar nueva lógica
+            precioFinalCalculado = precioTotalOriginal;
+            precioFinalSpan.textContent = `S/ ${precioFinalCalculado.toFixed(2)}`;
+            precioFinalInput.value = precioFinalCalculado;
+            document.getElementById('precioPorCuotaInput').value = 0;
+
+            if (metodoPago === 'Tarjeta de Credito') {
+                paymentDetails.style.display = 'block';
+                cuotasGroup.style.display = 'block';
+                
+                // Seleccionar 1 cuota por defecto y calcular
+                document.getElementById('Cuotas').value = '1';
+                calcularCuotas();
+            } else if (metodoPago === 'Tarjeta de Debito') {
+                paymentDetails.style.display = 'block';
+                // Para tarjeta de débito, el precio final es el precio total sin intereses
+                precioFinalCalculado = precioTotalOriginal;
+                precioFinalSpan.textContent = `S/ ${precioFinalCalculado.toFixed(2)}`;
+                precioFinalInput.value = precioFinalCalculado;
+                document.getElementById('precioPorCuotaInput').value = 0;
             }
+        }
 
-            document.getElementById('descuento').textContent = `S/ ${descuento.toFixed(2)}`;
-            document.getElementById('precioFinal').textContent = `S/ ${precioFinal.toFixed(2)}`;
-            document.getElementById('precioFinalInput').value = precioFinal;
+        function calcularCuotas() {
+            const metodoPago = document.getElementById('metodoPago').value;
+            const cuotasSelect = document.getElementById('Cuotas');
+            const precioFinalSpan = document.getElementById('precioFinal');
+            const precioFinalInput = document.getElementById('precioFinalInput');
+            const precioPorCuotaInput = document.getElementById('precioPorCuotaInput');
+
+            if (metodoPago === 'Tarjeta de Credito') {
+                const numCuotas = parseInt(cuotasSelect.value);
+                const interesPorcentaje = (numCuotas * 5) / 100; // Interés: 5% por cada cuota
+                const interesMonto = precioTotalOriginal * interesPorcentaje;
+                precioFinalCalculado = precioTotalOriginal + interesMonto;
+
+                const precioPorCuota = precioFinalCalculado / numCuotas;
+
+                precioFinalSpan.textContent = `S/ ${precioFinalCalculado.toFixed(2)}`;
+                precioFinalInput.value = precioFinalCalculado;
+                precioPorCuotaInput.value = precioPorCuota;
+
+            } else {
+                // Si por alguna razón se llama a calcularCuotas con Débito o sin método, resetear.
+                precioFinalCalculado = precioTotalOriginal;
+                precioFinalSpan.textContent = `S/ ${precioTotalOriginal.toFixed(2)}`;
+                precioFinalInput.value = precioTotalOriginal;
+                precioPorCuotaInput.value = 0;
+            }
         }
 
         // Formatear número de tarjeta
@@ -362,42 +418,61 @@
                         required: true
                     },
                     nombreTitularPago: {
-                        required: true,
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        },
                         minlength: 5,
                         maxlength: 100,
                         pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
                     },
                     correoFacturaPago: {
-                        required: true,
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        },
                         email: true
                     },
                     bancoTarjetaPago: {
-                        required: true
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        }
                     },
                     numeroTarjetaPago: {
-                        required: true,
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        },
                         minlength: 16,
                         maxlength: 16,
                         digits: true
                     },
                     fechaExpiracionPago: {
-                        required: true,
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        },
                         pattern: /^(0[1-9]|1[0-2])\/([0-9]{2})$/
                     },
                     cvvCvcPago: {
-                        required: true,
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        },
                         minlength: 3,
                         maxlength: 3,
                         digits: true
                     },
                     numCelularPago: {
-                        required: true,
+                        required: function(element) {
+                            return $('#metodoPago').val() !== ''; 
+                        },
                         minlength: 9,
                         maxlength: 9,
                         digits: true
                     },
                     aceptoTerminos: {
                         required: true
+                    },
+                    Cuotas: {
+                        required: function(element) {
+                            return $('#metodoPago').val() === 'Tarjeta de Credito';
+                        }
                     }
                 },
                 messages: {
@@ -441,16 +516,24 @@
                     },
                     aceptoTerminos: {
                         required: "Debe aceptar ambas condiciones para continuar"
+                    },
+                    Cuotas: {
+                        required: "Debe seleccionar el número de cuotas"
                     }
                 },
                 submitHandler: function(form) {
                     if (!aceptoDatosCheckbox.checked || !aceptoTerminosCheck.checked) {
-                        document.getElementById('error-aceptoTerminos').textContent = 'Debe aceptar ambas condiciones';
+                        // Aquí se necesita un span para el error de aceptoTerminos, 
+                        // o se puede usar un alert para simplificar si no hay un elemento específico.
+                        // Por ahora, solo evitamos el submit.
                         return false;
                     }
                     form.submit();
                 }
             });
+
+            // Inicializar al cargar la página
+            actualizarCamposPago();
         });
     </script>
 </body>

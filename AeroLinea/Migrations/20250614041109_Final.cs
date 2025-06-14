@@ -215,7 +215,9 @@ namespace AeroLinea.Migrations
                     precioTotal = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     precioFinal = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     aceptoTerminos = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    fechaPago = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    fechaPago = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Cuotas = table.Column<int>(type: "int", nullable: true),
+                    PrecioPorCuota = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
                 },
                 constraints: table =>
                 {
