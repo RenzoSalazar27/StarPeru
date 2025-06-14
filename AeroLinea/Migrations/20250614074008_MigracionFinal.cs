@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AeroLinea.Migrations
 {
     /// <inheritdoc />
-    public partial class Final : Migration
+    public partial class MigracionFinal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
