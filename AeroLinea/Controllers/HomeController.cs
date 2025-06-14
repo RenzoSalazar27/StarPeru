@@ -312,8 +312,7 @@ namespace AeroLinea.Controllers
                 fechaNacimiento = usuario.nacimientoUsuario.ToString("yyyy-MM-dd"),
                 telefonoUsuario = usuario.telefonoUsuario,
                 identificacionUsuario = usuario.identificacionUsuario,
-                correoUsuario = usuario.correoUsuario,
-                discapacidad = usuario.discapacidad
+                correoUsuario = usuario.correoUsuario
             });
         }
 
@@ -1214,8 +1213,6 @@ namespace AeroLinea.Controllers
                 {
                     usuarioExistente.contrasenaUsuario = BCrypt.Net.BCrypt.HashPassword(usuario.contrasenaUsuario);
                 }
-                
-                usuarioExistente.discapacidad = usuario.discapacidad;
 
                 _context.SaveChanges();
 
@@ -1255,16 +1252,6 @@ namespace AeroLinea.Controllers
 
                     // Encriptar la contraseña antes de guardar
                     usuario.contrasenaUsuario = BCrypt.Net.BCrypt.HashPassword(usuario.contrasenaUsuario);
-
-                    // Si el usuario tiene discapacidad, establecer la condición como "Daltonismo"
-                    if (usuario.discapacidad)
-                    {
-                        usuario.condicionUsuario = "Daltonismo";
-                    }
-                    else
-                    {
-                        usuario.condicionUsuario = null;
-                    }
 
                     _context.Usuarios.Add(usuario);
                     _context.SaveChanges();

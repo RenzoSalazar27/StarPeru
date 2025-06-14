@@ -272,27 +272,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-check form-switch mt-4">
-                                    <input asp-for="discapacidad" class="form-check-input" type="checkbox" 
-                                           role="switch" id="discapacidadSwitch" onchange="mostrarCondicion(this.checked)" />
-                                    <label class="form-check-label" for="discapacidadSwitch">
-                                        <i class="bi bi-wheelchair me-2"></i>Tengo una discapacidad
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-4" id="condicionGroup" style="display: none;">
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <select asp-for="condicionUsuario" class="form-control">
-                                        <option value="Daltonismo">Daltonismo</option>
-                                    </select>
-                                    <label asp-for="condicionUsuario">Condición</label>
-                                    <span asp-validation-for="condicionUsuario" class="text-danger"></span>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
@@ -343,15 +322,6 @@
                 passwordInput.type = 'password';
                 toggleIcon.classList.remove('bi-eye-slash');
                 toggleIcon.classList.add('bi-eye');
-            }
-        }
-
-        function mostrarCondicion(checked) {
-            const condicionGroup = document.getElementById('condicionGroup');
-            if (checked) {
-                condicionGroup.style.display = 'block';
-            } else {
-                condicionGroup.style.display = 'none';
             }
         }
 

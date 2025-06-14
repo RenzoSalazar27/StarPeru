@@ -38,13 +38,6 @@ namespace AeroLinea.Models
         [StringLength(255, MinimumLength = 6, ErrorMessage = "La contraseña debe tener entre 6 y 20 caracteres")]
         public string contrasenaUsuario { get; set; }
 
-        [Required(ErrorMessage = "Debe indicar si tiene discapacidad")]
-        public bool discapacidad { get; set; }
-
-        [Required(ErrorMessage = "Debe indicar la condición del usuario")]
-        [StringLength(50, ErrorMessage = "La condición no puede exceder los 50 caracteres")]
-        public string? condicionUsuario { get; set; }
-
         [Required]
         public bool esAdmin { get; set; }
 

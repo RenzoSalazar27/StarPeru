@@ -398,25 +398,20 @@
                     document.getElementById('editId').value = usuario.idUsuario;
                     document.getElementById('editNombres').value = usuario.nombresUsuario;
                     document.getElementById('editApellidos').value = usuario.apellidosUsuario;
-                    document.getElementById('editNacimiento').value = usuario.nacimientoUsuario;
+                    document.getElementById('editNacimiento').value = usuario.fechaNacimiento;
                     document.getElementById('editTelefono').value = usuario.telefonoUsuario;
                     document.getElementById('editIdentificacion').value = usuario.identificacionUsuario;
                     document.getElementById('editCorreo').value = usuario.correoUsuario;
-                    document.getElementById('editDiscapacidad').value = usuario.discapacidad;
-                    if (usuario.discapacidad) {
-                        document.getElementById('condicionGroup').style.display = 'block';
-                        document.getElementById('editCondicion').value = usuario.condicionUsuario;
-                    } else {
-                        document.getElementById('condicionGroup').style.display = 'none';
-                    }
-                    $('#modalEditar').modal('show');
+
+                    // Mostrar el modal
+                    $('#editarUsuarioModal').modal('show');
                 })
                 .catch(error => {
                     mostrarMensajeError('Error al cargar usuario: ' + error.message, 'errorEdicion');
                 });
         }
 
-        function guardarEdicion() {
+        function guardarCambios() {
             const usuario = {
                 idUsuario: document.getElementById('editId').value,
                 nombresUsuario: document.getElementById('editNombres').value,
@@ -424,31 +419,31 @@
                 nacimientoUsuario: document.getElementById('editNacimiento').value,
                 telefonoUsuario: document.getElementById('editTelefono').value,
                 identificacionUsuario: document.getElementById('editIdentificacion').value,
-                correoUsuario: document.getElementById('editCorreo').value,
-                discapacidad: document.getElementById('editDiscapacidad').value === 'true',
-                condicionUsuario: document.getElementById('editDiscapacidad').value === 'true' ? 
-                    document.getElementById('editCondicion').value : null
+                correoUsuario: document.getElementById('editCorreo').value
             };
 
+            // Enviar los cambios al servidor
             fetch('/Home/ActualizarUsuario', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(usuario)
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    $('#modalEditar').modal('hide');
-                    mostrarMensajeExito(data.message);
-                    location.reload();
+                    $('#editarUsuarioModal').modal('hide');
+                    mostrarMensajeExito('Usuario actualizado correctamente');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } else {
-                    mostrarMensajeError(data.message || 'Error al actualizar usuario', 'errorEdicion');
+                    mostrarMensajeError(data.message);
                 }
             })
             .catch(error => {
-                mostrarMensajeError('Error al actualizar usuario: ' + error.message, 'errorEdicion');
+                mostrarMensajeError('Error al actualizar el usuario');
             });
         }
 
@@ -1449,7 +1444,6 @@
                                     <th>Identificación</th>
                                     <th>Correo</th>
                                     <th>Contraseña</th>
-                                    <th>Discapacidad</th>
                                     <th>Rol</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -1465,7 +1459,6 @@
                                         <td>@usuario.identificacionUsuario</td>
                                         <td>@usuario.correoUsuario</td>
                                         <td>********</td>
-                                        <td>@(usuario.discapacidad ? "Sí" : "No")</td>
                                         <td>@(usuario.esAdmin ? "Administrador" : "Pasajero")</td>
                                         <td>
                                             <button class="btn btn-sm btn-primary" onclick="editarUsuario(@usuario.idUsuario)">
@@ -1630,71 +1623,43 @@
     </div>
 
     <!-- Modal Editar Usuario -->
-    <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar Usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="editarUsuarioModalLabel">Editar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="errorEdicion" class="alert alert-danger" style="display: none;"></div>
                     <input type="hidden" id="editId">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Nombres</label>
-                                <input type="text" class="form-control" id="editNombres" required>
-                                <small class="text-danger" id="errorEditNombres" style="display: none;"></small>
-                            </div>
-                            <div class="form-group">
-                                <label>Apellidos</label>
-                                <input type="text" class="form-control" id="editApellidos" required>
-                                <small class="text-danger" id="errorEditApellidos" style="display: none;"></small>
-                            </div>
-                            <div class="form-group">
-                                <label>Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" id="editNacimiento" required>
-                                <small class="text-danger" id="errorEditNacimiento" style="display: none;"></small>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Teléfono</label>
-                                <input type="text" class="form-control" id="editTelefono" required>
-                                <small class="text-danger" id="errorEditTelefono" style="display: none;"></small>
-                            </div>
-                            <div class="form-group">
-                                <label>Identificación</label>
-                                <input type="text" class="form-control" id="editIdentificacion" required>
-                                <small class="text-danger" id="errorEditIdentificacion" style="display: none;"></small>
-                            </div>
-                            <div class="form-group">
-                                <label>Correo</label>
-                                <input type="email" class="form-control" id="editCorreo" required>
-                                <small class="text-danger" id="errorEditCorreo" style="display: none;"></small>
-                            </div>
-                            <div class="form-group">
-                                <label>Discapacidad</label>
-                                <select class="form-control" id="editDiscapacidad" onchange="mostrarCondicion(this.value)">
-                                    <option value="false">No</option>
-                                    <option value="true">Sí</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="condicionGroup" style="display: none;">
-                                <label>Condición</label>
-                                <select class="form-control" id="editCondicion">
-                                    <option value="Daltonismo">Daltonismo</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label>Nombres</label>
+                        <input type="text" class="form-control" id="editNombres">
+                    </div>
+                    <div class="mb-3">
+                        <label>Apellidos</label>
+                        <input type="text" class="form-control" id="editApellidos">
+                    </div>
+                    <div class="mb-3">
+                        <label>Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="editNacimiento">
+                    </div>
+                    <div class="mb-3">
+                        <label>Teléfono</label>
+                        <input type="text" class="form-control" id="editTelefono">
+                    </div>
+                    <div class="mb-3">
+                        <label>Identificación</label>
+                        <input type="text" class="form-control" id="editIdentificacion" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label>Correo</label>
+                        <input type="email" class="form-control" id="editCorreo">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar Cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
                 </div>
             </div>
         </div>

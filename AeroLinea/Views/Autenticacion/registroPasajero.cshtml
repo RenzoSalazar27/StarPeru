@@ -219,21 +219,6 @@
                                title="Las contraseñas deben coincidir" required />
                         <span class="text-danger" id="errorConfirmarContrasena"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="discapacidad">¿Tiene alguna discapacidad?</label>
-                        <select asp-for="discapacidad" class="form-control" onchange="mostrarCondicion(this.value)" required>
-                            <option value="false">No</option>
-                            <option value="true">Sí</option>
-                        </select>
-                        <span asp-validation-for="discapacidad" class="text-danger"></span>
-                    </div>
-                    <div class="form-group" id="condicionGroup" style="display: none;">
-                        <label for="condicionUsuario">Condición</label>
-                        <select asp-for="condicionUsuario" class="form-control">
-                            <option value="Daltonismo">Daltonismo</option>
-                        </select>
-                        <span asp-validation-for="condicionUsuario" class="text-danger"></span>
-                    </div>
                 </div>
             </div>
             <div class="button-group">
@@ -253,15 +238,6 @@
     <script src="~/js/vozPorTexto.js" asp-append-version="true"></script>
     <script src="~/js/vozNavegacion.js" asp-append-version="true"></script>
     <script>
-        function mostrarCondicion(valor) {
-            const condicionGroup = document.getElementById('condicionGroup');
-            if (valor === 'true') {
-                condicionGroup.style.display = 'block';
-            } else {
-                condicionGroup.style.display = 'none';
-            }
-        }
-
         // Validación de nombres y apellidos (solo letras)
         document.querySelectorAll('input[name="nombresUsuario"], input[name="apellidosUsuario"]').forEach(function(input) {
             input.addEventListener('input', function() {

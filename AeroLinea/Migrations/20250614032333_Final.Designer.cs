@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250613151544_Final")]
+    [Migration("20250614032333_Final")]
     partial class Final
     {
         /// <inheritdoc />
@@ -312,11 +312,6 @@ namespace AeroLinea.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("varchar(30)");
 
-                    b.Property<string>("condicionUsuario")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<string>("contrasenaUsuario")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -326,9 +321,6 @@ namespace AeroLinea.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("varchar(30)");
-
-                    b.Property<bool>("discapacidad")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("esAdmin")
                         .HasColumnType("tinyint(1)");
