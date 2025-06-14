@@ -787,35 +787,8 @@ namespace AeroLinea.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    var errors = new Dictionary<string, string>();
-                    foreach (var modelState in ModelState)
-                    {
-                        if (modelState.Value.Errors.Count > 0)
-                        {
-                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
-                        }
-                    }
-                    return Json(new { success = false, errors = errors });
-                }
-
-                // Validar que la fecha sea al menos 2 días en el futuro
-                var fechaMinima = DateTime.Now.AddDays(2);
-                if (vuelo.fechaVuelo < fechaMinima)
-                {
-                    return Json(new { success = false, errors = new Dictionary<string, string> { { "fechaVuelo", "La fecha del vuelo debe ser al menos 2 días en el futuro" } } });
-                }
-
-                // Validar que el precio sea mayor a 0
-                if (vuelo.precioVuelo <= 0)
-                {
-                    return Json(new { success = false, errors = new Dictionary<string, string> { { "precioVuelo", "El precio debe ser mayor a 0" } } });
-                }
-
                 _context.Vuelo.Add(vuelo);
                 _context.SaveChanges();
-
                 return Json(new { success = true, message = "Vuelo registrado exitosamente" });
             }
             catch (Exception ex)
