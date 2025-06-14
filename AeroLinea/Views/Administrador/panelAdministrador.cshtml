@@ -646,7 +646,7 @@
                 nombrePiloto: document.getElementById('nombrePiloto').value,
                 apellidoPiloto: document.getElementById('apellidoPiloto').value,
                 nacimientoPiloto: document.getElementById('nacimientoPiloto').value,
-                telefonoPiloto: document.getElementById('telefonoPiloto').value,
+                telefonoPiloto: parseInt(document.getElementById('telefonoPiloto').value),
                 dniPiloto: document.getElementById('dniPiloto').value,
                 licenciaPiloto: document.getElementById('licenciaPiloto').value,
                 tipoLicPiloto: document.getElementById('tipoLicPiloto').value,
@@ -951,72 +951,105 @@
                 });
         }
 
-        function registrarVuelo() {
+        function validarYRegistrarVuelo() {
             // Limpiar mensajes de error anteriores
-            document.querySelectorAll('.text-danger').forEach(el => el.style.display = 'none');
-            
+            document.querySelectorAll('.text-danger').forEach(el => {
+                el.style.display = 'none';
+                el.textContent = '';
+            });
+            document.getElementById('errorRegistroVuelo').style.display = 'none';
+
+            // Obtener valores
             const origen = document.getElementById('origenVuelo').value;
             const destino = document.getElementById('destinoVuelo').value;
             const fecha = document.getElementById('fechaVuelo').value;
+            const avion = document.getElementById('idAvion').value;
+            const piloto = document.getElementById('idPiloto').value;
             const precio = document.getElementById('precioVuelo').value;
-            const idAvion = document.getElementById('idAvion').value;
-            const idPiloto = document.getElementById('idPiloto').value;
 
+            // Validar campos requeridos
             let hayErrores = false;
 
-            // Validaciones individuales
             if (!origen) {
-                document.getElementById('errorOrigen').textContent = 'El origen es obligatorio';
-                document.getElementById('errorOrigen').style.display = 'block';
+                document.getElementById('errorOrigenVuelo').textContent = 'El origen es obligatorio';
+                document.getElementById('errorOrigenVuelo').style.display = 'block';
                 hayErrores = true;
             }
 
             if (!destino) {
-                document.getElementById('errorDestino').textContent = 'El destino es obligatorio';
-                document.getElementById('errorDestino').style.display = 'block';
+                document.getElementById('errorDestinoVuelo').textContent = 'El destino es obligatorio';
+                document.getElementById('errorDestinoVuelo').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (origen && destino && origen === destino) {
+                document.getElementById('errorDestinoVuelo').textContent = 'El origen y destino no pueden ser la misma ciudad';
+                document.getElementById('errorDestinoVuelo').style.display = 'block';
                 hayErrores = true;
             }
 
             if (!fecha) {
-                document.getElementById('errorFecha').textContent = 'La fecha es obligatoria';
-                document.getElementById('errorFecha').style.display = 'block';
+                document.getElementById('errorFechaVuelo').textContent = 'La fecha es obligatoria';
+                document.getElementById('errorFechaVuelo').style.display = 'block';
+                hayErrores = true;
+            } else {
+                const fechaVuelo = new Date(fecha);
+                const fechaMinima = new Date();
+                fechaMinima.setDate(fechaMinima.getDate() + 2);
+                
+                if (fechaVuelo < fechaMinima) {
+                    document.getElementById('errorFechaVuelo').textContent = 'La fecha debe ser al menos 2 días en el futuro';
+                    document.getElementById('errorFechaVuelo').style.display = 'block';
+                    hayErrores = true;
+                }
+            }
+
+            if (!avion) {
+                document.getElementById('errorIdAvion').textContent = 'El avión es obligatorio';
+                document.getElementById('errorIdAvion').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!piloto) {
+                document.getElementById('errorIdPiloto').textContent = 'El piloto es obligatorio';
+                document.getElementById('errorIdPiloto').style.display = 'block';
                 hayErrores = true;
             }
 
             if (!precio) {
-                document.getElementById('errorPrecio').textContent = 'El precio es obligatorio';
-                document.getElementById('errorPrecio').style.display = 'block';
+                document.getElementById('errorPrecioVuelo').textContent = 'El precio es obligatorio';
+                document.getElementById('errorPrecioVuelo').style.display = 'block';
                 hayErrores = true;
-            }
-
-            if (!idAvion) {
-                document.getElementById('errorAvion').textContent = 'El avión es obligatorio';
-                document.getElementById('errorAvion').style.display = 'block';
-                hayErrores = true;
-            }
-
-            if (!idPiloto) {
-                document.getElementById('errorPiloto').textContent = 'El piloto es obligatorio';
-                document.getElementById('errorPiloto').style.display = 'block';
+            } else if (parseFloat(precio) <= 0) {
+                document.getElementById('errorPrecioVuelo').textContent = 'El precio debe ser mayor a 0';
+                document.getElementById('errorPrecioVuelo').style.display = 'block';
                 hayErrores = true;
             }
 
             if (hayErrores) {
-                $('#modalRegistrarVuelo').modal('hide'); // Cierra el modal si hay errores del lado del cliente
                 return;
             }
 
+            // Si no hay errores, proceder con el registro
+            registrarVuelo();
+        }
+
+        function registrarVuelo() {
+            const vueloId = document.querySelector('#modalRegistrarVuelo').dataset.vueloId;
             const vuelo = {
-                origenVuelo: origen,
-                destinoVuelo: destino,
-                fechaVuelo: fecha,
-                precioVuelo: parseFloat(precio),
-                idAvion: idAvion ? parseInt(idAvion) : null,
-                idPiloto: idPiloto ? parseInt(idPiloto) : null
+                origenVuelo: document.getElementById('origenVuelo').value,
+                destinoVuelo: document.getElementById('destinoVuelo').value,
+                fechaVuelo: document.getElementById('fechaVuelo').value,
+                idAvion: parseInt(document.getElementById('idAvion').value),
+                idPiloto: parseInt(document.getElementById('idPiloto').value),
+                precioVuelo: parseFloat(document.getElementById('precioVuelo').value)
             };
 
-            fetch('/Home/RegistrarVuelo', {
-                method: 'POST',
+            const url = vueloId ? `/Home/ActualizarVuelo/${vueloId}` : '/Home/RegistrarVuelo';
+            const method = vueloId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -1025,7 +1058,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    document.getElementById('formVuelo').reset();
+                    mostrarMensajeExito(vueloId ? 'Vuelo actualizado exitosamente' : 'Vuelo registrado exitosamente');
+                    document.getElementById('formRegistrarVuelo').reset();
+                    document.querySelector('#modalRegistrarVuelo .modal-title').textContent = 'Registrar Vuelo';
+                    document.querySelector('#modalRegistrarVuelo .btn-primary').textContent = 'Registrar';
+                    document.querySelector('#modalRegistrarVuelo').dataset.vueloId = '';
+                    $('#modalRegistrarVuelo').modal('hide');
                     cargarVuelos();
                 } else {
                     if (data.errors) {
@@ -1037,17 +1075,16 @@
                             }
                         });
                     } else {
-                        document.getElementById('errorGeneral').textContent = data.message;
-                        document.getElementById('errorGeneral').style.display = 'block';
+                        const errorElement = document.getElementById('errorRegistroVuelo');
+                        errorElement.textContent = data.message || 'Error al procesar la solicitud';
+                        errorElement.style.display = 'block';
                     }
                 }
-                $('#modalRegistrarVuelo').modal('hide'); // Cierra el modal después de la respuesta del servidor
             })
             .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('errorGeneral').textContent = 'Error al registrar el vuelo';
-                document.getElementById('errorGeneral').style.display = 'block';
-                $('#modalRegistrarVuelo').modal('hide'); // Cierra el modal si hay un error en la petición
+                const errorElement = document.getElementById('errorRegistroVuelo');
+                errorElement.textContent = 'Error al procesar la solicitud: ' + error.message;
+                errorElement.style.display = 'block';
             });
         }
 
@@ -1423,6 +1460,115 @@
                 errorElement.style.display = 'none';
             }
         }
+
+        function validarYRegistrarPiloto() {
+            // Limpiar mensajes de error anteriores
+            document.querySelectorAll('.text-danger').forEach(el => {
+                el.style.display = 'none';
+                el.textContent = '';
+            });
+            document.getElementById('errorRegistroPiloto').style.display = 'none';
+
+            // Obtener valores
+            const nombre = document.getElementById('nombrePiloto').value;
+            const apellido = document.getElementById('apellidoPiloto').value;
+            const edad = document.getElementById('edadPiloto').value;
+            const tipoLicencia = document.getElementById('tipoLicPiloto').value;
+
+            // Validar campos requeridos
+            let hayErrores = false;
+
+            if (!nombre) {
+                document.getElementById('errorNombrePiloto').textContent = 'El nombre es obligatorio';
+                document.getElementById('errorNombrePiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!apellido) {
+                document.getElementById('errorApellidoPiloto').textContent = 'El apellido es obligatorio';
+                document.getElementById('errorApellidoPiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!edad) {
+                document.getElementById('errorEdadPiloto').textContent = 'La edad es obligatoria';
+                document.getElementById('errorEdadPiloto').style.display = 'block';
+                hayErrores = true;
+            } else if (edad < 18 || edad > 65) {
+                document.getElementById('errorEdadPiloto').textContent = 'La edad debe estar entre 18 y 65 años';
+                document.getElementById('errorEdadPiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (!tipoLicencia) {
+                document.getElementById('errorTipoLicPiloto').textContent = 'El tipo de licencia es obligatorio';
+                document.getElementById('errorTipoLicPiloto').style.display = 'block';
+                hayErrores = true;
+            }
+
+            if (hayErrores) {
+                return;
+            }
+
+            // Si no hay errores, proceder con el registro
+            registrarPiloto();
+        }
+
+        function registrarPiloto() {
+            const pilotoId = document.querySelector('#modalRegistrarPiloto').dataset.pilotoId;
+            const piloto = {
+                nombrePiloto: document.getElementById('nombrePiloto').value,
+                apellidoPiloto: document.getElementById('apellidoPiloto').value,
+                nacimientoPiloto: document.getElementById('nacimientoPiloto').value,
+                telefonoPiloto: parseInt(document.getElementById('telefonoPiloto').value),
+                dniPiloto: document.getElementById('dniPiloto').value,
+                licenciaPiloto: document.getElementById('licenciaPiloto').value,
+                tipoLicPiloto: document.getElementById('tipoLicPiloto').value,
+                fechaEmiLic: document.getElementById('fechaEmiLic').value
+            };
+
+            const url = pilotoId ? `/Home/ActualizarPiloto/${pilotoId}` : '/Home/RegistrarPiloto';
+            const method = pilotoId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(piloto)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarMensajeExito(pilotoId ? 'Piloto actualizado exitosamente' : 'Piloto registrado exitosamente');
+                    document.getElementById('formRegistrarPiloto').reset();
+                    document.querySelector('#modalRegistrarPiloto .modal-title').textContent = 'Registrar Piloto';
+                    document.querySelector('#modalRegistrarPiloto .btn-primary').textContent = 'Registrar';
+                    document.querySelector('#modalRegistrarPiloto').dataset.pilotoId = '';
+                    $('#modalRegistrarPiloto').modal('hide');
+                    cargarPilotos();
+                } else {
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(key => {
+                            const errorElement = document.getElementById(`error${key.charAt(0).toUpperCase() + key.slice(1)}`);
+                            if (errorElement) {
+                                errorElement.textContent = data.errors[key];
+                                errorElement.style.display = 'block';
+                            }
+                        });
+                    } else {
+                        const errorElement = document.getElementById('errorRegistroPiloto');
+                        errorElement.textContent = data.message || 'Error al procesar la solicitud';
+                        errorElement.style.display = 'block';
+                    }
+                }
+            })
+            .catch(error => {
+                const errorElement = document.getElementById('errorRegistroPiloto');
+                errorElement.textContent = 'Error al procesar la solicitud: ' + error.message;
+                errorElement.style.display = 'block';
+            });
+        }
     </script>
 </head>
 <body>
@@ -1775,7 +1921,7 @@
                                     <small class="text-danger" id="errorDniPiloto" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
-                                    <label>Licencia de Piloto</label>
+                                    <label>Número de Licencia</label>
                                     <input type="text" class="form-control" id="licenciaPiloto" name="licenciaPiloto" required maxlength="9" pattern="[0-9]{9}">
                                     <small class="text-danger" id="errorLicenciaPiloto" style="display: none;"></small>
                                 </div>
@@ -1800,7 +1946,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="registrarPiloto()">Registrar</button>
+                    <button type="button" class="btn btn-primary" onclick="validarYRegistrarPiloto()">Registrar</button>
                 </div>
             </div>
         </div>
@@ -1923,12 +2069,12 @@
                 </div>
                 <div class="modal-body">
                     <div id="errorRegistroVuelo" class="alert alert-danger" style="display: none;"></div>
-                    <form id="formRegistrarVuelo">
+                    <form id="formRegistrarVuelo" novalidate>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="origenVuelo">Origen</label>
-                                    <select class="form-control" id="origenVuelo" required>
+                                    <label>Origen</label>
+                                    <select class="form-control" id="origenVuelo" name="origenVuelo" required>
                                         <option value="">Seleccione una ciudad</option>
                                         <option value="Chiclayo">Chiclayo</option>
                                         <option value="Cajamarca">Cajamarca</option>
@@ -1938,11 +2084,11 @@
                                         <option value="Tarapoto">Tarapoto</option>
                                         <option value="Pucallpa">Pucallpa</option>
                                     </select>
-                                    <small class="text-danger" id="errorOrigen" style="display: none;"></small>
+                                    <small class="text-danger" id="errorOrigenVuelo" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="destinoVuelo">Destino</label>
-                                    <select class="form-control" id="destinoVuelo" required>
+                                    <label>Destino</label>
+                                    <select class="form-control" id="destinoVuelo" name="destinoVuelo" required>
                                         <option value="">Seleccione una ciudad</option>
                                         <option value="Chiclayo">Chiclayo</option>
                                         <option value="Cajamarca">Cajamarca</option>
@@ -1952,42 +2098,41 @@
                                         <option value="Tarapoto">Tarapoto</option>
                                         <option value="Pucallpa">Pucallpa</option>
                                     </select>
-                                    <small class="text-danger" id="errorDestino" style="display: none;"></small>
+                                    <small class="text-danger" id="errorDestinoVuelo" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="fechaVuelo">Fecha</label>
-                                    <input type="datetime-local" class="form-control" id="fechaVuelo" required>
-                                    <small class="text-danger" id="errorFecha" style="display: none;"></small>
+                                    <label>Fecha del Vuelo</label>
+                                    <input type="datetime-local" class="form-control" id="fechaVuelo" name="fechaVuelo" required>
+                                    <small class="text-danger" id="errorFechaVuelo" style="display: none;"></small>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="precioVuelo">Precio</label>
-                                    <input type="number" class="form-control" id="precioVuelo" required min="0" step="0.01">
-                                    <small class="text-danger" id="errorPrecio" style="display: none;"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="idAvion">Avión</label>
-                                    <select class="form-control" id="idAvion" required>
+                                    <label>Avión</label>
+                                    <select class="form-control" id="idAvion" name="idAvion" required>
                                         <option value="">Seleccione un avión</option>
                                     </select>
-                                    <small class="text-danger" id="errorAvion" style="display: none;"></small>
+                                    <small class="text-danger" id="errorIdAvion" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="idPiloto">Piloto</label>
-                                    <select class="form-control" id="idPiloto" required>
+                                    <label>Piloto</label>
+                                    <select class="form-control" id="idPiloto" name="idPiloto" required>
                                         <option value="">Seleccione un piloto</option>
                                     </select>
-                                    <small class="text-danger" id="errorPiloto" style="display: none;"></small>
+                                    <small class="text-danger" id="errorIdPiloto" style="display: none;"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Precio</label>
+                                    <input type="number" class="form-control" id="precioVuelo" name="precioVuelo" required min="0.01" step="0.01">
+                                    <small class="text-danger" id="errorPrecioVuelo" style="display: none;"></small>
                                 </div>
                             </div>
                         </div>
-                        <small class="text-danger" id="errorGeneral" style="display: none;"></small>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="registrarVuelo()">Registrar</button>
+                    <button type="button" class="btn btn-primary" onclick="validarYRegistrarVuelo()">Registrar</button>
                 </div>
             </div>
         </div>
