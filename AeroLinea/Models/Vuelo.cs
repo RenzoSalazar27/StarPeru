@@ -13,6 +13,7 @@ namespace AeroLinea.Models
         [StringLength(50, ErrorMessage = "El origen no puede tener más de 50 caracteres")]
         [RegularExpression(@"^(Chiclayo|Cajamarca|Huanuco|Lima|Iquitos|Tarapoto|Pucallpa)$", 
             ErrorMessage = "El origen debe ser una de las siguientes ciudades: Chiclayo, Cajamarca, Huanuco, Lima, Iquitos, Tarapoto, Pucallpa")]
+        [CustomValidation(typeof(Vuelo), "ValidarOrigenDestino")]
         public string origenVuelo { get; set; }
 
         [Required(ErrorMessage = "El destino es obligatorio")]
@@ -40,5 +41,16 @@ namespace AeroLinea.Models
 
         [ForeignKey("idPiloto")]
         public virtual Piloto Piloto { get; set; }
+
+        // Método de validación personalizado para origen y destino
+        public static ValidationResult ValidarOrigenDestino(string origen, ValidationContext context)
+        {
+            var vuelo = (Vuelo)context.ObjectInstance;
+            if (origen == vuelo.destinoVuelo)
+            {
+                return new ValidationResult("El origen y destino no pueden ser la misma ciudad");
+            }
+            return ValidationResult.Success;
+        }
     }
 } 

@@ -403,7 +403,7 @@
                     document.getElementById('editIdentificacion').value = usuario.identificacionUsuario;
                     document.getElementById('editCorreo').value = usuario.correoUsuario;
 
-                    // Mostrar el modal
+                    // Mostrar el modal usando Bootstrap 4
                     $('#editarUsuarioModal').modal('show');
                 })
                 .catch(error => {
@@ -635,7 +635,11 @@
 
         function registrarPiloto() {
             // Limpiar mensajes de error anteriores
-            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            document.querySelectorAll('.text-danger').forEach(el => {
+                el.style.display = 'none';
+                el.textContent = '';
+            });
+            document.getElementById('errorRegistroPiloto').style.display = 'none';
             
             const pilotoId = document.querySelector('#modalRegistrarPiloto').dataset.pilotoId;
             const piloto = {
@@ -663,19 +667,9 @@
             .then(data => {
                 if (data.success) {
                     mostrarMensajeExito(pilotoId ? 'Piloto actualizado exitosamente' : 'Piloto registrado exitosamente', 'mensajeExitoPiloto');
-                    // Limpiar los campos del formulario
-                    document.getElementById('nombrePiloto').value = '';
-                    document.getElementById('apellidoPiloto').value = '';
-                    document.getElementById('nacimientoPiloto').value = '';
-                    document.getElementById('telefonoPiloto').value = '';
-                    document.getElementById('dniPiloto').value = '';
-                    document.getElementById('licenciaPiloto').value = '';
-                    document.getElementById('tipoLicPiloto').value = '';
-                    document.getElementById('fechaEmiLic').value = '';
-                    // Restaurar el título y el botón
+                    document.getElementById('formRegistrarPiloto').reset();
                     document.querySelector('#modalRegistrarPiloto .modal-title').textContent = 'Registrar Piloto';
                     document.querySelector('#modalRegistrarPiloto .btn-primary').textContent = 'Registrar';
-                    // Limpiar el ID del piloto
                     document.querySelector('#modalRegistrarPiloto').dataset.pilotoId = '';
                     $('#modalRegistrarPiloto').modal('hide');
                     cargarPilotos();
@@ -683,21 +677,23 @@
                     if (data.errors) {
                         // Mostrar errores de validación debajo de cada campo
                         Object.keys(data.errors).forEach(key => {
-                            const input = document.getElementById(key);
-                            if (input) {
-                                const errorDiv = document.createElement('div');
-                                errorDiv.className = 'error-message text-danger mt-1';
-                                errorDiv.textContent = data.errors[key];
-                                input.parentNode.appendChild(errorDiv);
+                            const errorElement = document.getElementById(`error${key.charAt(0).toUpperCase() + key.slice(1)}`);
+                            if (errorElement) {
+                                errorElement.textContent = data.errors[key];
+                                errorElement.style.display = 'block';
                             }
                         });
                     } else {
-                        mostrarMensajeError(data.message || 'Error al procesar la solicitud', 'errorRegistroPiloto');
+                        const errorElement = document.getElementById('errorRegistroPiloto');
+                        errorElement.textContent = data.message || 'Error al procesar la solicitud';
+                        errorElement.style.display = 'block';
                     }
                 }
             })
             .catch(error => {
-                mostrarMensajeError('Error al procesar la solicitud: ' + error.message, 'errorRegistroPiloto');
+                const errorElement = document.getElementById('errorRegistroPiloto');
+                errorElement.textContent = 'Error al procesar la solicitud: ' + error.message;
+                errorElement.style.display = 'block';
             });
         }
 
@@ -1406,6 +1402,27 @@
 
             return esValido;
         }
+
+        function validarEdadPiloto(input) {
+            const fechaNacimiento = new Date(input.value);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+            const mesActual = hoy.getMonth();
+            const mesNacimiento = fechaNacimiento.getMonth();
+            
+            if (mesActual < mesNacimiento || (mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())) {
+                edad--;
+            }
+
+            const errorElement = document.getElementById('errorNacimientoPiloto');
+            if (edad < 25) {
+                errorElement.textContent = 'El piloto debe tener al menos 25 años de edad';
+                errorElement.style.display = 'block';
+                input.value = ''; // Limpiar el valor si no cumple con la edad mínima
+            } else {
+                errorElement.style.display = 'none';
+            }
+        }
     </script>
 </head>
 <body>
@@ -1729,39 +1746,42 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nombre</label>
-                                    <input type="text" class="form-control" id="nombrePiloto" required maxlength="30" minlength="5" pattern="[A-Za-zÀ-ÿ\s]+">
+                                    <input type="text" class="form-control" id="nombrePiloto" name="nombrePiloto" required maxlength="30" minlength="5" pattern="[A-Za-zÀ-ÿ\s]+">
                                     <small class="text-danger" id="errorNombrePiloto" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Apellido</label>
-                                    <input type="text" class="form-control" id="apellidoPiloto" required maxlength="30" minlength="5" pattern="[A-Za-zÀ-ÿ\s]+">
+                                    <input type="text" class="form-control" id="apellidoPiloto" name="apellidoPiloto" required maxlength="30" minlength="5" pattern="[A-Za-zÀ-ÿ\s]+">
                                     <small class="text-danger" id="errorApellidoPiloto" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" id="nacimientoPiloto" required>
+                                    <input type="date" class="form-control" id="nacimientoPiloto" name="nacimientoPiloto" required 
+                                           max="@DateTime.Now.AddYears(-25).ToString("yyyy-MM-dd")" 
+                                           onchange="validarEdadPiloto(this)">
                                     <small class="text-danger" id="errorNacimientoPiloto" style="display: none;"></small>
+                                    <small class="text-muted">El piloto debe tener al menos 25 años de edad</small>
                                 </div>
                                 <div class="form-group">
                                     <label>Teléfono</label>
-                                    <input type="text" class="form-control" id="telefonoPiloto" required maxlength="12">
+                                    <input type="text" class="form-control" id="telefonoPiloto" name="telefonoPiloto" required maxlength="9" pattern="[0-9]{9}">
                                     <small class="text-danger" id="errorTelefonoPiloto" style="display: none;"></small>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>DNI</label>
-                                    <input type="text" class="form-control" id="dniPiloto" required pattern="^\d{8}$" maxlength="8">
+                                    <input type="text" class="form-control" id="dniPiloto" name="dniPiloto" required maxlength="8" pattern="[0-9]{8}">
                                     <small class="text-danger" id="errorDniPiloto" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Licencia de Piloto</label>
-                                    <input type="text" class="form-control" id="licenciaPiloto" required pattern="^\d{9}$" maxlength="9">
+                                    <input type="text" class="form-control" id="licenciaPiloto" name="licenciaPiloto" required maxlength="9" pattern="[0-9]{9}">
                                     <small class="text-danger" id="errorLicenciaPiloto" style="display: none;"></small>
                                 </div>
                                 <div class="form-group">
                                     <label>Tipo de Licencia</label>
-                                    <select class="form-control" id="tipoLicPiloto" required>
+                                    <select class="form-control" id="tipoLicPiloto" name="tipoLicPiloto" required>
                                         <option value="">Seleccione un tipo</option>
                                         <option value="Comercial">Comercial</option>
                                         <option value="Privada">Privada</option>
@@ -1771,7 +1791,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Fecha de Emisión de Licencia</label>
-                                    <input type="date" class="form-control" id="fechaEmiLic" required>
+                                    <input type="date" class="form-control" id="fechaEmiLic" name="fechaEmiLic" required>
                                     <small class="text-danger" id="errorFechaEmiLic" style="display: none;"></small>
                                 </div>
                             </div>

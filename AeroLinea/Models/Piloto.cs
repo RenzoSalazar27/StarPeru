@@ -60,6 +60,13 @@ namespace AeroLinea.Models
             if (fecha > DateTime.Now)
                 return new ValidationResult("La fecha de nacimiento no puede ser futura");
 
+            var edad = DateTime.Now.Year - fecha.Year;
+            if (DateTime.Now.DayOfYear < fecha.DayOfYear)
+                edad--;
+
+            if (edad < 25)
+                return new ValidationResult("El piloto debe tener al menos 25 años de edad");
+
             return ValidationResult.Success;
         }
 

@@ -474,27 +474,42 @@ namespace AeroLinea.Controllers
         [HttpPost]
         public IActionResult RegistrarPiloto([FromBody] Piloto piloto)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).FirstOrDefault()
-                );
-                return Json(new { success = false, errors = errors });
-            }
-
             try
             {
+                // Validar el modelo
+                if (!ModelState.IsValid)
+                {
+                    var errors = new Dictionary<string, string>();
+                    foreach (var modelState in ModelState)
+                    {
+                        if (modelState.Value.Errors.Count > 0)
+                        {
+                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
+                        }
+                    }
+                    return Json(new { success = false, errors = errors });
+                }
+
+                // Validar edad mínima
+                var edad = DateTime.Now.Year - piloto.nacimientoPiloto.Year;
+                if (DateTime.Now.DayOfYear < piloto.nacimientoPiloto.DayOfYear)
+                    edad--;
+
+                if (edad < 25)
+                {
+                    return Json(new { success = false, errors = new Dictionary<string, string> { { "nacimientoPiloto", "El piloto debe tener al menos 25 años de edad" } } });
+                }
+
                 // Verificar si ya existe un piloto con el mismo DNI
                 if (_context.Pilotos.Any(p => p.dniPiloto == piloto.dniPiloto))
                 {
-                    return Json(new { success = false, message = "Ya existe un piloto con este DNI" });
+                    return Json(new { success = false, errors = new Dictionary<string, string> { { "dniPiloto", "Ya existe un piloto con este DNI" } } });
                 }
 
                 // Verificar si ya existe un piloto con la misma licencia
                 if (_context.Pilotos.Any(p => p.licenciaPiloto == piloto.licenciaPiloto))
                 {
-                    return Json(new { success = false, message = "Ya existe un piloto con esta licencia" });
+                    return Json(new { success = false, errors = new Dictionary<string, string> { { "licenciaPiloto", "Ya existe un piloto con esta licencia" } } });
                 }
 
                 _context.Pilotos.Add(piloto);
@@ -766,28 +781,30 @@ namespace AeroLinea.Controllers
         {
             try
             {
-                if (vuelo == null)
+                if (!ModelState.IsValid)
                 {
-                    return Json(new { success = false, message = "Datos del vuelo no proporcionados" });
-                }
-
-                // Validar que el origen y destino sean diferentes
-                if (vuelo.origenVuelo == vuelo.destinoVuelo)
-                {
-                    return Json(new { success = false, message = "El origen y destino no pueden ser iguales" });
+                    var errors = new Dictionary<string, string>();
+                    foreach (var modelState in ModelState)
+                    {
+                        if (modelState.Value.Errors.Count > 0)
+                        {
+                            errors[modelState.Key] = modelState.Value.Errors[0].ErrorMessage;
+                        }
+                    }
+                    return Json(new { success = false, errors = errors });
                 }
 
                 // Validar que la fecha sea al menos 2 días en el futuro
                 var fechaMinima = DateTime.Now.AddDays(2);
                 if (vuelo.fechaVuelo < fechaMinima)
                 {
-                    return Json(new { success = false, message = "La fecha del vuelo debe ser al menos 2 días en el futuro" });
+                    return Json(new { success = false, errors = new Dictionary<string, string> { { "fechaVuelo", "La fecha del vuelo debe ser al menos 2 días en el futuro" } } });
                 }
 
                 // Validar que el precio sea mayor a 0
                 if (vuelo.precioVuelo <= 0)
                 {
-                    return Json(new { success = false, message = "El precio debe ser mayor a 0" });
+                    return Json(new { success = false, errors = new Dictionary<string, string> { { "precioVuelo", "El precio debe ser mayor a 0" } } });
                 }
 
                 _context.Vuelo.Add(vuelo);
