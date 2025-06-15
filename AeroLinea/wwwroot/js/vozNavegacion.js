@@ -77,6 +77,100 @@ function processVoiceCommand(text) {
         }
         return;
     }
+
+    // Comando para escribir en un campo
+    if (text.toLowerCase().startsWith('escribir')) {
+        const parts = text.split(' en ');
+        if (parts.length === 2) {
+            const texto = parts[0].replace('escribir', '').trim();
+            const nombreCampo = parts[1].trim();
+            const input = findInputField(nombreCampo);
+            if (input) {
+                input.value = texto;
+                input.dispatchEvent(new Event('input'));
+                speakText(`Texto escrito en ${nombreCampo}`);
+            } else {
+                speakText(`No se encontró el campo ${nombreCampo}`);
+            }
+            return;
+        }
+    }
+
+    // Comando para seleccionar de una lista desplegable
+    if (text.toLowerCase().startsWith('seleccionar')) {
+        const parts = text.split(' en ');
+        if (parts.length === 2) {
+            const opcion = parts[0].replace('seleccionar', '').trim();
+            const nombreLista = parts[1].trim();
+            const select = findSelectField(nombreLista);
+            if (select) {
+                const option = findOptionInSelect(select, opcion);
+                if (option) {
+                    select.value = option.value;
+                    select.dispatchEvent(new Event('change'));
+                    speakText(`Seleccionado ${opcion} en ${nombreLista}`);
+                } else {
+                    speakText(`No se encontró la opción ${opcion} en ${nombreLista}`);
+                }
+            } else {
+                speakText(`No se encontró la lista ${nombreLista}`);
+            }
+            return;
+        }
+    }
+
+    // Comando para borrar un campo
+    if (text.toLowerCase().startsWith('borrar campo')) {
+        const nombreCampo = text.replace('borrar campo', '').trim();
+        const input = findInputField(nombreCampo);
+        if (input) {
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            speakText(`Campo ${nombreCampo} borrado`);
+        } else {
+            speakText(`No se encontró el campo ${nombreCampo}`);
+        }
+        return;
+    }
+
+    // Comandos de navegación
+    if (text.toLowerCase().includes('ir abajo')) {
+        window.scrollBy(0, 300);
+        speakText('Desplazando hacia abajo');
+        return;
+    }
+
+    if (text.toLowerCase().includes('ir arriba')) {
+        window.scrollBy(0, -300);
+        speakText('Desplazando hacia arriba');
+        return;
+    }
+
+    if (text.toLowerCase().includes('ir más abajo')) {
+        window.scrollTo(0, document.body.scrollHeight);
+        speakText('Desplazando hasta el final de la página');
+        return;
+    }
+
+    if (text.toLowerCase().includes('ir más arriba')) {
+        window.scrollTo(0, 0);
+        speakText('Desplazando hasta el inicio de la página');
+        return;
+    }
+
+    if (text.toLowerCase().startsWith('ir a')) {
+        const seccion = text.replace('ir a', '').trim();
+        const elementos = document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]');
+        for (const elemento of elementos) {
+            if (elemento.textContent.toLowerCase().includes(seccion.toLowerCase())) {
+                elemento.scrollIntoView({ behavior: 'smooth' });
+                speakText(`Navegando a ${seccion}`);
+                return;
+            }
+        }
+        speakText(`No se encontró la sección ${seccion}`);
+        return;
+    }
     
     const element = findMatchingElement(text);
     
@@ -86,6 +180,49 @@ function processVoiceCommand(text) {
     } else {
         speakText('No se encontró ningún elemento similar');
     }
+}
+
+// Función para encontrar un campo de entrada por su nombre
+function findInputField(nombre) {
+    const inputs = document.querySelectorAll('input, textarea');
+    for (const input of inputs) {
+        const label = input.previousElementSibling;
+        const placeholder = input.placeholder;
+        const id = input.id;
+        const name = input.name;
+        
+        if (label && label.textContent.toLowerCase().includes(nombre.toLowerCase())) return input;
+        if (placeholder && placeholder.toLowerCase().includes(nombre.toLowerCase())) return input;
+        if (id && id.toLowerCase().includes(nombre.toLowerCase())) return input;
+        if (name && name.toLowerCase().includes(nombre.toLowerCase())) return input;
+    }
+    return null;
+}
+
+// Función para encontrar una lista desplegable por su nombre
+function findSelectField(nombre) {
+    const selects = document.querySelectorAll('select');
+    for (const select of selects) {
+        const label = select.previousElementSibling;
+        const id = select.id;
+        const name = select.name;
+        
+        if (label && label.textContent.toLowerCase().includes(nombre.toLowerCase())) return select;
+        if (id && id.toLowerCase().includes(nombre.toLowerCase())) return select;
+        if (name && name.toLowerCase().includes(nombre.toLowerCase())) return select;
+    }
+    return null;
+}
+
+// Función para encontrar una opción en una lista desplegable
+function findOptionInSelect(select, opcion) {
+    const options = select.options;
+    for (const option of options) {
+        if (option.text.toLowerCase().includes(opcion.toLowerCase())) {
+            return option;
+        }
+    }
+    return null;
 }
 
 // Función para inicializar el reconocimiento de voz

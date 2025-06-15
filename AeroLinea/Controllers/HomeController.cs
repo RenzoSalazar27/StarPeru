@@ -182,6 +182,7 @@ namespace AeroLinea.Controllers
             }
             return View();
         }
+        public IActionResult Discapacidad() => View();
         public IActionResult Cargo() => View();
         public IActionResult Promociones() => View();
         public IActionResult Alianzas() => View();

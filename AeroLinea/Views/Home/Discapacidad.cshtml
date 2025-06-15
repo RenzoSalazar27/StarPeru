@@ -1,0 +1,271 @@
+@{
+    ViewData["Title"] = "Servicios para Personas con Discapacidad";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+        min-height: 100vh;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .header-section {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .header-section h1 {
+        color: #e14a4a;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .header-section p {
+        color: #555;
+        font-size: 1.1em;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    .service-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .service-card h3 {
+        color: #e14a4a;
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .service-card p {
+        color: #555;
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .service-card ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin-top: 15px;
+    }
+
+    .service-card li {
+        color: #555;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+        padding-left: 25px;
+        position: relative;
+    }
+
+    .service-card li:before {
+        content: "•";
+        color: #e14a4a;
+        font-size: 1.5em;
+        position: absolute;
+        left: 0;
+        top: -5px;
+    }
+
+    .accessibility-features {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .accessibility-features h2 {
+        color: #e14a4a;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .feature-item {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .feature-item i {
+        font-size: 2em;
+        color: #e14a4a;
+        margin-bottom: 15px;
+    }
+
+    .feature-item h4 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .feature-item p {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 0;
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .header-section {
+            padding: 20px;
+        }
+
+        .header-section h1 {
+            font-size: 2em;
+        }
+
+        .service-card {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="header-section">
+        <h1>Servicios para Personas con Discapacidad</h1>
+        <p>En StarPerú nos comprometemos a brindar un servicio inclusivo y accesible para todos nuestros pasajeros.</p>
+    </div>
+
+    <div class="service-card">
+        <h3><i class="bi bi-wheelchair"></i> Asistencia en el Aeropuerto</h3>
+        <p>Ofrecemos asistencia completa desde el momento de su llegada al aeropuerto hasta el abordaje del avión:</p>
+        <ul>
+            <li>Asistencia personalizada en el check-in</li>
+            <li>Ayuda con el equipaje</li>
+            <li>Transporte en silla de ruedas hasta el avión</li>
+            <li>Asistencia durante el embarque y desembarque</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <h3><i class="bi bi-airplane"></i> Servicios a Bordo</h3>
+        <p>Nuestro personal está capacitado para brindar la mejor atención durante el vuelo:</p>
+        <ul>
+            <li>Asientos adaptados según necesidades</li>
+            <li>Asistencia para movilizarse dentro del avión</li>
+            <li>Ayuda con el equipaje de mano</li>
+            <li>Atención personalizada durante el vuelo</li>
+        </ul>
+    </div>
+
+    <div class="service-card">
+        <h3><i class="bi bi-tools"></i> Equipamiento Especial</h3>
+        <p>Disponemos de equipamiento especial para garantizar su comodidad:</p>
+        <ul>
+            <li>Sillas de ruedas para uso en aeropuerto</li>
+            <li>Equipamiento para movilidad reducida</li>
+            <li>Dispositivos de asistencia auditiva</li>
+            <li>Equipamiento para necesidades médicas</li>
+        </ul>
+    </div>
+
+    <div class="accessibility-features">
+        <h2>Características de Accesibilidad</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="bi bi-volume-up"></i>
+                <h4>Lector por Texto</h4>
+                <p>Activa el lector para que lea el texto al pasar el mouse sobre los elementos de la página.</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-mic"></i>
+                <h4>Navegación por Voz</h4>
+                <p>Usa comandos de voz para navegar por el sitio y realizar acciones como escribir o seleccionar opciones.</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-text-paragraph"></i>
+                <h4>Texto Adaptable</h4>
+                <p>Ajusta el tamaño del texto según tus necesidades para una mejor legibilidad.</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-contrast"></i>
+                <h4>Alto Contraste</h4>
+                <p>Activa el modo de alto contraste para mejorar la visibilidad de los elementos.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="accessibility-features">
+        <h2>Tutorial de Navegación por Voz</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="bi bi-mic"></i>
+                <h4>Comandos Básicos</h4>
+                <p>Para activar la navegación por voz, di "Activar" y "Desactivar" para desactivarla.</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-arrow-down-up"></i>
+                <h4>Navegación en la Página</h4>
+                <p>Di "Ir abajo" para bajar, "Ir arriba" para subir, "Ir más abajo" para ir al final, "Ir más arriba" para ir al inicio, o "Ir a [nombre de sección]" para saltar a una sección específica.</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-cursor-text"></i>
+                <h4>Escribir en Campos</h4>
+                <p>Di "Escribir [texto] en [nombre del campo]". Por ejemplo: "Escribir Juan en nombre"</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-list-check"></i>
+                <h4>Seleccionar Opciones</h4>
+                <p>Di "Seleccionar [opción] en [nombre de la lista]". Por ejemplo: "Seleccionar Si en ¿Tiene mascotas?"</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-eraser"></i>
+                <h4>Borrar Campos</h4>
+                <p>Di "Borrar campo [nombre del campo]" para limpiar un campo. Por ejemplo: "Borrar campo nombre"</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Asegurarse de que los elementos sean accesibles para lectores de pantalla
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
+            card.setAttribute('role', 'article');
+            card.setAttribute('aria-label', card.querySelector('h3').textContent);
+        });
+
+        const featureItems = document.querySelectorAll('.feature-item');
+        featureItems.forEach(item => {
+            item.setAttribute('role', 'article');
+            item.setAttribute('aria-label', item.querySelector('h4').textContent);
+        });
+    });
+</script>
