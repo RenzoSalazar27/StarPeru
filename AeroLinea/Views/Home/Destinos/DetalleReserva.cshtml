@@ -274,9 +274,7 @@
             <div class="mt-4">
                 @if (!Model.pagadoVuelo)
                 {
-                    <a href="@Url.Action("ProcesoPago", "Pago", new { id = Model.idResVuelo })" class="btn btn-success">
-                        Realizar Pago
-                    </a>
+                    <button onclick="realizarPago(@Model.idResVuelo)" class="btn btn-success">Realizar Pago</button>
                 }
                 <a href="@Url.Action("Reservas", "Home")" class="btn btn-secondary">Volver a Mis Reservas</a>
             </div>
@@ -286,6 +284,10 @@
 
 @section Scripts {
     <script>
-        // Eliminamos la función realizarPago ya que no la necesitamos más
+        function realizarPago(idReserva) {
+            if (confirm('¿Desea proceder con el pago de esta reserva?')) {
+                window.location.href = '@Url.Action("RealizarPago", "Home")/' + idReserva;
+            }
+        }
     </script>
 } 

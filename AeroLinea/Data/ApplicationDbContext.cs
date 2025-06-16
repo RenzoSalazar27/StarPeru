@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AeroLinea.Models;
 
-namespace Data
+namespace AeroLinea.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -18,5 +18,16 @@ namespace Data
         public DbSet<ReservaVuelo> ReservaVuelos { get; set; }
         public DbSet<Pasajero> Pasajeros { get; set; }
         public DbSet<Pago> Pagos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Pago>()
+                .HasOne(p => p.Reserva)
+                .WithMany()
+                .HasForeignKey(p => p.IdReserva)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 } 

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lM65xVs+Dps=",
+  "dgSpecHash": "492mIe6RNYc=",
   "success": true,
   "projectFilePath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
   "expectedPackageFiles": [
@@ -138,6 +138,7 @@
     "C:\\Users\\renzo\\.nuget\\packages\\sharpziplib\\1.4.2\\sharpziplib.1.4.2.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\sixlabors.fonts\\1.0.0-beta17\\sixlabors.fonts.1.0.0-beta17.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\sixlabors.imagesharp\\1.0.4\\sixlabors.imagesharp.1.0.4.nupkg.sha512",
+    "C:\\Users\\renzo\\.nuget\\packages\\stripe.net\\48.2.0\\stripe.net.48.2.0.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",

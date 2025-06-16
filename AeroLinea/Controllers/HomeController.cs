@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AeroLinea.Models;
 using System.Diagnostics;
-using Data;
+using AeroLinea.Data;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,18 +13,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
+using AeroLinea.Services;
 
 namespace AeroLinea.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly Data.ApplicationDbContext _context;
+        private readonly AeroLinea.Data.ApplicationDbContext _context;
+        private readonly StripeService _stripeService;
 
-        public HomeController(ILogger<HomeController> logger, Data.ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, AeroLinea.Data.ApplicationDbContext context, StripeService stripeService)
         {
             _logger = logger;
             _context = context;
+            _stripeService = stripeService;
         }
 
         public IActionResult Index()
@@ -1267,6 +1270,73 @@ namespace AeroLinea.Controllers
             {
                 return Json(new { success = false, message = "Error al registrar usuario: " + ex.Message });
             }
+        }
+
+        [HttpGet]
+        [Route("Home/RealizarPago/{idReserva}")]
+        public async Task<IActionResult> RealizarPago(int idReserva)
+        {
+            try
+            {
+                var reserva = await _context.ReservaVuelos
+                    .Include(r => r.Vuelo)
+                    .Include(r => r.Usuario)
+                    .FirstOrDefaultAsync(r => r.idResVuelo == idReserva);
+
+                if (reserva == null)
+                {
+                    return NotFound();
+                }
+
+                var pago = new PagoModel
+                {
+                    IdReserva = idReserva,
+                    Monto = reserva.precioVuelo,
+                    Descripcion = $"Reserva de vuelo {reserva.destinoVuelo}",
+                    EmailCliente = reserva.Usuario.correoUsuario,
+                    NombreCliente = $"{reserva.Usuario.nombresUsuario} {reserva.Usuario.apellidosUsuario}",
+                    FechaPago = DateTime.Now
+                };
+
+                var stripeUrl = await _stripeService.CrearSesionPago(pago);
+                return Redirect(stripeUrl);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al procesar el pago");
+                return RedirectToAction("Error");
+            }
+        }
+
+        public async Task<IActionResult> ConfirmacionPago(string session_id, int idReserva)
+        {
+            try
+            {
+                var pagoExitoso = await _stripeService.VerificarPago(session_id);
+                
+                if (pagoExitoso)
+                {
+                    var reserva = await _context.ReservaVuelos.FindAsync(idReserva);
+                    if (reserva != null)
+                    {
+                        reserva.pagadoVuelo = true;
+                        await _context.SaveChangesAsync();
+                    }
+                    return RedirectToAction("Reservas", new { mensaje = "Pago realizado con éxito" });
+                }
+                
+                return RedirectToAction("Reservas", new { mensaje = "Error al procesar el pago" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al confirmar el pago");
+                return RedirectToAction("Reservas", new { mensaje = "Error al procesar el pago" });
+            }
+        }
+
+        public IActionResult CancelacionPago()
+        {
+            return RedirectToAction("Reservas", new { mensaje = "Pago cancelado" });
         }
     }
 }

@@ -2846,3 +2846,4 @@ C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\A
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\ref\AeroLinea.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Stripe.net.dll

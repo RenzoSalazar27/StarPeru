@@ -1,5 +1,7 @@
-using AeroLinea.Models;
 using Microsoft.EntityFrameworkCore;
+using AeroLinea.Models;
+using AeroLinea.Services;
+using AeroLinea.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,7 @@ builder.Services.AddSession(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine($"Cadena de conexión: {connectionString}");
 
-builder.Services.AddDbContext<Data.ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AeroLinea.Data.ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
         mySqlOptions =>
@@ -32,6 +34,8 @@ builder.Services.AddDbContext<Data.ApplicationDbContext>(options =>
     .EnableDetailedErrors();
 });
 
+builder.Services.AddScoped<StripeService>();
+
 var app = builder.Build();
 
 // Asegurar que la base de datos existe y está actualizada
@@ -41,14 +45,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         Console.WriteLine("Intentando conectar a la base de datos...");
-        var context = services.GetRequiredService<Data.ApplicationDbContext>();
+        var context = services.GetRequiredService<AeroLinea.Data.ApplicationDbContext>();
         
         Console.WriteLine("Verificando si la base de datos existe...");
         if (context.Database.CanConnect())
         {
             Console.WriteLine("Conexión exitosa a la base de datos");
-            // Inicializar los datos
-            // DbInitializer.Initialize(context); // Línea eliminada
             Console.WriteLine("Datos inicializados correctamente");
         }
         else
