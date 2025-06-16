@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using BCrypt.Net;
 using AeroLinea.Services;
+using Stripe;
+using Stripe.Checkout;
 
 namespace AeroLinea.Controllers
 {
@@ -1274,69 +1276,69 @@ namespace AeroLinea.Controllers
 
         [HttpGet]
         [Route("Home/RealizarPago/{idReserva}")]
-        public async Task<IActionResult> RealizarPago(int idReserva)
+        public IActionResult RealizarPago(int idReserva)
         {
-            try
+            var reserva = _context.ReservaVuelos
+                .Include(r => r.Vuelo)
+                .FirstOrDefault(r => r.idResVuelo == idReserva);
+
+            if (reserva == null)
             {
-                var reserva = await _context.ReservaVuelos
-                    .Include(r => r.Vuelo)
-                    .Include(r => r.Usuario)
-                    .FirstOrDefaultAsync(r => r.idResVuelo == idReserva);
-
-                if (reserva == null)
-                {
-                    return NotFound();
-                }
-
-                var pago = new PagoModel
-                {
-                    IdReserva = idReserva,
-                    Monto = reserva.precioVuelo,
-                    Descripcion = $"Reserva de vuelo {reserva.destinoVuelo}",
-                    EmailCliente = reserva.Usuario.correoUsuario,
-                    NombreCliente = $"{reserva.Usuario.nombresUsuario} {reserva.Usuario.apellidosUsuario}",
-                    FechaPago = DateTime.Now
-                };
-
-                var stripeUrl = await _stripeService.CrearSesionPago(pago);
-                return Redirect(stripeUrl);
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al procesar el pago");
-                return RedirectToAction("Error");
-            }
-        }
 
-        public async Task<IActionResult> ConfirmacionPago(string session_id, int idReserva)
-        {
-            try
+            var options = new SessionCreateOptions
             {
-                var pagoExitoso = await _stripeService.VerificarPago(session_id);
-                
-                if (pagoExitoso)
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>
                 {
-                    var reserva = await _context.ReservaVuelos.FindAsync(idReserva);
-                    if (reserva != null)
+                    new SessionLineItemOptions
                     {
-                        reserva.pagadoVuelo = true;
-                        await _context.SaveChangesAsync();
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(reserva.precioVuelo * 100),
+                            Currency = "pen",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = $"Vuelo a {reserva.destinoVuelo}",
+                                Description = $"Vuelo desde {reserva.origenResVue} a {reserva.destinoVuelo}"
+                            }
+                        },
+                        Quantity = 1
                     }
-                    return RedirectToAction("Reservas", new { mensaje = "Pago realizado con éxito" });
-                }
-                
-                return RedirectToAction("Reservas", new { mensaje = "Error al procesar el pago" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al confirmar el pago");
-                return RedirectToAction("Reservas", new { mensaje = "Error al procesar el pago" });
-            }
+                },
+                Mode = "payment",
+                SuccessUrl = Url.Action("PagoExitoso", "Home", new { id = idReserva }, Request.Scheme),
+                CancelUrl = Url.Action("PagoCancelado", "Home", new { id = idReserva }, Request.Scheme)
+            };
+
+            var service = new SessionService();
+            var session = service.Create(options);
+
+            return Redirect(session.Url);
         }
 
-        public IActionResult CancelacionPago()
+        public IActionResult PagoExitoso(int id)
         {
-            return RedirectToAction("Reservas", new { mensaje = "Pago cancelado" });
+            var reserva = _context.ReservaVuelos.Find(id);
+            if (reserva != null)
+            {
+                reserva.pagadoVuelo = true;
+                _context.SaveChanges();
+            }
+            return View("~/Views/Home/Pago/ConfirmacionPago.cshtml");
+        }
+
+        public IActionResult PagoCancelado(int id)
+        {
+            var reserva = _context.ReservaVuelos.Find(id);
+            if (reserva != null)
+            {
+                reserva.pagadoVuelo = false;
+                _context.SaveChanges();
+            }
+            return View("~/Views/Home/Pago/CancelacionPago.cshtml");
         }
     }
 }
+    

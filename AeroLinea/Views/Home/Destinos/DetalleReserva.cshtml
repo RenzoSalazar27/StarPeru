@@ -152,6 +152,11 @@
         color: #000;
     }
 
+    .status-failed {
+        background: #dc3545;
+        color: white;
+    }
+
     @@media (max-width: 768px) {
         .container {
             padding: 10px;
@@ -285,9 +290,7 @@
 @section Scripts {
     <script>
         function realizarPago(idReserva) {
-            if (confirm('¿Desea proceder con el pago de esta reserva?')) {
-                window.location.href = '@Url.Action("RealizarPago", "Home")/' + idReserva;
-            }
+            window.location.href = '@Url.Action("RealizarPago", "Home")/' + idReserva;
         }
     </script>
 } 

@@ -84,6 +84,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Pago/CancelacionPago.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYWdvXENhbmNlbGFjaW9uUGFnby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/Pago/ConfirmacionPago.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYWdvXENvbmZpcm1hY2lvblBhZ28uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/TECNOLOGIA/Proyectos Visual Studio Code/StarPeru/AeroLinea/Views/Home/perfilPasajero.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxwZXJmaWxQYXNhamVyby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

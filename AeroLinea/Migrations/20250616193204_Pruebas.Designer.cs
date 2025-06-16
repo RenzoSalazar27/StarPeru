@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AeroLinea.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250616181931_PruebaPago")]
-    partial class PruebaPago
+    [Migration("20250616193204_Pruebas")]
+    partial class Pruebas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
