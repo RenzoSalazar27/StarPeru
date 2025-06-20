@@ -2847,3 +2847,5 @@ C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\r
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Stripe.net.dll
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Datos_Prueba_Postman.json
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\StarPeru.json

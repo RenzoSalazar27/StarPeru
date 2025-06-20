@@ -1,0 +1,1034 @@
+{
+	"info": {
+		"_postman_id": "aero-linea-collection",
+		"name": "StarPeru - Pruebas Funcionales",
+		"description": "Colección completa de pruebas funcionales para la aerolínea StarPeru",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Login Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "usuario@test.com",
+									"description": "Correo del usuario"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"description": "Contraseña del usuario"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/Login",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nombresUsuario",
+									"value": "Juan Carlos",
+									"description": "Nombres del usuario"
+								},
+								{
+									"key": "apellidosUsuario",
+									"value": "Pérez García",
+									"description": "Apellidos del usuario"
+								},
+								{
+									"key": "nacimientoUsuario",
+									"value": "1990-05-15",
+									"description": "Fecha de nacimiento"
+								},
+								{
+									"key": "telefonoUsuario",
+									"value": "987654321",
+									"description": "Teléfono (9 dígitos)"
+								},
+								{
+									"key": "identificacionUsuario",
+									"value": "12345678",
+									"description": "DNI (8 dígitos)"
+								},
+								{
+									"key": "correoUsuario",
+									"value": "nuevo@test.com",
+									"description": "Correo electrónico"
+								},
+								{
+									"key": "contrasenaUsuario",
+									"value": "123456",
+									"description": "Contraseña"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/registroPasajero",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "registroPasajero"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recuperar Contraseña",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "usuario@test.com",
+									"description": "Correo del usuario"
+								},
+								{
+									"key": "dni",
+									"value": "12345678",
+									"description": "DNI del usuario"
+								},
+								{
+									"key": "nuevaContrasena",
+									"value": "nueva123",
+									"description": "Nueva contraseña"
+								},
+								{
+									"key": "confirmarContrasena",
+									"value": "nueva123",
+									"description": "Confirmar nueva contraseña"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Autenticacion/RecuperarContrasena",
+							"host": ["{{baseUrl}}"],
+							"path": ["Autenticacion", "RecuperarContrasena"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cerrar Sesión",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/CerrarSesion",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "CerrarSesion"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de autenticación y gestión de usuarios"
+		},
+		{
+			"name": "Administración",
+			"item": [
+				{
+					"name": "Panel Administrador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/panelAdministrador",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "panelAdministrador"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar Rol Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"esAdmin\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/CambiarRol",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "CambiarRol"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/EliminarUsuario",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "EliminarUsuario"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerUsuario?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerUsuario"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idUsuario\": 1,\n    \"nombresUsuario\": \"Juan Carlos Actualizado\",\n    \"apellidosUsuario\": \"Pérez García\",\n    \"nacimientoUsuario\": \"1990-05-15T00:00:00\",\n    \"telefonoUsuario\": \"987654321\",\n    \"identificacionUsuario\": \"12345678\",\n    \"correoUsuario\": \"usuario@test.com\",\n    \"contrasenaUsuario\": \"123456\",\n    \"esAdmin\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/ActualizarUsuario",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ActualizarUsuario"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Usuario (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombresUsuario\": \"Admin Test\",\n    \"apellidosUsuario\": \"Administrador\",\n    \"nacimientoUsuario\": \"1985-03-20T00:00:00\",\n    \"telefonoUsuario\": \"987654321\",\n    \"identificacionUsuario\": \"87654321\",\n    \"correoUsuario\": \"admin@test.com\",\n    \"contrasenaUsuario\": \"admin123\",\n    \"esAdmin\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/RegistrarUsuario",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "RegistrarUsuario"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de funcionalidades administrativas"
+		},
+		{
+			"name": "Gestión de Pilotos",
+			"item": [
+				{
+					"name": "Obtener Pilotos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerPilotos",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerPilotos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Piloto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombresPiloto\": \"Carlos Alberto\",\n    \"apellidosPiloto\": \"Rodríguez López\",\n    \"licenciaPiloto\": \"PIL-2024-001\",\n    \"experienciaPiloto\": 5,\n    \"telefonoPiloto\": \"987654321\",\n    \"correoPiloto\": \"piloto@test.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/RegistrarPiloto",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "RegistrarPiloto"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Piloto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerPiloto?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerPiloto"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Piloto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombresPiloto\": \"Carlos Alberto Actualizado\",\n    \"apellidosPiloto\": \"Rodríguez López\",\n    \"licenciaPiloto\": \"PIL-2024-001\",\n    \"experienciaPiloto\": 6,\n    \"telefonoPiloto\": \"987654321\",\n    \"correoPiloto\": \"piloto@test.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/ActualizarPiloto/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ActualizarPiloto", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Piloto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/EliminarPiloto/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "EliminarPiloto", "1"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de gestión de pilotos"
+		},
+		{
+			"name": "Gestión de Flota",
+			"item": [
+				{
+					"name": "Obtener Flota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerFlota",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerFlota"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Avión",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"modeloAvion\": \"Boeing 737\",\n    \"capacidadAvion\": 150,\n    \"estadoAvion\": \"Activo\",\n    \"tipoAvion\": \"Comercial\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/RegistrarAvion",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "RegistrarAvion"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Avión",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerAvion?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerAvion"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Avión",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"modeloAvion\": \"Boeing 737 MAX\",\n    \"capacidadAvion\": 180,\n    \"estadoAvion\": \"Activo\",\n    \"tipoAvion\": \"Comercial\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/ActualizarAvion/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ActualizarAvion", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Avión",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/EliminarAvion/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "EliminarAvion", "1"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de gestión de flota de aviones"
+		},
+		{
+			"name": "Gestión de Vuelos",
+			"item": [
+				{
+					"name": "Obtener Vuelos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerVuelos",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerVuelos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Vuelo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"origenVuelo\": \"Lima\",\n    \"destinoVuelo\": \"Cusco\",\n    \"fechaVuelo\": \"2024-12-25T10:00:00\",\n    \"idAvion\": 1,\n    \"idPiloto\": 1,\n    \"precioVuelo\": 250.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/RegistrarVuelo",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "RegistrarVuelo"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Vuelo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerVuelo?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerVuelo"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Vuelo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"origenVuelo\": \"Lima\",\n    \"destinoVuelo\": \"Arequipa\",\n    \"fechaVuelo\": \"2024-12-25T14:00:00\",\n    \"idAvion\": 1,\n    \"idPiloto\": 1,\n    \"precioVuelo\": 280.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/ActualizarVuelo/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ActualizarVuelo", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Vuelo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/EliminarVuelo/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "EliminarVuelo", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vuelos por Destino",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/VuelosPorDestino?destino=Lima",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "VuelosPorDestino"],
+							"query": [
+								{
+									"key": "destino",
+									"value": "Lima"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vuelos Económicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/VuelosEconomicos",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "VuelosEconomicos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Detalles Vuelo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ObtenerDetallesVuelo?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ObtenerDetallesVuelo"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de gestión de vuelos"
+		},
+		{
+			"name": "Reservas",
+			"item": [
+				{
+					"name": "Reservar Vuelo (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ReservarVuelo?idVuelo=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ReservarVuelo"],
+							"query": [
+								{
+									"key": "idVuelo",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reservar Vuelo (POST)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/ReservarVuelo?idVuelo=1&numPasajeros=2&mascotas=false",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ReservarVuelo"],
+							"query": [
+								{
+									"key": "idVuelo",
+									"value": "1"
+								},
+								{
+									"key": "numPasajeros",
+									"value": "2"
+								},
+								{
+									"key": "mascotas",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle Reserva",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/DetalleReserva?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "DetalleReserva"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Reservas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Reservas",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Reservas"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de gestión de reservas"
+		},
+		{
+			"name": "Consultas y Soporte",
+			"item": [
+				{
+					"name": "Registrar Consulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "motivoConsulta",
+									"value": "Información de vuelo",
+									"description": "Motivo de la consulta"
+								},
+								{
+									"key": "descripcionConsultas",
+									"value": "Necesito información sobre el horario de mi vuelo",
+									"description": "Descripción detallada"
+								},
+								{
+									"key": "urgencia",
+									"value": "Media",
+									"description": "Nivel de urgencia"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/RegistrarConsulta",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "RegistrarConsulta"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Estado Consulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"estado\": \"Resuelto\",\n    \"comentarioConsulta\": \"Consulta resuelta satisfactoriamente\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/ActualizarEstadoConsulta",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ActualizarEstadoConsulta"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Consulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/EliminarConsulta",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "EliminarConsulta"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de sistema de consultas y soporte"
+		},
+		{
+			"name": "Perfil y Pagos",
+			"item": [
+				{
+					"name": "Perfil Pasajero",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/perfilPasajero",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "perfilPasajero"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Perfil",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								},
+								{
+									"key": "nombresUsuario",
+									"value": "Juan Carlos Actualizado"
+								},
+								{
+									"key": "apellidosUsuario",
+									"value": "Pérez García"
+								},
+								{
+									"key": "telefonoUsuario",
+									"value": "987654321"
+								},
+								{
+									"key": "correoUsuario",
+									"value": "usuario@test.com"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Home/ActualizarPerfil",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "ActualizarPerfil"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Realizar Pago",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/RealizarPago/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "RealizarPago", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pago Exitoso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/PagoExitoso?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "PagoExitoso"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pago Cancelado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/PagoCancelado?id=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "PagoCancelado"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de perfil de usuario y sistema de pagos"
+		},
+		{
+			"name": "Páginas Estáticas",
+			"item": [
+				{
+					"name": "Página Principal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Index",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Index"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destinos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Destinos",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Destinos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Equipaje",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Equipaje",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Equipaje"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Servicios al Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Servicios_al_cliente",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Servicios_al_cliente"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Discapacidad",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Discapacidad",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Discapacidad"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flota",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Flota",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Flota"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Privacidad",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/Home/Privacy",
+							"host": ["{{baseUrl}}"],
+							"path": ["Home", "Privacy"]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de páginas estáticas y navegación"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7001",
+			"type": "string"
+		}
+	]
+} 

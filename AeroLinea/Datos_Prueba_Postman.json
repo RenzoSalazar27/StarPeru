@@ -1,0 +1,291 @@
+{
+  "usuarios_prueba": {
+    "usuario_normal": {
+      "nombresUsuario": "Juan Carlos",
+      "apellidosUsuario": "Pérez García",
+      "nacimientoUsuario": "1990-05-15",
+      "telefonoUsuario": "987654321",
+      "identificacionUsuario": "12345678",
+      "correoUsuario": "usuario@test.com",
+      "contrasenaUsuario": "123456",
+      "esAdmin": false
+    },
+    "usuario_admin": {
+      "nombresUsuario": "Admin Test",
+      "apellidosUsuario": "Administrador",
+      "nacimientoUsuario": "1985-03-20",
+      "telefonoUsuario": "987654321",
+      "identificacionUsuario": "87654321",
+      "correoUsuario": "admin@test.com",
+      "contrasenaUsuario": "admin123",
+      "esAdmin": true
+    },
+    "usuario_nuevo": {
+      "nombresUsuario": "María Elena",
+      "apellidosUsuario": "Rodríguez López",
+      "nacimientoUsuario": "1992-08-10",
+      "telefonoUsuario": "987654322",
+      "identificacionUsuario": "23456789",
+      "correoUsuario": "maria@test.com",
+      "contrasenaUsuario": "123456",
+      "esAdmin": false
+    }
+  },
+  "pilotos_prueba": {
+    "piloto_1": {
+      "nombresPiloto": "Carlos Alberto",
+      "apellidosPiloto": "Rodríguez López",
+      "licenciaPiloto": "PIL-2024-001",
+      "experienciaPiloto": 5,
+      "telefonoPiloto": "987654321",
+      "correoPiloto": "piloto@test.com"
+    },
+    "piloto_2": {
+      "nombresPiloto": "Ana María",
+      "apellidosPiloto": "García Silva",
+      "licenciaPiloto": "PIL-2024-002",
+      "experienciaPiloto": 8,
+      "telefonoPiloto": "987654322",
+      "correoPiloto": "ana.piloto@test.com"
+    },
+    "piloto_3": {
+      "nombresPiloto": "Roberto Carlos",
+      "apellidosPiloto": "Mendoza Torres",
+      "licenciaPiloto": "PIL-2024-003",
+      "experienciaPiloto": 12,
+      "telefonoPiloto": "987654323",
+      "correoPiloto": "roberto.piloto@test.com"
+    }
+  },
+  "aviones_prueba": {
+    "avion_1": {
+      "modeloAvion": "Boeing 737",
+      "capacidadAvion": 150,
+      "estadoAvion": "Activo",
+      "tipoAvion": "Comercial"
+    },
+    "avion_2": {
+      "modeloAvion": "Airbus A320",
+      "capacidadAvion": 180,
+      "estadoAvion": "Activo",
+      "tipoAvion": "Comercial"
+    },
+    "avion_3": {
+      "modeloAvion": "Boeing 787 Dreamliner",
+      "capacidadAvion": 250,
+      "estadoAvion": "Activo",
+      "tipoAvion": "Comercial"
+    },
+    "avion_4": {
+      "modeloAvion": "ATR 72",
+      "capacidadAvion": 70,
+      "estadoAvion": "Activo",
+      "tipoAvion": "Regional"
+    }
+  },
+  "vuelos_prueba": {
+    "vuelo_lima_cusco": {
+      "origenVuelo": "Lima",
+      "destinoVuelo": "Cusco",
+      "fechaVuelo": "2024-12-25T10:00:00",
+      "idAvion": 1,
+      "idPiloto": 1,
+      "precioVuelo": 250.00
+    },
+    "vuelo_lima_arequipa": {
+      "origenVuelo": "Lima",
+      "destinoVuelo": "Arequipa",
+      "fechaVuelo": "2024-12-25T14:00:00",
+      "idAvion": 2,
+      "idPiloto": 2,
+      "precioVuelo": 180.00
+    },
+    "vuelo_cusco_lima": {
+      "origenVuelo": "Cusco",
+      "destinoVuelo": "Lima",
+      "fechaVuelo": "2024-12-26T08:00:00",
+      "idAvion": 1,
+      "idPiloto": 1,
+      "precioVuelo": 250.00
+    },
+    "vuelo_lima_trujillo": {
+      "origenVuelo": "Lima",
+      "destinoVuelo": "Trujillo",
+      "fechaVuelo": "2024-12-25T16:00:00",
+      "idAvion": 4,
+      "idPiloto": 3,
+      "precioVuelo": 120.00
+    },
+    "vuelo_lima_iquitos": {
+      "origenVuelo": "Lima",
+      "destinoVuelo": "Iquitos",
+      "fechaVuelo": "2024-12-25T12:00:00",
+      "idAvion": 3,
+      "idPiloto": 2,
+      "precioVuelo": 350.00
+    }
+  },
+  "reservas_prueba": {
+    "reserva_1": {
+      "idVuelo": 1,
+      "numPasajeros": 2,
+      "mascotas": false
+    },
+    "reserva_2": {
+      "idVuelo": 2,
+      "numPasajeros": 1,
+      "mascotas": true
+    },
+    "reserva_3": {
+      "idVuelo": 3,
+      "numPasajeros": 4,
+      "mascotas": false
+    }
+  },
+  "consultas_prueba": {
+    "consulta_1": {
+      "motivoConsulta": "Información de vuelo",
+      "descripcionConsultas": "Necesito información sobre el horario de mi vuelo y si puedo cambiar la fecha",
+      "urgencia": "Media"
+    },
+    "consulta_2": {
+      "motivoConsulta": "Problema con equipaje",
+      "descripcionConsultas": "Mi equipaje no llegó a mi destino, necesito ayuda para localizarlo",
+      "urgencia": "Alta"
+    },
+    "consulta_3": {
+      "motivoConsulta": "Cancelación de vuelo",
+      "descripcionConsultas": "Quiero cancelar mi vuelo y saber si puedo obtener un reembolso",
+      "urgencia": "Baja"
+    }
+  },
+  "destinos_disponibles": [
+    "Lima",
+    "Cusco",
+    "Arequipa",
+    "Trujillo",
+    "Iquitos",
+    "Chiclayo",
+    "Cajamarca",
+    "Huanuco",
+    "Tarapoto",
+    "Pucallpa"
+  ],
+  "datos_invalidos": {
+    "usuario_invalido": {
+      "nombresUsuario": "A",
+      "apellidosUsuario": "B",
+      "nacimientoUsuario": "2025-01-01",
+      "telefonoUsuario": "123",
+      "identificacionUsuario": "123",
+      "correoUsuario": "correo_invalido",
+      "contrasenaUsuario": "123",
+      "esAdmin": false
+    },
+    "vuelo_invalido": {
+      "origenVuelo": "Lima",
+      "destinoVuelo": "Lima",
+      "fechaVuelo": "2020-01-01T10:00:00",
+      "idAvion": 999,
+      "idPiloto": 999,
+      "precioVuelo": -100
+    },
+    "piloto_invalido": {
+      "nombresPiloto": "",
+      "apellidosPiloto": "",
+      "licenciaPiloto": "",
+      "experienciaPiloto": -1,
+      "telefonoPiloto": "123",
+      "correoPiloto": "correo_invalido"
+    }
+  },
+  "headers_comunes": {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "User-Agent": "PostmanRuntime/7.32.3"
+  },
+  "headers_form_data": {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "User-Agent": "PostmanRuntime/7.32.3"
+  },
+  "variables_entorno": {
+    "baseUrl": "https://localhost:7001",
+    "userEmail": "usuario@test.com",
+    "userPassword": "123456",
+    "adminEmail": "admin@test.com",
+    "adminPassword": "admin123",
+    "testUserId": "1",
+    "testVueloId": "1",
+    "testPilotoId": "1",
+    "testAvionId": "1",
+    "testReservaId": "1"
+  },
+  "urls_endpoints": {
+    "autenticacion": {
+      "login": "{{baseUrl}}/Home/Login",
+      "registro": "{{baseUrl}}/Home/registroPasajero",
+      "recuperar_password": "{{baseUrl}}/Autenticacion/RecuperarContrasena",
+      "cerrar_sesion": "{{baseUrl}}/Home/CerrarSesion"
+    },
+    "administracion": {
+      "panel_admin": "{{baseUrl}}/Home/panelAdministrador",
+      "cambiar_rol": "{{baseUrl}}/Home/CambiarRol",
+      "eliminar_usuario": "{{baseUrl}}/Home/EliminarUsuario",
+      "obtener_usuario": "{{baseUrl}}/Home/ObtenerUsuario?id={{testUserId}}",
+      "actualizar_usuario": "{{baseUrl}}/Home/ActualizarUsuario",
+      "registrar_usuario": "{{baseUrl}}/Home/RegistrarUsuario"
+    },
+    "pilotos": {
+      "obtener_pilotos": "{{baseUrl}}/Home/ObtenerPilotos",
+      "registrar_piloto": "{{baseUrl}}/Home/RegistrarPiloto",
+      "obtener_piloto": "{{baseUrl}}/Home/ObtenerPiloto?id={{testPilotoId}}",
+      "actualizar_piloto": "{{baseUrl}}/Home/ActualizarPiloto/{{testPilotoId}}",
+      "eliminar_piloto": "{{baseUrl}}/Home/EliminarPiloto/{{testPilotoId}}"
+    },
+    "flota": {
+      "obtener_flota": "{{baseUrl}}/Home/ObtenerFlota",
+      "registrar_avion": "{{baseUrl}}/Home/RegistrarAvion",
+      "obtener_avion": "{{baseUrl}}/Home/ObtenerAvion?id={{testAvionId}}",
+      "actualizar_avion": "{{baseUrl}}/Home/ActualizarAvion/{{testAvionId}}",
+      "eliminar_avion": "{{baseUrl}}/Home/EliminarAvion/{{testAvionId}}"
+    },
+    "vuelos": {
+      "obtener_vuelos": "{{baseUrl}}/Home/ObtenerVuelos",
+      "registrar_vuelo": "{{baseUrl}}/Home/RegistrarVuelo",
+      "obtener_vuelo": "{{baseUrl}}/Home/ObtenerVuelo?id={{testVueloId}}",
+      "actualizar_vuelo": "{{baseUrl}}/Home/ActualizarVuelo/{{testVueloId}}",
+      "eliminar_vuelo": "{{baseUrl}}/Home/EliminarVuelo/{{testVueloId}}",
+      "vuelos_por_destino": "{{baseUrl}}/Home/VuelosPorDestino?destino=Lima",
+      "vuelos_economicos": "{{baseUrl}}/Home/VuelosEconomicos",
+      "detalles_vuelo": "{{baseUrl}}/Home/ObtenerDetallesVuelo?id={{testVueloId}}"
+    },
+    "reservas": {
+      "reservar_vuelo_get": "{{baseUrl}}/Home/ReservarVuelo?idVuelo={{testVueloId}}",
+      "reservar_vuelo_post": "{{baseUrl}}/Home/ReservarVuelo?idVuelo={{testVueloId}}&numPasajeros=2&mascotas=false",
+      "detalle_reserva": "{{baseUrl}}/Home/DetalleReserva?id={{testReservaId}}",
+      "ver_reservas": "{{baseUrl}}/Home/Reservas"
+    },
+    "consultas": {
+      "registrar_consulta": "{{baseUrl}}/Home/RegistrarConsulta",
+      "actualizar_estado_consulta": "{{baseUrl}}/Home/ActualizarEstadoConsulta",
+      "eliminar_consulta": "{{baseUrl}}/Home/EliminarConsulta"
+    },
+    "perfil_pagos": {
+      "perfil_pasajero": "{{baseUrl}}/Home/perfilPasajero",
+      "actualizar_perfil": "{{baseUrl}}/Home/ActualizarPerfil",
+      "realizar_pago": "{{baseUrl}}/Home/RealizarPago/{{testReservaId}}",
+      "pago_exitoso": "{{baseUrl}}/Home/PagoExitoso?id={{testReservaId}}",
+      "pago_cancelado": "{{baseUrl}}/Home/PagoCancelado?id={{testReservaId}}"
+    },
+    "paginas_estaticas": {
+      "index": "{{baseUrl}}/Home/Index",
+      "destinos": "{{baseUrl}}/Home/Destinos",
+      "equipaje": "{{baseUrl}}/Home/Equipaje",
+      "servicios_cliente": "{{baseUrl}}/Home/Servicios_al_cliente",
+      "discapacidad": "{{baseUrl}}/Home/Discapacidad",
+      "flota": "{{baseUrl}}/Home/Flota",
+      "privacy": "{{baseUrl}}/Home/Privacy"
+    }
+  }
+} 
