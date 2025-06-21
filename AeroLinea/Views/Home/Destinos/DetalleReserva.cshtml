@@ -77,8 +77,8 @@
         /* Header moderno */
         .page-header {
             text-align: center !important;
-            margin-bottom: 40px !important;
-            padding: 50px 40px !important;
+            margin-bottom: 20px !important;
+            padding: 30px 40px !important;
             background: rgba(255, 255, 255, 0.15) !important;
             backdrop-filter: blur(25px) !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -186,17 +186,17 @@
         }
 
         .card-body-modern {
-            padding: 40px !important;
+            padding: 25px !important;
         }
 
         /* Sección de destino */
         .destination-section {
             display: flex !important;
-            gap: 30px !important;
-            margin-bottom: 40px !important;
+            gap: 20px !important;
+            margin-bottom: 20px !important;
             background: rgba(225, 74, 74, 0.05) !important;
             border-radius: 20px !important;
-            padding: 30px !important;
+            padding: 20px !important;
             border: 1px solid rgba(225, 74, 74, 0.1) !important;
             transition: all 0.3s ease !important;
         }
@@ -243,7 +243,7 @@
 
         .destination-image img {
             width: 100% !important;
-            height: 250px !important;
+            height: 200px !important;
             object-fit: cover !important;
         }
 
@@ -251,8 +251,8 @@
         .info-section-modern {
             background: rgba(255, 255, 255, 0.8) !important;
             border-radius: 20px !important;
-            padding: 30px !important;
-            margin-bottom: 30px !important;
+            padding: 20px !important;
+            margin-bottom: 20px !important;
             border: 1px solid rgba(225, 74, 74, 0.1) !important;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
             transition: all 0.3s ease !important;
@@ -265,21 +265,21 @@
 
         .info-section-modern h4 {
             color: #e14a4a !important;
-            font-size: 1.6em !important;
-            margin-bottom: 25px !important;
+            font-size: 1.4em !important;
+            margin-bottom: 15px !important;
             font-weight: 700 !important;
             display: flex !important;
             align-items: center !important;
             gap: 12px !important;
             border-bottom: 3px solid #ff6b6b !important;
-            padding-bottom: 10px !important;
+            padding-bottom: 8px !important;
         }
 
         .info-item-modern {
             display: flex !important;
-            margin-bottom: 20px !important;
+            margin-bottom: 12px !important;
             align-items: center !important;
-            padding: 15px !important;
+            padding: 12px !important;
             background: rgba(255, 255, 255, 0.5) !important;
             border-radius: 12px !important;
             transition: all 0.3s ease !important;
@@ -310,8 +310,8 @@
         .table-container-modern {
             background: rgba(255, 255, 255, 0.9) !important;
             border-radius: 20px !important;
-            padding: 25px !important;
-            margin-top: 30px !important;
+            padding: 20px !important;
+            margin-top: 20px !important;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
             border: 1px solid rgba(225, 74, 74, 0.1) !important;
         }
@@ -328,8 +328,8 @@
             color: white !important;
             font-weight: 600 !important;
             border: none !important;
-            padding: 20px 15px !important;
-            font-size: 1.1em !important;
+            padding: 15px 12px !important;
+            font-size: 1em !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
         }
@@ -343,7 +343,7 @@
         }
 
         .custom-table tbody td {
-            padding: 18px 15px !important;
+            padding: 12px !important;
             vertical-align: middle !important;
             color: #555 !important;
             border-bottom: 1px solid rgba(0,0,0,0.08) !important;
@@ -632,7 +632,7 @@
                         <span class="info-value-modern">
                             <span class="status-badge-modern @(Model.pagadoVuelo ? "status-paid-modern" : "status-pending-modern")">
                                 <i class="fas @(Model.pagadoVuelo ? "fa-check-circle" : "fa-clock") me-1"></i>
-                                @(Model.pagadoVuelo ? "Pagado" : "Pendiente")
+                            @(Model.pagadoVuelo ? "Pagado" : "Pendiente")
                         </span>
                     </span>
                 </div>
@@ -676,19 +676,19 @@
             </div>
 
                 <!-- Botones de acción -->
-                <div style="margin-top: 30px; text-align: center;">
+                <div style="margin-top: 20px; text-align: center;">
                 @if (!Model.pagadoVuelo)
                 {
                         <button onclick="realizarPago(@Model.idResVuelo)" class="btn-modern btn-success-modern">
                             <i class="fas fa-credit-card me-2"></i>
                             Realizar Pago
                         </button>
-                    }
+                }
                     <a href="@Url.Action("Reservas", "Home")" class="btn-modern btn-secondary-modern">
                         <i class="fas fa-arrow-left me-2"></i>
                         Volver a Mis Reservas
                     </a>
-                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -10,25 +10,48 @@
     <link rel="stylesheet" href="~/css/daltonismo.css" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Reset y configuración base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Switch de accesibilidad moderno */
         .switch-container {
             display: flex;
             align-items: center;
-            padding: 5px 10px;
-            margin: 0 5px;
+            padding: 8px 15px;
+            margin: 0 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
+
+        .switch-container:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
         .switch {
             position: relative;
             display: inline-block;
-            width: 40px;
-            height: 20px;
-            margin-right: 5px;
+            width: 45px;
+            height: 25px;
+            margin-right: 8px;
         }
+
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
+
         .slider {
             position: absolute;
             cursor: pointer;
@@ -36,154 +59,445 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 20px;
+            background: linear-gradient(135deg, #ccc 0%, #999 100%);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 25px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
+
         .slider:before {
             position: absolute;
             content: "";
-            height: 14px;
-            width: 14px;
+            height: 19px;
+            width: 19px;
             left: 3px;
             bottom: 3px;
-            background-color: white;
-            transition: .4s;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+
         input:checked + .slider {
-            background-color: #0d6efd;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            box-shadow: 0 0 15px rgba(225, 74, 74, 0.4);
         }
+
         input:checked + .slider:before {
             transform: translateX(20px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
+
         .switch-label {
             color: #333;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-weight: 500;
+            gap: 5px;
+            font-weight: 600;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .switch-label i {
-            color: #0d6efd;
-            font-size: 1rem;
+            color: #e14a4a;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
+
+        .switch-container:hover .switch-label i {
+            transform: scale(1.1);
+        }
+
         .accessibility-switches {
             display: flex;
             align-items: center;
             margin-left: auto;
-            margin-right: 15px;
+            margin-right: 20px;
         }
+
+        /* Botón hamburguesa moderno */
         .hamburger {
-            background: none;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
             border: none;
-            font-size: 1.8rem;
-            color: #0d6efd;
-            padding: 0.5rem;
+            font-size: 1.5rem;
+            color: white;
+            padding: 12px 15px;
             cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .hamburger:hover {
-            transform: scale(1.1);
-        }
-        #menuOptions {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 300px;
-            height: 100vh;
-            background: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            transition: transform 0.3s ease;
-            transform: translateX(-100%);
-            overflow-y: auto;
-        }
-        #menuOptions.show {
-            transform: translateX(0);
-        }
-        .card2 {
-            background: white;
-            border: none;
-            padding: 1rem;
-        }
-        .menu-section-title {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 700;
-            margin: 1.8rem 0 0.8rem 0;
-            padding: 0.8rem 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            border-radius: 8px;
-            box-shadow: 0 3px 6px rgba(220, 53, 69, 0.3);
-            position: relative;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .menu-main-title {
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            padding: 0.8rem 1.2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(225, 74, 74, 0.3);
             position: relative;
             overflow: hidden;
         }
-        .menu-main-title::before {
+
+        .hamburger::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
         }
-        .menu-main-title:hover::before {
+
+        .hamburger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(225, 74, 74, 0.4);
+        }
+
+        .hamburger:hover::before {
             left: 100%;
         }
-        .nav-link {
-            color: #333;
-            padding: 0.8rem 1rem;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            margin: 0.2rem 0.5rem;
+
+        .hamburger i {
+            transition: transform 0.3s ease;
         }
-        .nav-link:hover {
-            background-color: #f8f9fa;
-            color: #0d6efd;
+
+        .hamburger:hover i {
+            transform: rotate(90deg);
+        }
+
+        /* Menú desplegable moderno */
+        #menuOptions {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.98) 100%);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateX(-100%);
+            overflow-y: auto;
+            border-radius: 0 30px 30px 0;
+        }
+
+        #menuOptions.show {
+            transform: translateX(0);
+        }
+
+        /* Partículas flotantes en el menú */
+        .menu-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .menu-particle {
+            position: absolute;
+            background: rgba(225, 74, 74, 0.1);
+            border-radius: 50%;
+            animation: menuFloat 6s ease-in-out infinite;
+        }
+
+        @@keyframes menuFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        .card2 {
+            background: transparent;
+            border: none;
+            padding: 0;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Header del menú */
+        .menu-header {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            margin: 0;
+            padding: 2rem;
+            border-radius: 0 30px 0 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
+        }
+
+        .menu-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .menu-header:hover::before {
+            left: 100%;
+        }
+
+        .menu-main-title {
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .menu-main-title i {
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .btn-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .btn-close i {
+            font-size: 1.2rem;
+        }
+
+        /* Eliminar el pseudo-elemento de Bootstrap que causa la X doble */
+        .btn-close::before,
+        .btn-close::after {
+            display: none !important;
+        }
+
+        /* Contenido del menú */
+        .menu-content {
+            padding: 2rem;
+            background: transparent;
+            width: 100%;
+        }
+
+        /* Dropdown de daltonismo mejorado */
+        .daltonism-dropdown {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .daltonism-dropdown .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 9999 !important;
+            min-width: 250px;
+            background: white;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .daltonism-dropdown .dropdown-menu.show {
+            display: block !important;
+        }
+
+        .daltonism-dropdown .dropdown-item {
+            padding: 0.75rem 1rem;
+            color: #555;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .daltonism-dropdown .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            color: #e14a4a;
             transform: translateX(5px);
         }
-        .btn-close {
-            color: #0d6efd;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
+
+        .daltonism-dropdown .dropdown-divider {
+            margin: 0.5rem 0;
+            border-top: 1px solid rgba(0,0,0,0.1);
         }
-        .btn-close:hover {
-            opacity: 1;
+
+        /* Forzar visibilidad del dropdown */
+        .daltonism-dropdown .dropdown-menu[style*="display: none"] {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
+
+        /* CSS adicional para forzar visibilidad */
+        .daltonism-dropdown .dropdown-menu.force-show {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 99999 !important;
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+        }
+
+        /* Secciones del menú */
+        .menu-section-title {
+            color: #e14a4a;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem 0;
+            padding: 1rem 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border-radius: 15px;
+            border-left: 4px solid #e14a4a;
+            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .menu-section-title:hover {
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.15) 0%, rgba(255, 107, 107, 0.15) 100%);
+            transform: translateX(5px);
+        }
+
+        /* Enlaces del menú */
+        .nav-link {
+            color: #555;
+            padding: 1rem 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 15px;
+            margin: 0.5rem 0;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(225, 74, 74, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            color: #e14a4a;
+            transform: translateX(10px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(225, 74, 74, 0.15);
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Overlay del menú */
         .menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
             z-index: 999;
             display: none;
+            transition: all 0.3s ease;
         }
+
         .menu-overlay.show {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsividad */
+        @@media (max-width: 768px) {
+            #menuOptions {
+                width: 100%;
+                border-radius: 0;
+            }
+
+            .menu-header {
+                border-radius: 0;
+            }
+
+            .accessibility-switches {
+                flex-direction: column;
+                gap: 10px;
+                margin-right: 10px;
+            }
+
+            .switch-container {
+                margin: 0;
+                padding: 6px 12px;
+            }
+
+            .switch-label {
+                font-size: 0.75rem;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .hamburger {
+                padding: 10px 12px;
+                font-size: 1.3rem;
+            }
+
+            .menu-main-title {
+                font-size: 1.3rem;
+            }
+
+            .nav-link {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.95rem;
+            }
         }
     </style>
     @RenderSection("Styles", required: false)
@@ -193,7 +507,7 @@
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <button class="hamburger" type="button" data-bs-toggle="collapse" data-bs-target="#menuOptions" aria-controls="menuOptions" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="bi bi-list"></i>
+                    <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav flex-grow-1">
@@ -213,7 +527,7 @@
                                 <span class="slider"></span>
                             </label>
                             <span class="switch-label">
-                                <i class="bi bi-palette"></i> Daltonismo
+                                <i class="fas fa-palette"></i> Daltonismo
                             </span>
                             <!-- Dropdown que aparece solo cuando está activado -->
                             <div class="daltonism-dropdown" id="daltonismDropdown" style="display: none;">
@@ -241,7 +555,7 @@
                                 <span class="slider"></span>
                             </label>
                             <span class="switch-label">
-                                <i class="bi bi-volume-up"></i> Lector <span style="font-size: 0.7rem; color: #666;">(Alt+V)</span>
+                                <i class="fas fa-volume-up"></i> Lector <span style="font-size: 0.7rem; color: #666;">(Alt+V)</span>
                             </span>
                         </div>
                         <div class="switch-container">
@@ -264,118 +578,184 @@
         <!-- Menú desplegable -->
         <div class="menu-overlay" id="menuOverlay"></div>
         <div class="collapse" id="menuOptions">
+            <!-- Partículas flotantes -->
+            <div class="menu-particles" id="menuParticles"></div>
+            
             <div class="card2 card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0 menu-main-title">Menú Principal</h5>
-                    <button type="button" class="btn-close" onclick="closeMenu()" aria-label="Close"></button>
+                <!-- Header del menú -->
+                <div class="menu-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 menu-main-title">
+                            <i class="fas fa-plane"></i>
+                            Menú Principal
+                        </h5>
+                        <button type="button" class="btn-close" onclick="closeMenu()" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <h5 class="menu-section-title">👤 TU CUENTA</h5>
-                    </li>
-                    @if (Context.Session.GetString("UserEmail") != null)
-                    {
-                        if (Context.Session.GetString("UserType") == "admin")
+
+                <!-- Contenido del menú -->
+                <div class="menu-content">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <h5 class="menu-section-title">
+                                <i class="fas fa-user-circle me-2"></i>
+                                TU CUENTA
+                            </h5>
+                        </li>
+                        @if (Context.Session.GetString("UserEmail") != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="panelAdministrador">Administrador</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="CerrarSesion">Cerrar Sesión</a>
-                            </li>
+                            if (Context.Session.GetString("UserType") == "admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Home" asp-action="panelAdministrador">
+                                        <i class="fas fa-crown"></i>
+                                        Administrador
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Home" asp-action="CerrarSesion">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Cerrar Sesión
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Home" asp-action="perfilPasajero">
+                                        <i class="fas fa-user"></i>
+                                        Perfil
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Home" asp-action="CerrarSesion">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Cerrar Sesión
+                                    </a>
+                                </li>
+                            }
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="perfilPasajero">Perfil</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="CerrarSesion">Cerrar Sesión</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Iniciar Sesión
+                                </a>
                             </li>
                         }
-                    }
-                    else
-                    {
+
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Login">Iniciar Sesión</a>
+                            <h5 class="menu-section-title">
+                                <i class="fas fa-plane me-2"></i>
+                                VUELA
+                            </h5>
                         </li>
-                    }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Destinos">
+                                <i class="fas fa-map-marked-alt"></i>
+                                Destinos
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <h5 class="menu-section-title">✈️ VUELA</h5>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Destinos">Destinos</a>
-                    </li>
+                        <li class="nav-item">
+                            <h5 class="menu-section-title">
+                                <i class="fas fa-question-circle me-2"></i>
+                                CONSULTAS
+                            </h5>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Servicios_al_cliente">
+                                <i class="fas fa-headset"></i>
+                                Consultas
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <h5 class="menu-section-title">❓ CONSULTAS</h5>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Servicios_al_cliente">Consultas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <h5 class="menu-section-title">ℹ️ INFORMACIÓN</h5>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Flota">Flota</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Reservas">Reservas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Equipaje">Equipaje</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Discapacidad">Discapacidad</a>
-                    </li>
-                    <li class="nav-item">
-                        <h5 class="menu-section-title">♿ ACCESIBILIDAD</h5>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link" style="cursor: default;">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-volume-up me-2"></i>
-                                <div>
-                                    <strong>Lector por Texto</strong>
-                                    <p class="mb-0" style="font-size: 0.8em; color: #666;">
-                                        Activa el lector para que lea el texto al pasar el mouse
-                                    </p>
+                        <li class="nav-item">
+                            <h5 class="menu-section-title">
+                                <i class="fas fa-info-circle me-2"></i>
+                                INFORMACIÓN
+                            </h5>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Flota">
+                                <i class="fas fa-plane-departure"></i>
+                                Flota
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Reservas">
+                                <i class="fas fa-ticket-alt"></i>
+                                Reservas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Equipaje">
+                                <i class="fas fa-suitcase"></i>
+                                Equipaje
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Discapacidad">
+                                <i class="fas fa-wheelchair"></i>
+                                Discapacidad
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <h5 class="menu-section-title">
+                                <i class="fas fa-universal-access me-2"></i>
+                                ACCESIBILIDAD
+                            </h5>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-link" style="cursor: default;">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-volume-up me-2"></i>
+                                    <div>
+                                        <strong>Lector por Texto</strong>
+                                        <p class="mb-0" style="font-size: 0.8em; color: #666;">
+                                            Activa el lector para que lea el texto al pasar el mouse
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link" style="cursor: default;">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-mic me-2"></i>
-                                <div>
-                                    <strong>Navegación por Voz</strong>
-                                    <p class="mb-0" style="font-size: 0.8em; color: #666;">
-                                        Usa comandos de voz para navegar y escribir
-                                    </p>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-link" style="cursor: default;">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-microphone me-2"></i>
+                                    <div>
+                                        <strong>Navegación por Voz</strong>
+                                        <p class="mb-0" style="font-size: 0.8em; color: #666;">
+                                            Usa comandos de voz para navegar y escribir
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link" style="cursor: default;">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-palette me-2"></i>
-                                <div>
-                                    <strong>Daltonismo</strong>
-                                    <p class="mb-0" style="font-size: 0.8em; color: #666;">
-                                        Adapta los colores para diferentes tipos de daltonismo
-                                    </p>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-link" style="cursor: default;">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-palette me-2"></i>
+                                    <div>
+                                        <strong>Daltonismo</strong>
+                                        <p class="mb-0" style="font-size: 0.8em; color: #666;">
+                                            Adapta los colores para diferentes tipos de daltonismo
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">🏠 Inicio</a>
-                    </li>
-                </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home"></i>
+                                Inicio
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
@@ -397,27 +777,127 @@
     <script src="~/js/vozNavegacion.js" asp-append-version="true"></script>
     <script src="~/js/daltonismo.js" asp-append-version="true"></script>
     <script>
+        // Crear partículas flotantes para el menú
+        function createMenuParticles() {
+            const particlesContainer = document.getElementById('menuParticles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'menu-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 8 + 3 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const hamburger = document.querySelector('.hamburger');
             const menuOptions = document.getElementById('menuOptions');
             const menuOverlay = document.getElementById('menuOverlay');
             
+            // Crear partículas del menú
+            createMenuParticles();
+            
             function toggleMenu() {
                 menuOptions.classList.toggle('show');
                 menuOverlay.classList.toggle('show');
                 document.body.style.overflow = menuOptions.classList.contains('show') ? 'hidden' : '';
+                
+                // Efecto de rotación del icono hamburguesa
+                const icon = hamburger.querySelector('i');
+                if (menuOptions.classList.contains('show')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
             }
             
             hamburger.addEventListener('click', toggleMenu);
             menuOverlay.addEventListener('click', toggleMenu);
+
+            // Manejo del dropdown de daltonismo
+            const daltonismToggle = document.getElementById('daltonismToggle');
+            const daltonismDropdown = document.getElementById('daltonismDropdown');
+            const daltonismOptionsDropdown = document.getElementById('daltonismOptionsDropdown');
+            const daltonismMenu = document.getElementById('daltonismMenu');
+
+            if (daltonismToggle && daltonismDropdown) {
+                daltonismToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        daltonismDropdown.style.display = 'block';
+                    } else {
+                        daltonismDropdown.style.display = 'none';
+                        daltonismMenu.style.display = 'none';
+                        daltonismMenu.classList.remove('show');
+                    }
+                });
+            }
+
+            if (daltonismOptionsDropdown && daltonismMenu) {
+                daltonismOptionsDropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Forzar visibilidad del dropdown
+                    if (daltonismMenu.style.display === 'none' || daltonismMenu.style.display === '') {
+                        daltonismMenu.style.display = 'block';
+                        daltonismMenu.style.visibility = 'visible';
+                        daltonismMenu.style.opacity = '1';
+                        daltonismMenu.classList.add('show', 'force-show');
+                        
+                        // Forzar z-index alto
+                        daltonismMenu.style.zIndex = '99999';
+                        daltonismMenu.style.position = 'absolute';
+                        
+                        // Asegurar que esté por encima de todo
+                        daltonismMenu.style.pointerEvents = 'auto';
+                    } else {
+                        daltonismMenu.style.display = 'none';
+                        daltonismMenu.classList.remove('show', 'force-show');
+                    }
+                });
+
+                // Cerrar dropdown al hacer clic fuera
+                document.addEventListener('click', function(e) {
+                    if (daltonismDropdown && !daltonismDropdown.contains(e.target)) {
+                        daltonismMenu.style.display = 'none';
+                        daltonismMenu.classList.remove('show', 'force-show');
+                    }
+                });
+
+                // Manejar selección de opciones de daltonismo
+                const daltonismItems = daltonismMenu.querySelectorAll('.dropdown-item');
+                daltonismItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const daltonismType = this.getAttribute('data-daltonism');
+                        daltonismOptionsDropdown.textContent = this.textContent;
+                        daltonismMenu.style.display = 'none';
+                        daltonismMenu.classList.remove('show', 'force-show');
+                        
+                        // Aquí puedes agregar la lógica para aplicar el tipo de daltonismo
+                        console.log('Tipo de daltonismo seleccionado:', daltonismType);
+                    });
+                });
+            }
         });
 
         function closeMenu() {
             const menuOptions = document.getElementById('menuOptions');
             const menuOverlay = document.getElementById('menuOverlay');
+            const hamburger = document.querySelector('.hamburger');
+            const icon = hamburger.querySelector('i');
+            
             menuOptions.classList.remove('show');
             menuOverlay.classList.remove('show');
             document.body.style.overflow = '';
+            icon.style.transform = 'rotate(0deg)';
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)

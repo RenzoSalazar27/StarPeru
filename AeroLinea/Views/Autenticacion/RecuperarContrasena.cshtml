@@ -7,11 +7,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recuperar Contraseña</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Recuperar Contraseña - StarPerú</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -19,67 +23,174 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 25%, #FF2E4E 50%, #2c3e50 75%, #34495e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animación del gradiente */
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Partículas flotantes */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
         }
 
         .recovery-container {
-            width: 400px;
-            padding: 40px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 450px;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 10;
+            animation: slideUp 1s ease-out;
+        }
+
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .recovery-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .recovery-container:hover::before {
+            left: 100%;
         }
 
         h2 {
-            margin: 0 0 20px;
-            font-size: 2em;
-            font-weight: bold;
-            color: #e14a4a;
+            margin: 0 0 2rem;
+            font-size: 2.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
         }
 
         .form-group label {
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: block;
+            font-size: 0.95rem;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #eee;
-            border-radius: 8px;
+            padding: 15px 20px;
+            border: 2px solid rgba(225, 74, 74, 0.2);
+            border-radius: 15px;
             font-size: 16px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: relative;
         }
 
         input:focus {
             border-color: #e14a4a;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(225, 74, 74, 0.1);
+            box-shadow: 
+                0 0 0 4px rgba(225, 74, 74, 0.1),
+                0 10px 25px rgba(225, 74, 74, 0.2);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        input::placeholder {
+            color: #9ca3af;
+            font-weight: 500;
         }
 
         .recovery-btn {
             width: 100%;
-            padding: 12px;
-            background: #e14a4a;
+            padding: 18px;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 15px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(225, 74, 74, 0.3);
         }
 
         .recovery-btn:hover {
-            background: #ff6b6b;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(225, 74, 74, 0.4);
+        }
+
+        .recovery-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .recovery-btn:hover::before {
+            left: 100%;
         }
 
         .back-link {
@@ -87,115 +198,288 @@
             text-align: center;
             color: #e14a4a;
             text-decoration: none;
-            margin-top: 20px;
-            font-size: 14px;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            color: #ff6b6b;
+            transform: translateX(5px);
         }
 
         .alert {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            padding: 18px;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: rgba(34, 197, 94, 0.1);
+            color: #166534;
+            border: 2px solid rgba(34, 197, 94, 0.2);
         }
 
         .alert-danger {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: rgba(239, 68, 68, 0.1);
+            color: #991b1b;
+            border: 2px solid rgba(239, 68, 68, 0.2);
         }
 
         .text-danger {
             color: #e14a4a !important;
             font-size: 0.9rem;
-            margin-top: 0.3rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
         }
 
         .password-container {
             position: relative;
         }
+
         .password-toggle {
             position: absolute;
-            right: 10px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #666;
+            color: #9ca3af;
             cursor: pointer;
-            padding: 0;
-            font-size: 16px;
+            padding: 8px;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 3;
         }
+
         .password-toggle:hover {
             color: #e14a4a;
+            background: rgba(225, 74, 74, 0.1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Barra superior mejorada */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            padding: 15px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(225, 74, 74, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: flex-end;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 15px;
+            background: rgba(225, 74, 74, 0.1);
+            border-radius: 25px;
+            border: 1px solid rgba(225, 74, 74, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .switch-container:hover {
+            background: rgba(225, 74, 74, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(225, 74, 74, 0.2);
+        }
+
+        .switch-label {
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 26px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            box-shadow: 0 0 15px rgba(225, 74, 74, 0.4);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        @@media (max-width: 768px) {
+            .recovery-container {
+                width: 90%;
+                padding: 2rem;
+                margin: 80px 10px 20px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .top-bar-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .switch-container {
+                padding: 6px 12px;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .recovery-container {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 70px 5px 10px;
+                border-radius: 20px;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+
+            input {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+
+            .recovery-btn {
+                padding: 15px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <div style="position: fixed; top: 0; left: 0; right: 0; background: #f8f9fa; padding: 10px; z-index: 1000; border-bottom: 1px solid #dee2e6;">
-        <div style="display: flex; justify-content: flex-end; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <label style="position: relative; display: inline-block; width: 60px; height: 34px;">
-                    <input type="checkbox" id="voiceToggle" style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;">
-                        <span style="position: absolute; content: ''; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
-                    </span>
+    <!-- Partículas flotantes -->
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="switch-container">
+                <label class="switch">
+                    <input type="checkbox" id="voiceToggle">
+                    <span class="slider"></span>
                 </label>
-                <span style="color: #333; font-size: 14px;">Lector (Alt+V)</span>
+                <span class="switch-label">Lector (Alt+V)</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <label style="position: relative; display: inline-block; width: 60px; height: 34px;">
-                    <input type="checkbox" id="voiceNavToggle" style="opacity: 0; width: 0; height: 0;">
-                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;">
-                        <span style="position: absolute; content: ''; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
-                    </span>
+            <div class="switch-container">
+                <label class="switch">
+                    <input type="checkbox" id="voiceNavToggle">
+                    <span class="slider"></span>
                 </label>
-                <span style="color: #333; font-size: 14px;">Reconocimiento de voz</span>
+                <span class="switch-label">Reconocimiento de voz</span>
             </div>
         </div>
     </div>
 
-    <div class="recovery-container" style="margin-top: 60px;">
-        <h2>Recuperar Contraseña</h2>
+    <div class="recovery-container">
+        <h2><i class="fas fa-key me-2"></i>Recuperar Contraseña</h2>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (TempData["Success"] != null)
         {
             <div class="alert alert-success">
+                <i class="fas fa-check-circle me-2"></i>
                 @TempData["Success"]
             </div>
         }
         @if (TempData["Error"] != null)
         {
             <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
                 @TempData["Error"]
             </div>
         }
         <form method="post" asp-controller="Home" asp-action="RecuperarContrasena">
             <div class="form-group">
-                <label for="email">Correo Electrónico</label>
-                <input type="email" id="email" name="email" class="form-control" maxlength="30" 
+                <label for="email">
+                    <i class="fas fa-envelope me-1"></i>Correo Electrónico
+                </label>
+                <input type="email" id="email" name="email" maxlength="30" 
                        placeholder="ejemplo@correo.com" 
                        title="Ingrese un correo electrónico válido" required />
             </div>
             <div class="form-group">
-                <label for="dni">DNI</label>
-                <input type="text" id="dni" name="dni" class="form-control" maxlength="8" minlength="8" 
+                <label for="dni">
+                    <i class="fas fa-id-card me-1"></i>DNI
+                </label>
+                <input type="text" id="dni" name="dni" maxlength="8" minlength="8" 
                        placeholder="Ingrese su DNI" 
                        title="El DNI debe tener 8 dígitos" required />
             </div>
             <div class="form-group">
-                <label for="nuevaContrasena">Nueva Contraseña</label>
+                <label for="nuevaContrasena">
+                    <i class="fas fa-lock me-1"></i>Nueva Contraseña
+                </label>
                 <div class="password-container">
-                    <input type="password" id="nuevaContrasena" name="nuevaContrasena" class="form-control" maxlength="20" minlength="6" 
+                    <input type="password" id="nuevaContrasena" name="nuevaContrasena" maxlength="20" minlength="6" 
                            placeholder="Ingrese su nueva contraseña" 
                            title="La contraseña debe tener entre 6 y 20 caracteres, incluir letras, números y al menos un carácter especial" required />
                     <button type="button" class="password-toggle" onclick="togglePassword('nuevaContrasena')">
@@ -205,9 +489,11 @@
                 <span class="text-danger" id="errorNuevaContrasena"></span>
             </div>
             <div class="form-group">
-                <label for="confirmarContrasena">Confirmar Contraseña</label>
+                <label for="confirmarContrasena">
+                    <i class="fas fa-lock me-1"></i>Confirmar Contraseña
+                </label>
                 <div class="password-container">
-                    <input type="password" id="confirmarContrasena" name="confirmarContrasena" class="form-control" maxlength="20" minlength="6" 
+                    <input type="password" id="confirmarContrasena" name="confirmarContrasena" maxlength="20" minlength="6" 
                            placeholder="Confirme su nueva contraseña" 
                            title="Las contraseñas deben coincidir" required />
                     <button type="button" class="password-toggle" onclick="togglePassword('confirmarContrasena')">
@@ -216,32 +502,57 @@
                 </div>
                 <span class="text-danger" id="errorConfirmarContrasena"></span>
             </div>
-            <button type="submit" class="recovery-btn">Actualizar Contraseña</button>
+            <button type="submit" class="recovery-btn">
+                <i class="fas fa-save me-2"></i>Actualizar Contraseña
+            </button>
         </form>
-        <a asp-controller="Home" asp-action="Autenticacion" class="back-link">Volver al inicio de sesión</a>
+        <a asp-controller="Home" asp-action="Autenticacion" class="back-link">
+            <i class="fas fa-arrow-left me-1"></i>Volver al inicio de sesión
+        </a>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
     <script src="~/js/vozPorTexto.js" asp-append-version="true"></script>
     <script src="~/js/vozNavegacion.js" asp-append-version="true"></script>
     <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const voiceToggle = document.getElementById('voiceToggle');
             const voiceNavToggle = document.getElementById('voiceNavToggle');
+
+            // Crear partículas
+            createParticles();
 
             // Función para actualizar el estado visual del switch
             function updateSwitchState(checkbox, isChecked) {
                 const slider = checkbox.nextElementSibling;
                 const circle = slider.firstElementChild;
                 if (isChecked) {
-                    slider.style.backgroundColor = '#e14a4a';
-                    circle.style.transform = 'translateX(26px)';
+                    slider.style.background = 'linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%)';
+                    slider.style.boxShadow = '0 0 15px rgba(225, 74, 74, 0.4)';
+                    circle.style.transform = 'translateX(24px)';
+                    circle.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
                 } else {
-                    slider.style.backgroundColor = '#ccc';
+                    slider.style.background = 'linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%)';
+                    slider.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.1)';
                     circle.style.transform = 'translateX(0)';
+                    circle.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
                 }
             }
 
