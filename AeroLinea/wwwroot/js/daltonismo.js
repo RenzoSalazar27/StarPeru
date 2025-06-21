@@ -38,9 +38,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Función para aplicar filtro de daltonismo
     function applyDaltonismFilter(daltonismType) {
-        // Por ahora solo guardamos la selección
-        // La funcionalidad de filtros se implementará después
         console.log('Tipo de daltonismo seleccionado:', daltonismType);
+        
+        // Remover todas las clases de daltonismo del body
+        document.body.classList.remove(
+            'daltonismo-protanopia',
+            'daltonismo-protanomaly',
+            'daltonismo-deuteranopia',
+            'daltonismo-deuteranomaly',
+            'daltonismo-tritanopia',
+            'daltonismo-tritanomaly',
+            'daltonismo-achromatopsia',
+            'daltonismo-default'
+        );
+        
+        // Aplicar la clase correspondiente
+        if (daltonismType !== 'default') {
+            document.body.classList.add(`daltonismo-${daltonismType}`);
+        }
         
         // Guardar en localStorage
         localStorage.setItem('daltonismType', daltonismType);
@@ -124,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aplicar filtro inicial si está habilitado
     if (isDaltonismEnabled && currentDaltonism !== 'default') {
         applyDaltonismFilter(currentDaltonism);
+    } else if (isDaltonismEnabled) {
+        // Si está habilitado pero es default, aplicar la clase default
+        document.body.classList.add('daltonismo-default');
     }
     
     // Debug: Verificar que los elementos existen
