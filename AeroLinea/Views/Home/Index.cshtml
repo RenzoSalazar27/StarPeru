@@ -2,209 +2,730 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!-- Header-->
-<header class="bg-dark">
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="~/img/Panel.jpg" class="d-block w-100 carousel-img" alt="Descripción de la imagen 1">
-            </div>
-            <div class="carousel-item">
-                <img src="~/img/Panel2.jpg" class="d-block w-100 carousel-img" alt="Descripción de la imagen 2">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</header>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarPerú - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- Opciones para el panel -->
-<div class="text-center my-3" id="buttonContainer">
-    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom mx-2">Vuela</a>
-    <a href="@Url.Action("Reservas", "Home")" class="btn btn-custom mx-2">Pagar Reserva</a>
-    <a href="@Url.Action("Servicios_al_cliente", "Home")" class="btn btn-custom mx-2">Consultas</a>
-    <a href="@Url.Action("Flota", "Home")" class="btn btn-custom mx-2">Flota</a>
-</div>
-<a class="align-content-lg-around"></a>
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 25%, #FF2E4E 50%, #2c3e50 75%, #34495e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
 
-<!-- Panel informativo -->
-<div class="bg-light py-2 text-center" id="infoPanel">
-    <h5 class="mb-0">¡Descubre nuestras mejores ofertas y destinos!</h5>
-</div>
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-<!-- Línea blanca -->
-<div class="white-separator"></div>
+        /* Header moderno con carrusel */
+        .hero-section {
+            position: relative;
+            height: 45vh;
+            min-height: 350px;
+            overflow: hidden;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
 
-<!-- PEQUEÑO TEXTO-->
-<div class="small-text">
-    <img src="~/img/icono-destinos.jpg" alt="Pequeña imagen" />
-    Conoce nuestros destinos
-</div>
+        .carousel {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
 
-<!-- Línea blanca -->
-<div class="white-separator"></div>
+        .carousel-inner {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
 
-<!--OPCIONES DE VIAJES-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        .carousel-item {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.7);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: block;
+            min-width: 100%;
+            min-height: 100%;
+            max-width: none;
+            max-height: none;
+        }
+
+        /* Ajustes específicos para diferentes imágenes */
+        .carousel-item:nth-child(1) .carousel-img {
+            object-position: center 25%;
+        }
+
+        .carousel-item:nth-child(2) .carousel-img {
+            object-position: center 35%;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 1s ease-out;
+            text-align: center;
+            max-width: 700px;
+            width: 90%;
+            z-index: 10;
+        }
+
+        .carousel-caption h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        .carousel-caption p {
+            font-size: 1.3em;
+            font-weight: 300;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin: auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Botones de navegación modernos */
+        .navigation-buttons {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .btn-modern {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(225, 74, 74, 0.4);
+            color: white;
+        }
+
+        /* Panel informativo moderno */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        .info-panel h5 {
+            color: white;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Separadores modernos */
+        .modern-separator {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            margin: 40px auto;
+            max-width: 300px;
+            border-radius: 2px;
+        }
+
+        /* Sección de destinos */
+        .destinations-section {
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            margin: 40px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        .destination-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 100%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .destination-card:nth-child(1) { animation-delay: 0.1s; }
+        .destination-card:nth-child(2) { animation-delay: 0.2s; }
+        .destination-card:nth-child(3) { animation-delay: 0.3s; }
+        .destination-card:nth-child(4) { animation-delay: 0.4s; }
+        .destination-card:nth-child(5) { animation-delay: 0.5s; }
+        .destination-card:nth-child(6) { animation-delay: 0.6s; }
+        .destination-card:nth-child(7) { animation-delay: 0.7s; }
+
+        .destination-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .destination-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-body {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-title {
+            color: #e14a4a;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .card-footer {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            border: none;
+            padding: 20px;
+        }
+
+        .card-footer .btn {
+            background: white;
+            color: #e14a4a;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .card-footer .btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Sección de alianzas */
+        .alliances-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 1.8s ease-out;
+        }
+
+        .alliance-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .alliance-item:hover {
+            transform: scale(1.05);
+        }
+
+        .alliance-item img {
+            max-height: 80px;
+            margin: 0 20px;
+            filter: brightness(0.9);
+            transition: filter 0.3s ease;
+        }
+
+        .alliance-item:hover img {
+            filter: brightness(1);
+        }
+
+        /* Sección conócenos */
+        .about-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 50px;
+            margin: 40px auto;
+            max-width: 1200px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 2s ease-out;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text {
+            flex: 1;
+            padding: 30px;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .about-text h5 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .about-text p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* Animaciones */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Partículas flotantes */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Responsividad */
+        @@media (max-width: 768px) {
+            .hero-section {
+                height: 40vh;
+                min-height: 300px;
+            }
+
+            .carousel-caption h1 {
+                font-size: 2.5em;
+            }
+
+            .section-title {
+                font-size: 2.2em;
+            }
+
+            .about-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .navigation-buttons {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .btn-modern {
+                padding: 12px 25px;
+                font-size: 1em;
+                margin: 5px;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .carousel-caption h1 {
+                font-size: 2em;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            .btn-modern {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas flotantes -->
+    <div class="floating-particles" id="particles"></div>
+
+    <!-- Header moderno con carrusel -->
+    <header class="hero-section">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <!-- Primer grupo de 3 destinos -->
                 <div class="carousel-item active">
-                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/lima.jpeg" alt="LIMA" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">LIMA</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/chiclayo.jpeg" alt="CHICLAYO" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">CHICLAYO</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/cajamarca.jpeg" alt="CAJAMARCA" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">CAJAMARCA</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <img src="~/img/Panel.jpg" class="carousel-img" alt="StarPerú - Vuelos Nacionales">
                 </div>
-                <!-- Segundo grupo de 3 destinos -->
                 <div class="carousel-item">
-                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/huanuco.jpeg" alt="HUÁNUCO" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">HUÁNUCO</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/iquitos.jpeg" alt="IQUITOS" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">IQUITOS</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/tarapoto.jpeg" alt="TARAPOTO" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">TARAPOTO</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Tercer grupo (último destino) -->
-                <div class="carousel-item">
-                    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/img/pucallpa.jpeg" alt="PUCALLPA" />
-                                <div class="card-body text-center">
-                                    <h5 class="fw-bolder">PUCALLPA</h5>
-                                    <p>Desde: S/ 100.00 a S/ 500.00</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="@Url.Action("Destinos", "Home")" class="btn btn-custom">FLOTA</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <img src="~/img/Panel2.jpg" class="carousel-img" alt="StarPerú - Experiencia de Vuelo">
                 </div>
             </div>
-            <!-- Flechas de navegación -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Anterior</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Siguiente</span>
             </button>
         </div>
+    </header>
+
+    <!-- Botones de navegación modernos -->
+    <div class="navigation-buttons">
+        <a href="@Url.Action("Destinos", "Home")" class="btn btn-modern">
+            <i class="fas fa-plane me-2"></i>Vuela
+        </a>
+        <a href="@Url.Action("Reservas", "Home")" class="btn btn-modern">
+            <i class="fas fa-credit-card me-2"></i>Pagar Reserva
+        </a>
+        <a href="@Url.Action("Servicios_al_cliente", "Home")" class="btn btn-modern">
+            <i class="fas fa-headset me-2"></i>Consultas
+        </a>
+        <a href="@Url.Action("Flota", "Home")" class="btn btn-modern">
+            <i class="fas fa-plane-departure me-2"></i>Flota
+        </a>
     </div>
-</section>
 
-<!-- Línea blanca -->
-<div class="white-separator"></div>
+    <!-- Panel informativo moderno -->
+    <div class="info-panel">
+        <h5><i class="fas fa-gift me-3"></i>¡Descubre nuestras mejores ofertas y destinos!</h5>
+    </div>
 
-<!-- ALIANZAS -->
-<div class="container">
-    <div class="row justify-content-center align-items-start">
-        <div class="col-6 col-md-3 d-flex align-items-start">
-            <img src="~/img/icono-convenios.png" alt="Alianza 1" class="img-fluid me-3" />
-            <span class="small-text text-white mt-n5">Alianzas</span>
+    <!-- Separador moderno -->
+    <div class="modern-separator"></div>
+
+    <!-- Sección de destinos -->
+    <section class="destinations-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-map-marker-alt me-3"></i>Nuestros Destinos
+            </h2>
+            
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                <div class="carousel-inner">
+                    <!-- Primer grupo de 3 destinos -->
+                    <div class="carousel-item active">
+                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/lima.jpeg" alt="LIMA" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">LIMA</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/chiclayo.jpeg" alt="CHICLAYO" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">CHICLAYO</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/cajamarca.jpeg" alt="CAJAMARCA" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">CAJAMARCA</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Segundo grupo de 3 destinos -->
+                    <div class="carousel-item">
+                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/huanuco.jpeg" alt="HUÁNUCO" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">HUÁNUCO</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/iquitos.jpeg" alt="IQUITOS" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">IQUITOS</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/tarapoto.jpeg" alt="TARAPOTO" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">TARAPOTO</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tercer grupo (último destino) -->
+                    <div class="carousel-item">
+                        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+                            <div class="col mb-5">
+                                <div class="destination-card">
+                                    <img src="~/img/pucallpa.jpeg" alt="PUCALLPA" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">PUCALLPA</h5>
+                                        <p class="card-text">Desde: S/ 100.00 a S/ 500.00</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="@Url.Action("Destinos", "Home")" class="btn">FLOTA</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Flechas de navegación -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
         </div>
-        <div class="col-6 col-md-3 d-flex flex-column align-items-center">
-            <img src="~/img/avianca-star.png" alt="Alianza 2" class="img-fluid" />
+    </section>
+
+    <!-- Separador moderno -->
+    <div class="modern-separator"></div>
+
+    <!-- Sección de alianzas -->
+    <div class="alliances-section">
+        <h3 style="color: white; margin-bottom: 30px; font-weight: 700;">
+            <i class="fas fa-handshake me-3"></i>Nuestras Alianzas
+        </h3>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6 col-md-3 d-flex justify-content-center">
+                <div class="alliance-item">
+                    <img src="~/img/icono-convenios.png" alt="Alianzas" />
+                </div>
+            </div>
+            <div class="col-6 col-md-3 d-flex justify-content-center">
+                <div class="alliance-item">
+                    <img src="~/img/avianca-star.png" alt="Star Alliance" />
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Línea blanca -->
-<div class="white-separator"></div>
+    <!-- Separador moderno -->
+    <div class="modern-separator"></div>
 
-<!-- Descripción -->
-<div class="container mb-5">
-    <div class="row align-items-center">
-        <div class="col-md-6 d-flex justify-content-center">
-            <img src="~/img/conocenos.jpg" alt="Descripción de la imagen" class="img-fluid w-100 h-auto object-fit-contain" />
-        </div>
-        <div class="col-md-6">
-            <div class="bg-light p-3">
-                <h5 class="text-center">Conócenos</h5>
+    <!-- Sección conócenos -->
+    <div class="about-section">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="~/img/conocenos.jpg" alt="Conócenos" />
+            </div>
+            <div class="about-text">
+                <h5><i class="fas fa-info-circle me-3"></i>Conócenos</h5>
                 <p>
                     Somos la única línea aérea 100% peruana y nuestro equipo lo refleja en la dedicación y cuidado que ponemos en nuestro servicio y en cumplir con nuestra misión de llevarlos a su destino.
                 </p>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="~/js/scripts_index.js"></script>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="~/js/scripts_index.js"></script>
+    
+    <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 25;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 15 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar efectos visuales
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
