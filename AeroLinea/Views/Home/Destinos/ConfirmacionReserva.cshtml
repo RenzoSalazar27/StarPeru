@@ -4,51 +4,596 @@
     ViewData["Title"] = "Confirmación de Reserva";
 }
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header bg-success text-white">
-            <h3 class="mb-0">¡Reserva Confirmada!</h3>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+    <title>Confirmación de Reserva - StarPerú</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        html, body {
+            height: 100% !important;
+            width: 100% !important;
+            overflow-x: hidden !important;
+        }
+
+        body {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 25%, #17a2b8 50%, #6f42c1 75%, #e83e8c 100%) !important;
+            background-size: 400% 400% !important;
+            animation: gradientShift 20s ease infinite !important;
+            min-height: 100vh !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: relative !important;
+        }
+
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Partículas flotantes */
+        .floating-particles {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+            z-index: 1 !important;
+        }
+
+        .particle {
+            position: absolute !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 50% !important;
+            animation: float 8s ease-in-out infinite !important;
+        }
+
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            max-width: 1000px !important;
+            margin: 0 auto !important;
+            padding: 20px !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+
+        /* Header de confirmación */
+        .confirmation-header {
+            text-align: center !important;
+            margin-bottom: 40px !important;
+            padding: 60px 40px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 30px !important;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            animation: fadeInUp 1s ease-out !important;
+        }
+
+        .confirmation-header::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
+            transition: left 0.8s ease !important;
+        }
+
+        .confirmation-header:hover::before {
+            left: 100% !important;
+        }
+
+        .success-icon {
+            font-size: 4em !important;
+            color: #28a745 !important;
+            margin-bottom: 20px !important;
+            animation: bounce 2s ease-in-out infinite !important;
+        }
+
+        @@keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .confirmation-title {
+            color: white !important;
+            font-size: 3.5em !important;
+            font-weight: 800 !important;
+            margin-bottom: 15px !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+            position: relative !important;
+            z-index: 1 !important;
+            background: linear-gradient(45deg, #fff, #f0f0f0) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        .confirmation-subtitle {
+            color: rgba(255,255,255,0.9) !important;
+            font-size: 1.3em !important;
+            font-weight: 300 !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2) !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        /* Tarjeta principal */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: none !important;
+            border-radius: 25px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            animation: fadeInUp 1s ease-out !important;
+        }
+
+        .main-card::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 6px !important;
+            background: linear-gradient(90deg, #28a745, #20c997, #17a2b8) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 3s ease infinite !important;
+        }
+
+        .card-body-modern {
+            padding: 40px !important;
+        }
+
+        /* Sección de detalles */
+        .details-section {
+            background: rgba(40, 167, 69, 0.05) !important;
+            border-radius: 20px !important;
+            padding: 30px !important;
+            border: 1px solid rgba(40, 167, 69, 0.1) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+            transition: all 0.3s ease !important;
+            margin-bottom: 30px !important;
+        }
+
+        .details-section:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.1) !important;
+        }
+
+        .details-title {
+            color: #28a745 !important;
+            font-size: 1.8em !important;
+            font-weight: 700 !important;
+            margin-bottom: 25px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            border-bottom: 3px solid #20c997 !important;
+            padding-bottom: 10px !important;
+        }
+
+        .detail-item {
+            display: flex !important;
+            margin-bottom: 20px !important;
+            align-items: center !important;
+            padding: 15px !important;
+            background: rgba(255, 255, 255, 0.5) !important;
+            border-radius: 12px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .detail-item:hover {
+            background: rgba(255, 255, 255, 0.8) !important;
+            transform: translateX(5px) !important;
+        }
+
+        .detail-label {
+            font-weight: 600 !important;
+            color: #555 !important;
+            width: 180px !important;
+            flex-shrink: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .detail-value {
+            color: #333 !important;
+            flex-grow: 1 !important;
+            font-weight: 500 !important;
+        }
+
+        .price-highlight {
+            color: #28a745 !important;
+            font-size: 1.2em !important;
+            font-weight: 700 !important;
+        }
+
+        /* Tabla de pasajeros */
+        .passengers-section {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-radius: 20px !important;
+            padding: 25px !important;
+            margin-top: 30px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+            border: 1px solid rgba(40, 167, 69, 0.1) !important;
+        }
+
+        .passengers-title {
+            color: #28a745 !important;
+            font-size: 1.6em !important;
+            font-weight: 700 !important;
+            margin-bottom: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            border-bottom: 3px solid #20c997 !important;
+            padding-bottom: 10px !important;
+        }
+
+        .custom-table {
+            margin-bottom: 0 !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            width: 100% !important;
+        }
+
+        .custom-table thead th {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border: none !important;
+            padding: 20px 15px !important;
+            font-size: 1.1em !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .custom-table thead th:first-child {
+            border-top-left-radius: 15px !important;
+        }
+
+        .custom-table thead th:last-child {
+            border-top-right-radius: 15px !important;
+        }
+
+        .custom-table tbody td {
+            padding: 18px 15px !important;
+            vertical-align: middle !important;
+            color: #555 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+        .custom-table tbody tr {
+            transition: all 0.3s ease !important;
+        }
+
+        .custom-table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(32, 201, 151, 0.05) 100%) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Badges de estado */
+        .status-badge {
+            padding: 8px 15px !important;
+            border-radius: 20px !important;
+            font-weight: 600 !important;
+            font-size: 0.9em !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            display: inline-block !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.1) !important;
+        }
+
+        .status-adult {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            color: white !important;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3) !important;
+        }
+
+        .status-minor {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+            color: #000 !important;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3) !important;
+        }
+
+        /* Botón de volver */
+        .btn-home-modern {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            border: none !important;
+            padding: 15px 40px !important;
+            font-size: 1.2em !important;
+            font-weight: 700 !important;
+            border-radius: 50px !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            position: relative !important;
+            overflow: hidden !important;
+            color: white !important;
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3) !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+        }
+
+        .btn-home-modern::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+            transition: left 0.5s ease !important;
+        }
+
+        .btn-home-modern:hover::before {
+            left: 100% !important;
+        }
+
+        .btn-home-modern:hover {
+            background: linear-gradient(135deg, #20c997 0%, #28a745 100%) !important;
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        /* Animaciones */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0 !important;
+                transform: translateY(30px) !important;
+            }
+            to {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+            }
+        }
+
+        /* Responsividad */
+        @@media (max-width: 768px) {
+            .confirmation-title {
+                font-size: 2.5em !important;
+            }
+
+            .success-icon {
+                font-size: 3em !important;
+            }
+
+            .card-body-modern {
+                padding: 25px !important;
+            }
+
+            .details-section {
+                padding: 20px !important;
+            }
+
+            .detail-item {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+            }
+
+            .detail-label {
+                width: 100% !important;
+            }
+
+            .btn-home-modern {
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+            .custom-table thead th {
+                font-size: 0.9em !important;
+                padding: 15px 10px !important;
+            }
+
+            .custom-table tbody td {
+                padding: 15px 10px !important;
+                font-size: 0.9em !important;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .confirmation-title {
+                font-size: 2em !important;
+            }
+
+            .details-title {
+                font-size: 1.5em !important;
+            }
+
+            .passengers-title {
+                font-size: 1.4em !important;
+            }
+
+            .details-section {
+                padding: 15px !important;
+            }
+
+            .passengers-section {
+                padding: 20px !important;
+            }
+
+            .custom-table thead th {
+                font-size: 0.8em !important;
+                padding: 12px 8px !important;
+            }
+
+            .custom-table tbody td {
+                padding: 12px 8px !important;
+                font-size: 0.8em !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas flotantes -->
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="main-container">
+        <!-- Header de confirmación -->
+        <div class="confirmation-header">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="confirmation-title">
+                ¡Reserva Confirmada!
+            </h1>
+            <p class="confirmation-subtitle">Tu reserva ha sido procesada exitosamente</p>
         </div>
-        <div class="card-body">
-            <h4>Detalles de la Reserva</h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Origen:</strong> @Model.origenResVue</p>
-                    <p><strong>Destino:</strong> @Model.destinoVuelo</p>
-                    <p><strong>Número de Personas:</strong> @Model.personasResVue</p>
-                    <p><strong>Mascotas:</strong> @Model.mascotasResVue</p>
-                    <p><strong>Precio Total:</strong> S/ @Model.precioVuelo.ToString("N2")</p>
-                </div>
+
+        <div class="main-card">
+            <div class="card-body-modern">
+                <!-- Detalles de la reserva -->
+                <div class="details-section">
+                    <h4 class="details-title">
+                        <i class="fas fa-info-circle"></i>
+                        Detalles de la Reserva
+                    </h4>
+                    <div class="detail-item">
+                        <span class="detail-label">
+                            <i class="fas fa-plane-departure"></i>
+                            Origen:
+                        </span>
+                        <span class="detail-value">@Model.origenResVue</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">
+                            <i class="fas fa-plane-arrival"></i>
+                            Destino:
+                        </span>
+                        <span class="detail-value">@Model.destinoVuelo</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">
+                            <i class="fas fa-users"></i>
+                            Número de Personas:
+                        </span>
+                        <span class="detail-value">@Model.personasResVue</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">
+                            <i class="fas fa-paw"></i>
+                            Mascotas:
+                        </span>
+                        <span class="detail-value">@Model.mascotasResVue</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">
+                            <i class="fas fa-dollar-sign"></i>
+                            Precio Total:
+                        </span>
+                        <span class="detail-value price-highlight">
+                            S/ @Model.precioVuelo.ToString("N2")
+                        </span>
+                    </div>
             </div>
 
-            <h4 class="mt-4">Pasajeros</h4>
+                <!-- Tabla de pasajeros -->
+                <div class="passengers-section">
+                    <h4 class="passengers-title">
+                        <i class="fas fa-user-friends"></i>
+                        Pasajeros
+                    </h4>
             <div class="table-responsive">
-                <table class="table table-striped">
+                        <table class="custom-table">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>DNI</th>
-                            <th>Edad</th>
-                            <th>Estado</th>
+                                    <th><i class="fas fa-user me-2"></i>Nombre</th>
+                                    <th><i class="fas fa-id-card me-2"></i>DNI</th>
+                                    <th><i class="fas fa-birthday-cake me-2"></i>Edad</th>
+                                    <th><i class="fas fa-info-circle me-2"></i>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var pasajero in Model.Pasajeros)
                         {
                             <tr>
-                                <td>@pasajero.Nombre</td>
+                                        <td>
+                                            <i class="fas fa-user me-2"></i>
+                                            @pasajero.Nombre
+                                        </td>
                                 <td>@pasajero.DNI</td>
-                                <td>@pasajero.Edad</td>
-                                <td>@(pasajero.Edad < 18 ? "Menor de edad" : "Adulto")</td>
+                                        <td>@pasajero.Edad años</td>
+                                        <td>
+                                            <span class="status-badge @(pasajero.Edad < 18 ? "status-minor" : "status-adult")">
+                                                <i class="fas @(pasajero.Edad < 18 ? "fa-child" : "fa-user") me-1"></i>
+                                                @(pasajero.Edad < 18 ? "Menor de edad" : "Adulto")
+                                            </span>
+                                        </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                    </div>
             </div>
 
-            <div class="mt-4">
-                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Volver al Inicio</a>
+                <!-- Botón de volver -->
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="@Url.Action("Index", "Home")" class="btn-home-modern">
+                        <i class="fas fa-home me-2"></i>
+                        Volver al Inicio
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div> 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 8 + 4 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar efectos visuales
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+    </script>
+</body>
+</html> 

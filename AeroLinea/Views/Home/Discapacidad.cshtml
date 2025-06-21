@@ -2,474 +2,646 @@
     ViewData["Title"] = "Servicios para Personas con Discapacidad";
 }
 
-<style>
-    body {
-        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
-        min-height: 100vh;
-        padding: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+    <title>Servicios para Personas con Discapacidad - StarPerú</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 25%, #FF2E4E 50%, #2c3e50 75%, #34495e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
 
-    /* Header moderno con efecto glassmorphism */
-    .header-section {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 40px 30px;
-        border-radius: 25px;
-        margin-bottom: 40px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    .header-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        transition: left 0.6s ease;
-    }
+        /* Partículas flotantes */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-    .header-section:hover::before {
-        left: 100%;
-    }
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
 
-    .header-section h1 {
-        color: white;
-        font-size: 3em;
-        margin-bottom: 20px;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        position: relative;
-        z-index: 1;
-    }
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
 
-    .header-section p {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1.2em;
-        margin-bottom: 0;
-        position: relative;
-        z-index: 1;
-        font-weight: 300;
-    }
+        /* Header moderno */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out;
+        }
 
-    /* Cards modernas con efectos */
-    .service-card {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-        overflow: hidden;
-    }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.8s ease;
+        }
 
-    .service-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #e14a4a, #ff6b6b);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-    }
+        .page-header:hover::before {
+            left: 100%;
+        }
 
-    .service-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    }
+        .page-title {
+            color: white;
+            font-size: 4em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .service-card:hover::before {
-        transform: scaleX(1);
-    }
+        .page-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3em;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
 
-    .service-card h3 {
-        color: #e14a4a;
-        font-size: 1.6em;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        font-weight: 600;
-    }
-
-    .service-card h3 i {
-        background: linear-gradient(45deg, #e14a4a, #ff6b6b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: 1.8em;
-    }
-
-    .service-card p {
-        color: #555;
-        font-size: 1.1em;
-        line-height: 1.7;
-        margin-bottom: 0;
-        font-weight: 400;
-    }
-
-    .service-card ul {
-        list-style-type: none;
-        padding-left: 0;
-        margin-top: 20px;
-    }
-
-    .service-card li {
-        color: #555;
-        font-size: 1.1em;
-        margin-bottom: 12px;
-        padding-left: 30px;
-        position: relative;
-        font-weight: 400;
-    }
-
-    .service-card li:before {
-        content: "✓";
-        color: #e14a4a;
-        font-size: 1.2em;
-        font-weight: bold;
-        position: absolute;
-        left: 0;
-        top: 0;
-        background: linear-gradient(45deg, #e14a4a, #ff6b6b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    /* Secciones de accesibilidad modernas */
-    .accessibility-features {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 25px;
-        padding: 40px;
-        margin-top: 40px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .accessibility-features::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #e14a4a, #ff6b6b, #e14a4a);
-        background-size: 200% 100%;
-        animation: gradientShift 3s ease infinite;
-    }
-
-    @@keyframes gradientShift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-
-    .accessibility-features h2 {
-        color: #e14a4a;
-        font-size: 2.2em;
-        margin-bottom: 30px;
-        text-align: center;
-        font-weight: 700;
-        position: relative;
-        z-index: 1;
-    }
-
-    .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        margin-top: 30px;
-    }
-
-    .feature-item {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-        padding: 25px;
-        border-radius: 18px;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(225, 74, 74, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .feature-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(225, 74, 74, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .feature-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(225, 74, 74, 0.15);
-        border-color: rgba(225, 74, 74, 0.3);
-    }
-
-    .feature-item:hover::before {
-        opacity: 1;
-    }
-
-    .feature-item i {
-        font-size: 2.5em;
-        background: linear-gradient(45deg, #e14a4a, #ff6b6b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 20px;
-        display: block;
-        transition: transform 0.3s ease;
-    }
-
-    .feature-item:hover i {
-        transform: scale(1.1);
-    }
-
-    .feature-item h4 {
-        color: #333;
-        margin-bottom: 15px;
-        font-weight: 600;
-        font-size: 1.2em;
-        position: relative;
-        z-index: 1;
-    }
-
-    .feature-item p {
-        color: #666;
-        font-size: 0.95em;
-        margin-bottom: 0;
-        line-height: 1.6;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Responsive mejorado */
-    @@media (max-width: 768px) {
+        /* Contenedor principal */
         .container {
-            padding: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .header-section {
-            padding: 30px 20px;
-            border-radius: 20px;
+        /* Grid de servicios */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 35px;
+            padding: 20px;
         }
 
-        .header-section h1 {
-            font-size: 2.2em;
-        }
-
+        /* Tarjetas de servicios */
         .service-card {
-            padding: 25px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s ease forwards;
         }
 
-        .accessibility-features {
-            padding: 30px 20px;
-            border-radius: 20px;
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @@keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .feature-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
+        /* Barra superior de la tarjeta */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #e14a4a, #ff6b6b, #FF2E4E);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            z-index: 2;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Información del servicio */
+        .service-info {
+            padding: 35px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        .service-title {
+            color: #e14a4a;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .service-title::before {
+            content: '♿';
+            font-size: 0.7em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .service-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #e14a4a, #ff6b6b);
+            border-radius: 2px;
+        }
+
+        .service-description {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .service-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .service-list li {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding-left: 35px;
+            position: relative;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .service-list li {
+            transform: translateX(8px);
+        }
+
+        .service-list li:before {
+            content: "✓";
+            color: #e14a4a;
+            font-size: 1.3em;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(45deg, #e14a4a, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Efecto de brillo en hover */
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+
+        .service-card:hover::after {
+            left: 100%;
+        }
+
+        /* Secciones de características */
+        .features-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .features-title {
+            color: white;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
         .feature-item {
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-    }
 
-    /* Animaciones de entrada */
-    .fade-in {
-        opacity: 0;
-        transform: translateY(30px);
-        animation: fadeInUp 0.8s ease forwards;
-    }
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-    @@keyframes fadeInUp {
-        to {
+        .feature-item:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .feature-item:hover::before {
             opacity: 1;
-            transform: translateY(0);
         }
-    }
 
-    .service-card:nth-child(1) { animation-delay: 0.1s; }
-    .service-card:nth-child(2) { animation-delay: 0.2s; }
-    .service-card:nth-child(3) { animation-delay: 0.3s; }
-    .accessibility-features:nth-child(1) { animation-delay: 0.4s; }
-    .accessibility-features:nth-child(2) { animation-delay: 0.5s; }
-</style>
+        .feature-item i {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 20px;
+            display: block;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
 
-<div class="container mt-4">
-    <div class="header-section fade-in">
-        <h1>Servicios para Personas con Discapacidad</h1>
-        <p>En StarPerú nos comprometemos a brindar un servicio inclusivo y accesible para todos nuestros pasajeros.</p>
-    </div>
+        .feature-item:hover i {
+            transform: scale(1.2) rotate(5deg);
+        }
 
-    <div class="service-card fade-in">
-        <h3><i class="bi bi-wheelchair"></i> Asistencia en el Aeropuerto</h3>
-        <p>Ofrecemos asistencia completa desde el momento de su llegada al aeropuerto hasta el abordaje del avión:</p>
-        <ul>
-            <li>Asistencia personalizada en el check-in</li>
-            <li>Ayuda con el equipaje</li>
-            <li>Transporte en silla de ruedas hasta el avión</li>
-            <li>Asistencia durante el embarque y desembarque</li>
-        </ul>
-    </div>
+        .feature-item h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
 
-    <div class="service-card fade-in">
-        <h3><i class="bi bi-airplane"></i> Servicios a Bordo</h3>
-        <p>Nuestro personal está capacitado para brindar la mejor atención durante el vuelo:</p>
-        <ul>
-            <li>Asientos adaptados según necesidades</li>
-            <li>Asistencia para movilizarse dentro del avión</li>
-            <li>Ayuda con el equipaje de mano</li>
-            <li>Atención personalizada durante el vuelo</li>
-        </ul>
-    </div>
+        .feature-item p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95em;
+            margin-bottom: 0;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
 
-    <div class="service-card fade-in">
-        <h3><i class="bi bi-tools"></i> Equipamiento Especial</h3>
-        <p>Disponemos de equipamiento especial para garantizar su comodidad:</p>
-        <ul>
-            <li>Sillas de ruedas para uso en aeropuerto</li>
-            <li>Equipamiento para movilidad reducida</li>
-            <li>Dispositivos de asistencia auditiva</li>
-            <li>Equipamiento para necesidades médicas</li>
-        </ul>
-    </div>
+        /* Responsividad */
+        @@media (max-width: 768px) {
+            .page-title {
+                font-size: 2.8em;
+            }
 
-    <div class="accessibility-features fade-in">
-        <h2>Características de Accesibilidad</h2>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <i class="bi bi-volume-up"></i>
-                <h4>Lector por Texto</h4>
-                <p>Activa el lector para que lea el texto al pasar el mouse sobre los elementos de la página.</p>
+            .page-subtitle {
+                font-size: 1.1em;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 15px;
+            }
+
+            .service-info {
+                padding: 25px;
+            }
+
+            .service-title {
+                font-size: 1.8em;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .features-title {
+                font-size: 2em;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .page-title {
+                font-size: 2.2em;
+            }
+
+            .service-info {
+                padding: 20px;
+            }
+
+            .service-title {
+                font-size: 1.5em;
+            }
+
+            .features-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas flotantes -->
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="container">
+        <!-- Header de la página -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-universal-access me-3"></i>
+                Servicios para Personas con Discapacidad
+            </h1>
+            <p class="page-subtitle">En StarPerú nos comprometemos a brindar un servicio inclusivo y accesible para todos nuestros pasajeros</p>
+        </div>
+
+        <!-- Grid de servicios -->
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-info">
+                    <h2 class="service-title">
+                        <i class="fas fa-wheelchair"></i>
+                        Asistencia en el Aeropuerto
+                    </h2>
+                    <p class="service-description">Ofrecemos asistencia completa desde el momento de su llegada al aeropuerto hasta el abordaje del avión:</p>
+                    <ul class="service-list">
+                        <li>Asistencia personalizada en el check-in</li>
+                        <li>Ayuda con el equipaje</li>
+                        <li>Transporte en silla de ruedas hasta el avión</li>
+                        <li>Asistencia durante el embarque y desembarque</li>
+                    </ul>
+                </div>
             </div>
-            <div class="feature-item">
-                <i class="bi bi-mic"></i>
-                <h4>Navegación por Voz</h4>
-                <p>Usa comandos de voz para navegar por el sitio y realizar acciones como escribir o seleccionar opciones.</p>
+
+            <div class="service-card">
+                <div class="service-info">
+                    <h2 class="service-title">
+                        <i class="fas fa-plane"></i>
+                        Servicios a Bordo
+                    </h2>
+                    <p class="service-description">Nuestro personal está capacitado para brindar la mejor atención durante el vuelo:</p>
+                    <ul class="service-list">
+                        <li>Asientos adaptados según necesidades</li>
+                        <li>Asistencia para movilizarse dentro del avión</li>
+                        <li>Ayuda con el equipaje de mano</li>
+                        <li>Atención personalizada durante el vuelo</li>
+                    </ul>
+                </div>
             </div>
-            <div class="feature-item">
-                <i class="bi bi-palette"></i>
-                <h4>Adaptación de Daltonismo</h4>
-                <p>Adapta los colores del sitio para diferentes tipos de daltonismo: protanopía, deuteranopía, tritanopía y más.</p>
+
+            <div class="service-card">
+                <div class="service-info">
+                    <h2 class="service-title">
+                        <i class="fas fa-tools"></i>
+                        Equipamiento Especial
+                    </h2>
+                    <p class="service-description">Disponemos de equipamiento especial para garantizar su comodidad:</p>
+                    <ul class="service-list">
+                        <li>Sillas de ruedas para uso en aeropuerto</li>
+                        <li>Equipamiento para movilidad reducida</li>
+                        <li>Dispositivos de asistencia auditiva</li>
+                        <li>Equipamiento para necesidades médicas</li>
+                    </ul>
+                </div>
             </div>
-            <div class="feature-item">
-                <i class="bi bi-text-paragraph"></i>
-                <h4>Texto Adaptable</h4>
-                <p>Ajusta el tamaño del texto según tus necesidades para una mejor legibilidad.</p>
+        </div>
+
+        <!-- Características de accesibilidad -->
+        <div class="features-section">
+            <h2 class="features-title">
+                <i class="fas fa-star"></i>
+                Características de Accesibilidad
+            </h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-volume-up"></i>
+                    <h4>Lector por Texto</h4>
+                    <p>Activa el lector para que lea el texto al pasar el mouse sobre los elementos de la página.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-microphone"></i>
+                    <h4>Navegación por Voz</h4>
+                    <p>Usa comandos de voz para navegar por el sitio y realizar acciones como escribir o seleccionar opciones.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-palette"></i>
+                    <h4>Adaptación de Daltonismo</h4>
+                    <p>Adapta los colores del sitio para diferentes tipos de daltonismo: protanopía, deuteranopía, tritanopía y más.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-text-height"></i>
+                    <h4>Texto Adaptable</h4>
+                    <p>Ajusta el tamaño del texto según tus necesidades para una mejor legibilidad.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-adjust"></i>
+                    <h4>Alto Contraste</h4>
+                    <p>Activa el modo de alto contraste para mejorar la visibilidad de los elementos.</p>
+                </div>
             </div>
-            <div class="feature-item">
-                <i class="bi bi-contrast"></i>
-                <h4>Alto Contraste</h4>
-                <p>Activa el modo de alto contraste para mejorar la visibilidad de los elementos.</p>
+        </div>
+
+        <!-- Tutorial de navegación por voz -->
+        <div class="features-section">
+            <h2 class="features-title">
+                <i class="fas fa-graduation-cap"></i>
+                Tutorial de Navegación por Voz
+            </h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-microphone"></i>
+                    <h4>Comandos Básicos</h4>
+                    <p>Para activar la navegación por voz, di "Activar" y "Desactivar" para desactivarla.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-arrows-alt-v"></i>
+                    <h4>Navegación en la Página</h4>
+                    <p>Para ir abajo alguna sección, solo dí la sección, por ejemplo: "Destinos". "Ir abajo" para bajar, "Ir arriba" para subir, "Ir más abajo" para ir al final, "Ir más arriba" para ir al inicio.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-edit"></i>
+                    <h4>Escribir en Campos</h4>
+                    <p>Di "Escribir [texto] en [nombre del campo]". Por ejemplo: "Escribir Juan en nombres".</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-list-check"></i>
+                    <h4>Seleccionar Opciones</h4>
+                    <p>Di "Seleccionar [opción] en [nombre de la lista]". Por ejemplo: "Seleccionar Si en ¿Tiene mascotas?".</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-eraser"></i>
+                    <h4>Borrar Campos</h4>
+                    <p>Di "Borrar campo [nombre del campo]" para limpiar un campo. Por ejemplo: "Borrar campo nombres".</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sistema de adaptación para daltonismo -->
+        <div class="features-section">
+            <h2 class="features-title">
+                <i class="fas fa-eye"></i>
+                Sistema de Adaptación para Daltonismo
+            </h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-palette"></i>
+                    <h4>Tipos de Daltonismo Soportados</h4>
+                    <p>Nuestro sistema incluye filtros para: Protanopía, Protanomalía, Deuteranopía, Deuteranomalía, Tritanopía, Tritanomalía y Acromatopsia.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-toggle-on"></i>
+                    <h4>Activación Fácil</h4>
+                    <p>Activa el switch de Daltonismo en la barra superior y selecciona el tipo que mejor se adapte a tus necesidades visuales.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-eye"></i>
+                    <h4>Cambio Inmediato</h4>
+                    <p>Los colores se adaptan instantáneamente sin necesidad de recargar la página, mejorando la experiencia visual.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-cog"></i>
+                    <h4>Configuración Persistente</h4>
+                    <p>Tu configuración se guarda automáticamente y se mantiene entre sesiones para una experiencia consistente.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-undo"></i>
+                    <h4>Restauración Rápida</h4>
+                    <p>Puedes volver a la vista normal en cualquier momento seleccionando "Por defecto" en las opciones.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container mt-4">
-    <div class="accessibility-features fade-in">
-        <h2>Tutorial de Navegación por Voz</h2>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <i class="bi bi-mic"></i>
-                <h4>Comandos Básicos</h4>
-                <p>Para activar la navegación por voz, di "Activar" y "Desactivar" para desactivarla.</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-arrow-down-up"></i>
-                <h4>Navegación en la Página</h4>
-                <p>Para ir abajo alguna sección, solo dí la sección, por ejemplo: "Destinos". "Ir abajo" para bajar, "Ir arriba" para subir, "Ir más abajo" para ir al final, "Ir más arriba" para ir al inicio.</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-cursor-text"></i>
-                <h4>Escribir en Campos</h4>
-                <p>Di "Escribir [texto] en [nombre del campo]". Por ejemplo: "Escribir Juan en nombres".</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-list-check"></i>
-                <h4>Seleccionar Opciones</h4>
-                <p>Di "Seleccionar [opción] en [nombre de la lista]". Por ejemplo: "Seleccionar Si en ¿Tiene mascotas?".</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-eraser"></i>
-                <h4>Borrar Campos</h4>
-                <p>Di "Borrar campo [nombre del campo]" para limpiar un campo. Por ejemplo: "Borrar campo nombres".</p>
-            </div>
-        </div>
-    </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 25;
 
-<div class="container mt-4">
-    <div class="accessibility-features fade-in">
-        <h2>Sistema de Adaptación para Daltonismo</h2>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <i class="bi bi-palette"></i>
-                <h4>Tipos de Daltonismo Soportados</h4>
-                <p>Nuestro sistema incluye filtros para: Protanopía, Protanomalía, Deuteranopía, Deuteranomalía, Tritanopía, Tritanomalía y Acromatopsia.</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-toggle-on"></i>
-                <h4>Activación Fácil</h4>
-                <p>Activa el switch de Daltonismo en la barra superior y selecciona el tipo que mejor se adapte a tus necesidades visuales.</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-eye"></i>
-                <h4>Cambio Inmediato</h4>
-                <p>Los colores se adaptan instantáneamente sin necesidad de recargar la página, mejorando la experiencia visual.</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-gear"></i>
-                <h4>Configuración Persistente</h4>
-                <p>Tu configuración se guarda automáticamente y se mantiene entre sesiones para una experiencia consistente.</p>
-            </div>
-            <div class="feature-item">
-                <i class="bi bi-arrow-clockwise"></i>
-                <h4>Restauración Rápida</h4>
-                <p>Puedes volver a la vista normal en cualquier momento seleccionando "Por defecto" en las opciones.</p>
-            </div>
-        </div>
-    </div>
-</div>
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 12 + 6 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Asegurarse de que los elementos sean accesibles para lectores de pantalla
-        const serviceCards = document.querySelectorAll('.service-card');
-        serviceCards.forEach(card => {
-            card.setAttribute('role', 'article');
-            card.setAttribute('aria-label', card.querySelector('h3').textContent);
+        // Inicializar efectos visuales
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Efecto de aparición gradual para las tarjetas
+            const cards = document.querySelectorAll('.service-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => observer.observe(card));
+            
+            // Asegurarse de que los elementos sean accesibles para lectores de pantalla
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach(card => {
+                card.setAttribute('role', 'article');
+                card.setAttribute('aria-label', card.querySelector('.service-title').textContent);
+            });
+
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach(item => {
+                item.setAttribute('role', 'article');
+                item.setAttribute('aria-label', item.querySelector('h4').textContent);
+            });
         });
-
-        const featureItems = document.querySelectorAll('.feature-item');
-        featureItems.forEach(item => {
-            item.setAttribute('role', 'article');
-            item.setAttribute('aria-label', item.querySelector('h4').textContent);
-        });
-    });
-</script>
+    </script>
+</body>
+</html>

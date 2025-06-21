@@ -4,269 +4,668 @@
     ViewData["Title"] = "Detalles de la Reserva";
 }
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+    <title>Detalles de la Reserva - StarPerú</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        html, body {
+            height: 100% !important;
+            width: 100% !important;
+            overflow-x: hidden !important;
+        }
+
     body {
-        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
-        min-height: 100vh;
-        padding: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-
-    .card-header {
-        background: #e14a4a;
-        border: none;
-        padding: 20px 30px;
-    }
-
-    .card-header h3 {
-        color: white;
-        margin: 0;
-        font-size: 1.8em;
-        font-weight: 600;
-    }
-
-    .card-body {
-        padding: 30px;
-    }
-
-    .info-section {
-        background: rgba(225, 74, 74, 0.05);
-        border-radius: 10px;
-        padding: 25px;
-        margin-bottom: 30px;
-    }
-
-    .info-section h4 {
-        color: #e14a4a;
-        font-size: 1.4em;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
-
-    .info-item {
-        display: flex;
-        margin-bottom: 15px;
-        align-items: center;
-    }
-
-    .info-label {
-        font-weight: 600;
-        color: #555;
-        width: 180px;
-        flex-shrink: 0;
-    }
-
-    .info-value {
-        color: #333;
-        flex-grow: 1;
-    }
-
-    .table-responsive {
-        background: white;
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-    }
-
-    .table {
-        margin-bottom: 0;
-    }
-
-    .table thead th {
-        background: #e14a4a;
-        color: white;
-        font-weight: 600;
-        border: none;
-        padding: 15px;
-    }
-
-    .table tbody td {
-        padding: 15px;
-        vertical-align: middle;
-        color: #555;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .table tbody tr:hover {
-        background: rgba(225, 74, 74, 0.05);
-    }
-
-    .btn {
-        padding: 12px 25px;
-        font-size: 1.1em;
-        font-weight: 500;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        margin-right: 10px;
-    }
-
-    .btn-success {
-        background: #28a745;
-        border: none;
-    }
-
-    .btn-success:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .btn-secondary {
-        background: #6c757d;
-        border: none;
-    }
-
-    .btn-secondary:hover {
-        background: #5a6268;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
-    }
-
-    .status-badge {
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-weight: 500;
-        font-size: 0.9em;
-    }
-
-    .status-paid {
-        background: #28a745;
-        color: white;
-    }
-
-    .status-pending {
-        background: #ffc107;
-        color: #000;
-    }
-
-    .status-failed {
-        background: #dc3545;
-        color: white;
-    }
-
-    @@media (max-width: 768px) {
-        .container {
-            padding: 10px;
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 25%, #FF2E4E 50%, #2c3e50 75%, #34495e 100%) !important;
+            background-size: 400% 400% !important;
+            animation: gradientShift 20s ease infinite !important;
+            min-height: 100vh !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: relative !important;
         }
 
-        .card-header {
-            padding: 15px 20px;
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .card-header h3 {
-            font-size: 1.5em;
+        /* Partículas flotantes */
+        .floating-particles {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+            z-index: 1 !important;
         }
 
-        .card-body {
-            padding: 20px;
+        .particle {
+            position: absolute !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 50% !important;
+            animation: float 8s ease-in-out infinite !important;
         }
 
-        .info-section {
-            padding: 15px;
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
         }
 
-        .info-item {
-            flex-direction: column;
-            align-items: flex-start;
+        /* Contenedor principal */
+        .main-container {
+            max-width: 1000px !important;
+            margin: 0 auto !important;
+            padding: 20px !important;
+            position: relative !important;
+            z-index: 10 !important;
         }
 
-        .info-label {
-            width: 100%;
-            margin-bottom: 5px;
+        /* Header moderno */
+        .page-header {
+            text-align: center !important;
+            margin-bottom: 40px !important;
+            padding: 50px 40px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 30px !important;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            animation: fadeInUp 1s ease-out !important;
         }
 
-        .btn {
-            width: 100%;
-            margin-bottom: 10px;
-            margin-right: 0;
+        .page-header::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
+            transition: left 0.8s ease !important;
+        }
+
+        .page-header:hover::before {
+            left: 100% !important;
+        }
+
+        .page-title {
+            color: white !important;
+            font-size: 3.5em !important;
+            font-weight: 800 !important;
+            margin-bottom: 15px !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+            position: relative !important;
+            z-index: 1 !important;
+            background: linear-gradient(45deg, #fff, #f0f0f0) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        .page-subtitle {
+            color: rgba(255,255,255,0.9) !important;
+            font-size: 1.2em !important;
+            font-weight: 300 !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2) !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        /* Tarjeta principal */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: none !important;
+            border-radius: 25px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            animation: fadeInUp 1s ease-out !important;
+        }
+
+        .main-card::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 6px !important;
+            background: linear-gradient(90deg, #e14a4a, #ff6b6b, #FF2E4E) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 3s ease infinite !important;
+        }
+
+        .card-header-modern {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%) !important;
+            border: none !important;
+            padding: 30px !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .card-header-modern::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
+            transition: left 0.6s ease !important;
+        }
+
+        .card-header-modern:hover::before {
+            left: 100% !important;
+        }
+
+        .card-header-modern h3 {
+            color: white !important;
+            margin: 0 !important;
+            font-size: 2.2em !important;
+            font-weight: 700 !important;
+            position: relative !important;
+            z-index: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 15px !important;
+        }
+
+        .card-body-modern {
+            padding: 40px !important;
+        }
+
+        /* Sección de destino */
+        .destination-section {
+            display: flex !important;
+            gap: 30px !important;
+            margin-bottom: 40px !important;
+            background: rgba(225, 74, 74, 0.05) !important;
+            border-radius: 20px !important;
+            padding: 30px !important;
+            border: 1px solid rgba(225, 74, 74, 0.1) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .destination-section:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 15px 30px rgba(225, 74, 74, 0.1) !important;
+        }
+
+        .destination-info {
+            flex: 1 !important;
+        }
+
+        .destination-name {
+            color: #e14a4a !important;
+            font-size: 2em !important;
+            font-weight: 700 !important;
+            margin-bottom: 15px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+
+        .flight-time {
+            color: #333 !important;
+            font-size: 1.2em !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .destination-image {
+            flex: 1 !important;
+            border-radius: 15px !important;
+            overflow: hidden !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .destination-image:hover {
+            transform: scale(1.05) !important;
+        }
+
+        .destination-image img {
+            width: 100% !important;
+            height: 250px !important;
+            object-fit: cover !important;
+        }
+
+        /* Sección de información */
+        .info-section-modern {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 20px !important;
+            padding: 30px !important;
+            margin-bottom: 30px !important;
+            border: 1px solid rgba(225, 74, 74, 0.1) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .info-section-modern:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+        }
+
+        .info-section-modern h4 {
+            color: #e14a4a !important;
+            font-size: 1.6em !important;
+            margin-bottom: 25px !important;
+            font-weight: 700 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            border-bottom: 3px solid #ff6b6b !important;
+            padding-bottom: 10px !important;
+        }
+
+        .info-item-modern {
+            display: flex !important;
+            margin-bottom: 20px !important;
+            align-items: center !important;
+            padding: 15px !important;
+            background: rgba(255, 255, 255, 0.5) !important;
+            border-radius: 12px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .info-item-modern:hover {
+            background: rgba(255, 255, 255, 0.8) !important;
+            transform: translateX(5px) !important;
+        }
+
+        .info-label-modern {
+            font-weight: 600 !important;
+            color: #555 !important;
+            width: 200px !important;
+            flex-shrink: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .info-value-modern {
+            color: #333 !important;
+            flex-grow: 1 !important;
+            font-weight: 500 !important;
+        }
+
+        /* Tabla moderna */
+        .table-container-modern {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-radius: 20px !important;
+            padding: 25px !important;
+            margin-top: 30px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+            border: 1px solid rgba(225, 74, 74, 0.1) !important;
+        }
+
+        .custom-table {
+            margin-bottom: 0 !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            width: 100% !important;
+        }
+
+        .custom-table thead th {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border: none !important;
+            padding: 20px 15px !important;
+            font-size: 1.1em !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .custom-table thead th:first-child {
+            border-top-left-radius: 15px !important;
+        }
+
+        .custom-table thead th:last-child {
+            border-top-right-radius: 15px !important;
+        }
+
+        .custom-table tbody td {
+            padding: 18px 15px !important;
+            vertical-align: middle !important;
+            color: #555 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+        .custom-table tbody tr {
+            transition: all 0.3s ease !important;
+        }
+
+        .custom-table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Botones modernos */
+        .btn-modern {
+            padding: 15px 30px !important;
+            font-size: 1.1em !important;
+            font-weight: 600 !important;
+            border-radius: 50px !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            position: relative !important;
+            overflow: hidden !important;
+            border: none !important;
+            margin-right: 15px !important;
+            margin-bottom: 10px !important;
+        }
+
+        .btn-modern::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+            transition: left 0.5s ease !important;
+        }
+
+        .btn-modern:hover::before {
+            left: 100% !important;
+        }
+
+        .btn-success-modern {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            color: white !important;
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3) !important;
+        }
+
+        .btn-success-modern:hover {
+            background: linear-gradient(135deg, #20c997 0%, #28a745 100%) !important;
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4) !important;
+            color: white !important;
+        }
+
+        .btn-secondary-modern {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%) !important;
+            color: white !important;
+            box-shadow: 0 10px 25px rgba(108, 117, 125, 0.3) !important;
+        }
+
+        .btn-secondary-modern:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%) !important;
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 15px 35px rgba(108, 117, 125, 0.4) !important;
+            color: white !important;
+        }
+
+        /* Badges modernos */
+        .status-badge-modern {
+            padding: 10px 18px !important;
+            border-radius: 25px !important;
+            font-weight: 600 !important;
+            font-size: 0.9em !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            display: inline-block !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .status-badge-modern:hover {
+            transform: scale(1.1) !important;
+        }
+
+        .status-paid-modern {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            color: white !important;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3) !important;
+        }
+
+        .status-pending-modern {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+            color: #000 !important;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3) !important;
+        }
+
+        .status-failed-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            color: white !important;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3) !important;
+        }
+
+        /* Animaciones */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0 !important;
+                transform: translateY(30px) !important;
+            }
+            to {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+            }
+        }
+
+        /* Responsividad */
+        @@media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5em !important;
+            }
+
+            .destination-section {
+                flex-direction: column !important;
+                gap: 20px !important;
+                padding: 20px !important;
+            }
+
+            .destination-image img {
+                height: 200px !important;
+            }
+
+            .card-body-modern {
+                padding: 25px !important;
+            }
+
+            .info-item-modern {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+            }
+
+            .info-label-modern {
+                width: 100% !important;
+            }
+
+            .btn-modern {
+                width: 100% !important;
+                margin-right: 0 !important;
+            }
+
+            .custom-table thead th {
+                font-size: 0.9em !important;
+                padding: 15px 10px !important;
+            }
+
+            .custom-table tbody td {
+                padding: 15px 10px !important;
+                font-size: 0.9em !important;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .page-title {
+                font-size: 2em !important;
+            }
+
+            .card-header-modern h3 {
+                font-size: 1.8em !important;
+            }
+
+            .destination-name {
+                font-size: 1.6em !important;
+            }
+
+            .info-section-modern {
+                padding: 20px !important;
+            }
+
+            .custom-table thead th {
+                font-size: 0.8em !important;
+                padding: 12px 8px !important;
+            }
+
+            .custom-table tbody td {
+                padding: 12px 8px !important;
+                font-size: 0.8em !important;
         }
     }
 </style>
+</head>
+<body>
+    <!-- Partículas flotantes -->
+    <div class="floating-particles" id="particles"></div>
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h3>Detalles de la Reserva</h3>
+    <div class="main-container">
+        <!-- Header de la página -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-ticket-alt me-3"></i>
+                Detalles de la Reserva
+            </h1>
+            <p class="page-subtitle">Información completa de tu reserva de vuelo</p>
         </div>
-        <div class="card-body">
-            <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-                <div style="flex: 1; background: rgba(225, 74, 74, 0.05); border-radius: 10px; padding: 20px;">
-                    <div style="color: #e14a4a; font-size: 1.5em; font-weight: 600; margin-bottom: 10px;">@Model.destinoVuelo</div>
-                    <div style="color: #333; font-size: 1.1em;">Hora del vuelo: @Model.Vuelo.fechaVuelo.ToString("HH:mm")</div>
+
+        <div class="main-card">
+            <div class="card-header-modern">
+                <h3>
+                    <i class="fas fa-plane me-2"></i>
+                    Reserva #@Model.idResVuelo
+                </h3>
+            </div>
+            <div class="card-body-modern">
+                <!-- Sección de destino -->
+                <div class="destination-section">
+                    <div class="destination-info">
+                        <div class="destination-name">
+                            <i class="fas fa-map-marker-alt"></i>
+                            @Model.destinoVuelo
+                        </div>
+                        <div class="flight-time">
+                            <i class="fas fa-clock"></i>
+                            Hora del vuelo: @Model.Vuelo.fechaVuelo.ToString("HH:mm")
+                        </div>
                 </div>
-                <div style="flex: 1; border-radius: 10px; overflow: hidden;">
+                    <div class="destination-image">
                     <img src="@Url.Content($"~/img/{Model.destinoVuelo.ToUpper()}.jpeg")" 
                          alt="@Model.destinoVuelo" 
-                         style="width: 100%; height: 200px; object-fit: cover;"
                          onerror="this.src='@Url.Content("~/img/PERU.png")'">
                 </div>
             </div>
 
-            <div class="info-section">
-                <h4>Información del Vuelo</h4>
-                <div class="info-item">
-                    <span class="info-label">Origen:</span>
-                    <span class="info-value">@Model.origenResVue</span>
+                <!-- Información del vuelo -->
+                <div class="info-section-modern">
+                    <h4>
+                        <i class="fas fa-info-circle"></i>
+                        Información del Vuelo
+                    </h4>
+                    <div class="info-item-modern">
+                        <span class="info-label-modern">
+                            <i class="fas fa-plane-departure"></i>
+                            Origen:
+                        </span>
+                        <span class="info-value-modern">@Model.origenResVue</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Destino:</span>
-                    <span class="info-value">@Model.destinoVuelo</span>
+                    <div class="info-item-modern">
+                        <span class="info-label-modern">
+                            <i class="fas fa-plane-arrival"></i>
+                            Destino:
+                        </span>
+                        <span class="info-value-modern">@Model.destinoVuelo</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Número de Personas:</span>
-                    <span class="info-value">@Model.personasResVue</span>
+                    <div class="info-item-modern">
+                        <span class="info-label-modern">
+                            <i class="fas fa-users"></i>
+                            Número de Personas:
+                        </span>
+                        <span class="info-value-modern">@Model.personasResVue</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Mascotas:</span>
-                    <span class="info-value">@Model.mascotasResVue</span>
+                    <div class="info-item-modern">
+                        <span class="info-label-modern">
+                            <i class="fas fa-paw"></i>
+                            Mascotas:
+                        </span>
+                        <span class="info-value-modern">@Model.mascotasResVue</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Precio Total:</span>
-                    <span class="info-value">S/ @Model.precioVuelo.ToString("N2")</span>
+                    <div class="info-item-modern">
+                        <span class="info-label-modern">
+                            <i class="fas fa-dollar-sign"></i>
+                            Precio Total:
+                        </span>
+                        <span class="info-value-modern">
+                            <strong style="color: #28a745; font-size: 1.1em;">
+                                S/ @Model.precioVuelo.ToString("N2")
+                            </strong>
+                        </span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Estado de Pago:</span>
-                    <span class="info-value">
-                        <span class="status-badge @(Model.pagadoVuelo ? "status-paid" : "status-pending")">
-                            @(Model.pagadoVuelo ? "Pagado" : "Pendiente")
+                    <div class="info-item-modern">
+                        <span class="info-label-modern">
+                            <i class="fas fa-credit-card"></i>
+                            Estado de Pago:
+                        </span>
+                        <span class="info-value-modern">
+                            <span class="status-badge-modern @(Model.pagadoVuelo ? "status-paid-modern" : "status-pending-modern")">
+                                <i class="fas @(Model.pagadoVuelo ? "fa-check-circle" : "fa-clock") me-1"></i>
+                                @(Model.pagadoVuelo ? "Pagado" : "Pendiente")
                         </span>
                     </span>
                 </div>
             </div>
 
-            <h4 class="mt-4" style="color: #e14a4a; font-weight: 600;">Pasajeros</h4>
-            <div class="table-responsive">
-                <table class="table">
+                <!-- Tabla de pasajeros -->
+                <h4 style="color: #e14a4a; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-friends"></i>
+                    Pasajeros
+                </h4>
+                <div class="table-container-modern">
+                    <table class="custom-table">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>DNI</th>
-                            <th>Edad</th>
-                            <th>Estado</th>
+                                <th><i class="fas fa-user me-2"></i>Nombre</th>
+                                <th><i class="fas fa-id-card me-2"></i>DNI</th>
+                                <th><i class="fas fa-birthday-cake me-2"></i>Edad</th>
+                                <th><i class="fas fa-info-circle me-2"></i>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var pasajero in Model.Pasajeros)
                         {
                             <tr>
-                                <td>@pasajero.Nombre</td>
+                                    <td>
+                                        <i class="fas fa-user me-2"></i>
+                                        @pasajero.Nombre
+                                    </td>
                                 <td>@pasajero.DNI</td>
-                                <td>@pasajero.Edad</td>
+                                    <td>@pasajero.Edad años</td>
                                 <td>
-                                    <span class="status-badge @(pasajero.EsMenorEdad ? "status-pending" : "status-paid")">
+                                        <span class="status-badge-modern @(pasajero.EsMenorEdad ? "status-pending-modern" : "status-paid-modern")">
+                                            <i class="fas @(pasajero.EsMenorEdad ? "fa-child" : "fa-user") me-1"></i>
                                         @(pasajero.EsMenorEdad ? "Menor de edad" : "Adulto")
                                     </span>
                                 </td>
@@ -276,21 +675,53 @@
                 </table>
             </div>
 
-            <div class="mt-4">
+                <!-- Botones de acción -->
+                <div style="margin-top: 30px; text-align: center;">
                 @if (!Model.pagadoVuelo)
                 {
-                    <button onclick="realizarPago(@Model.idResVuelo)" class="btn btn-success">Realizar Pago</button>
-                }
-                <a href="@Url.Action("Reservas", "Home")" class="btn btn-secondary">Volver a Mis Reservas</a>
-            </div>
+                        <button onclick="realizarPago(@Model.idResVuelo)" class="btn-modern btn-success-modern">
+                            <i class="fas fa-credit-card me-2"></i>
+                            Realizar Pago
+                        </button>
+                    }
+                    <a href="@Url.Action("Reservas", "Home")" class="btn-modern btn-secondary-modern">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Volver a Mis Reservas
+                    </a>
+                </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 8 + 4 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar efectos visuales
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+
+        // Función del backend (mantenida intacta)
         function realizarPago(idReserva) {
             window.location.href = '@Url.Action("RealizarPago", "Home")/' + idReserva;
         }
     </script>
-} 
+</body>
+</html> 

@@ -6,451 +6,597 @@
     var userType = Context.Session.GetString("UserType");
 }
 
-<style>
-    body {
-        background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%);
-        min-height: 100vh;
-        padding: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .header-section {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 25px;
-        padding: 40px 30px;
-        margin-bottom: 40px;
-        text-align: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .header-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        transition: left 0.6s ease;
-    }
-
-    .header-section:hover::before {
-        left: 100%;
-    }
-
-    .header-section h2 {
-        color: white;
-        font-size: 3em;
-        margin: 0;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        position: relative;
-        z-index: 1;
-    }
-
-    .alert {
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .alert::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #e14a4a, #ff6b6b);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-    }
-
-    .alert:hover::before {
-        transform: scaleX(1);
-    }
-
-    .alert:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-
-    .alert h4 {
-        color: #e14a4a;
-        font-size: 1.6em;
-        margin-bottom: 20px;
-        font-weight: 600;
-        position: relative;
-        z-index: 1;
-    }
-
-    .alert p {
-        color: #555;
-        font-size: 1.1em;
-        margin-bottom: 25px;
-        line-height: 1.6;
-        position: relative;
-        z-index: 1;
-    }
-
-    .btn-primary {
-        background: linear-gradient(45deg, #e14a4a, #ff6b6b);
-        border: none;
-        padding: 15px 35px;
-        font-size: 1.1em;
-        font-weight: 600;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-primary::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s ease;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(225, 74, 74, 0.4);
-        background: linear-gradient(45deg, #ff6b6b, #e14a4a);
-    }
-
-    .btn-primary:hover::before {
-        left: 100%;
-    }
-
-    .table-responsive {
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 25px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .table-responsive::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #e14a4a, #ff6b6b, #e14a4a);
-        background-size: 200% 100%;
-        animation: gradientShift 3s ease infinite;
-    }
-
-    @@keyframes gradientShift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-
-    .table {
-        margin-bottom: 0;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-    .table thead th {
-        background: linear-gradient(45deg, #e14a4a, #ff6b6b);
-        color: white;
-        font-weight: 600;
-        border: none;
-        padding: 18px 15px;
-        font-size: 1.1em;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-
-    .table thead th:first-child {
-        border-top-left-radius: 12px;
-    }
-
-    .table thead th:last-child {
-        border-top-right-radius: 12px;
-    }
-
-    .table thead th:hover {
-        background: linear-gradient(45deg, #ff6b6b, #e14a4a);
-        transform: translateY(-1px);
-    }
-
-    .table tbody td {
-        padding: 18px 15px;
-        vertical-align: middle;
-        color: #555;
-        border-bottom: 1px solid rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .table tbody tr {
-        transition: all 0.3s ease;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 0.6s ease forwards;
-    }
-
-    .table tbody tr:nth-child(1) { animation-delay: 0.1s; }
-    .table tbody tr:nth-child(2) { animation-delay: 0.2s; }
-    .table tbody tr:nth-child(3) { animation-delay: 0.3s; }
-    .table tbody tr:nth-child(4) { animation-delay: 0.4s; }
-    .table tbody tr:nth-child(5) { animation-delay: 0.5s; }
-
-    @@keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .table tbody tr:hover {
-        background: linear-gradient(135deg, rgba(225, 74, 74, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    .table tbody tr:hover td {
-        color: #333;
-    }
-
-    .btn-info {
-        background: linear-gradient(45deg, #e14a4a, #ff6b6b);
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        box-shadow: 0 3px 10px rgba(225, 74, 74, 0.2);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-info::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.3s ease;
-    }
-
-    .btn-info:hover {
-        background: linear-gradient(45deg, #ff6b6b, #e14a4a);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3);
-    }
-
-    .btn-info:hover::before {
-        left: 100%;
-    }
-
-    .badge {
-        padding: 8px 12px;
-        font-size: 0.9em;
-        font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .badge.bg-success {
-        background: linear-gradient(45deg, #28a745, #20c997) !important;
-        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
-    }
-
-    .badge.bg-warning {
-        background: linear-gradient(45deg, #ffc107, #fd7e14) !important;
-        box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
-    }
-
-    .badge:hover {
-        transform: scale(1.05);
-    }
-
-    .admin-message {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 25px;
-        padding: 40px 30px;
-        margin: 20px 0;
-        text-align: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .admin-message::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        transition: left 0.6s ease;
-    }
-
-    .admin-message:hover::before {
-        left: 100%;
-    }
-
-    .admin-message h1 {
-        color: white;
-        font-size: 2.8em;
-        margin-bottom: 20px;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        position: relative;
-        z-index: 1;
-    }
-
-    @@media (max-width: 768px) {
-        .container {
-            padding: 10px;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" />
+    <title>Mis Reservas - StarPerú</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
         }
 
-        .header-section {
-            padding: 30px 20px;
-            margin-bottom: 20px;
-            border-radius: 20px;
+        html, body {
+            height: 100% !important;
+            width: 100% !important;
+            overflow-x: hidden !important;
         }
 
-        .header-section h2 {
-            font-size: 2.2em;
+        /* Fondo animado */
+        body {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 25%, #FF2E4E 50%, #2c3e50 75%, #34495e 100%) !important;
+            background-size: 400% 400% !important;
+            animation: gradientShift 20s ease infinite !important;
+            min-height: 100vh !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: relative !important;
         }
 
-        .alert {
-            padding: 25px;
-            border-radius: 15px;
+        /* Animación del gradiente */
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .table-responsive {
-            padding: 20px;
-            border-radius: 15px;
+        /* Partículas flotantes */
+        .floating-particles {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+            z-index: 1 !important;
         }
 
-        .table thead th {
-            font-size: 1em;
-            padding: 12px 8px;
+        .particle {
+            position: absolute !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 50% !important;
+            animation: float 8s ease-in-out infinite !important;
         }
 
-        .table tbody td {
-            padding: 12px 8px;
-            font-size: 0.9em;
+        @@keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
         }
 
-        .btn-info {
-            padding: 8px 15px;
-            font-size: 0.9em;
+        /* Contenedor principal */
+        .main-container {
+            max-width: 1200px !important;
+            margin: 0 auto !important;
+            padding: 20px !important;
+            position: relative !important;
+            z-index: 10 !important;
         }
 
+        /* Header moderno */
+        .page-header {
+            text-align: center !important;
+            margin-bottom: 50px !important;
+            padding: 60px 40px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 30px !important;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            animation: fadeInUp 1s ease-out !important;
+        }
+
+        .page-header::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent) !important;
+            transition: left 0.8s ease !important;
+        }
+
+        .page-header:hover::before {
+            left: 100% !important;
+        }
+
+        .page-title {
+            color: white !important;
+            font-size: 4em !important;
+            font-weight: 800 !important;
+            margin-bottom: 15px !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+            position: relative !important;
+            z-index: 1 !important;
+            background: linear-gradient(45deg, #fff, #f0f0f0) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        .page-subtitle {
+            color: rgba(255,255,255,0.9) !important;
+            font-size: 1.3em !important;
+            font-weight: 300 !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2) !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        /* Alertas modernas */
+        .alert-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 25px !important;
+            padding: 40px !important;
+            margin-bottom: 40px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            animation: fadeInUp 0.8s ease-out !important;
+        }
+
+        .alert-card::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 5px !important;
+            background: linear-gradient(90deg, #e14a4a, #ff6b6b, #FF2E4E) !important;
+            transform: scaleX(0) !important;
+            transition: transform 0.4s ease !important;
+        }
+
+        .alert-card:hover {
+            transform: translateY(-10px) scale(1.02) !important;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15) !important;
+        }
+
+        .alert-card:hover::before {
+            transform: scaleX(1) !important;
+        }
+
+        .alert-title {
+            color: #e14a4a !important;
+            font-size: 2em !important;
+            font-weight: 700 !important;
+            margin-bottom: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 15px !important;
+        }
+
+        .alert-text {
+            color: #555 !important;
+            font-size: 1.2em !important;
+            margin-bottom: 30px !important;
+            line-height: 1.6 !important;
+        }
+
+        /* Botones modernos */
+        .btn-modern {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%) !important;
+            border: none !important;
+            padding: 15px 35px !important;
+            font-size: 1.1em !important;
+            font-weight: 600 !important;
+            border-radius: 50px !important;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            position: relative !important;
+            overflow: hidden !important;
+            box-shadow: 0 10px 25px rgba(225, 74, 74, 0.3) !important;
+            color: white !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+        }
+
+        .btn-modern::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+            transition: left 0.5s ease !important;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 15px 35px rgba(225, 74, 74, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .btn-modern:hover::before {
+            left: 100% !important;
+        }
+
+        /* Tabla moderna */
+        .table-container {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 25px !important;
+            padding: 30px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            animation: fadeInUp 1s ease-out !important;
+        }
+
+        .table-container::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 6px !important;
+            background: linear-gradient(90deg, #e14a4a, #ff6b6b, #FF2E4E) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 3s ease infinite !important;
+        }
+
+        .custom-table {
+            margin-bottom: 0 !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            width: 100% !important;
+        }
+
+        .custom-table thead th {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border: none !important;
+            padding: 20px 15px !important;
+            font-size: 1.1em !important;
+            position: relative !important;
+            transition: all 0.3s ease !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .custom-table thead th:first-child {
+            border-top-left-radius: 15px !important;
+        }
+
+        .custom-table thead th:last-child {
+            border-top-right-radius: 15px !important;
+        }
+
+        .custom-table thead th:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #e14a4a 100%) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        .custom-table tbody td {
+            padding: 20px 15px !important;
+            vertical-align: middle !important;
+            color: #555 !important;
+            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            font-weight: 500 !important;
+        }
+
+        .custom-table tbody tr {
+            transition: all 0.4s ease !important;
+            opacity: 0 !important;
+            transform: translateY(30px) !important;
+            animation: fadeInUp 0.6s ease forwards !important;
+        }
+
+        .custom-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        .custom-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        .custom-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        .custom-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        .custom-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+        @@keyframes fadeInUp {
+            to {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+            }
+        }
+
+        .custom-table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%) !important;
+            transform: translateY(-5px) scale(1.01) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+        }
+
+        .custom-table tbody tr:hover td {
+            color: #333 !important;
+        }
+
+        /* Botón de detalles */
+        .btn-details {
+            background: linear-gradient(135deg, #e14a4a 0%, #ff6b6b 100%) !important;
+            border: none !important;
+            color: white !important;
+            padding: 12px 25px !important;
+            border-radius: 25px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 600 !important;
+            box-shadow: 0 5px 15px rgba(225, 74, 74, 0.3) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+        }
+
+        .btn-details::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+            transition: left 0.3s ease !important;
+        }
+
+        .btn-details:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #e14a4a 100%) !important;
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 8px 20px rgba(225, 74, 74, 0.4) !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .btn-details:hover::before {
+            left: 100% !important;
+        }
+
+        /* Badges modernos */
+        .custom-badge {
+            padding: 10px 16px !important;
+            font-size: 0.9em !important;
+            font-weight: 600 !important;
+            border-radius: 20px !important;
+            transition: all 0.3s ease !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            display: inline-block !important;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3) !important;
+            color: white !important;
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3) !important;
+            color: #000 !important;
+        }
+
+        .custom-badge:hover {
+            transform: scale(1.1) !important;
+        }
+
+        /* Mensaje de administrador */
         .admin-message {
-            padding: 30px 20px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 25px !important;
+            padding: 50px !important;
+            margin: 40px 0 !important;
+            text-align: center !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            animation: fadeInUp 1s ease-out !important;
         }
 
         .admin-message h1 {
-            font-size: 2.2em;
+            color: white !important;
+            font-size: 3em !important;
+            font-weight: 800 !important;
+            margin-bottom: 30px !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+            background: linear-gradient(45deg, #fff, #f0f0f0) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
         }
-    }
-</style>
+
+        /* Responsividad */
+        @@media (max-width: 768px) {
+            .page-title {
+                font-size: 2.8em !important;
+            }
+
+            .page-subtitle {
+                font-size: 1.1em !important;
+            }
+
+            .alert-card {
+                padding: 30px !important;
+                border-radius: 20px !important;
+            }
+
+            .alert-title {
+                font-size: 1.6em !important;
+            }
+
+            .table-container {
+                padding: 20px !important;
+                border-radius: 20px !important;
+            }
+
+            .custom-table thead th {
+                font-size: 0.9em !important;
+                padding: 15px 10px !important;
+            }
+
+            .custom-table tbody td {
+                padding: 15px 10px !important;
+                font-size: 0.9em !important;
+            }
+
+            .btn-details {
+                padding: 10px 20px !important;
+                font-size: 0.9em !important;
+            }
+
+            .admin-message {
+                padding: 30px 20px !important;
+                border-radius: 20px !important;
+            }
+
+            .admin-message h1 {
+                font-size: 2.2em !important;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .page-title {
+                font-size: 2.2em !important;
+            }
+
+            .alert-card {
+                padding: 25px !important;
+            }
+
+            .alert-title {
+                font-size: 1.4em !important;
+            }
+
+            .custom-table thead th {
+                font-size: 0.8em !important;
+                padding: 12px 8px !important;
+            }
+
+            .custom-table tbody td {
+                padding: 12px 8px !important;
+                font-size: 0.8em !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas flotantes -->
+    <div class="floating-particles" id="particles"></div>
 
 @if (userType == "admin")
 {
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="admin-message">
-                    <h1 class="display-4 fw-bold">Usted tiene rol administrador</h1>
-                </div>
-            </div>
+    <div class="main-container">
+        <div class="admin-message">
+            <h1>
+                <i class="fas fa-crown me-3"></i>
+                Panel de Administrador
+            </h1>
+            <p style="color: white; font-size: 1.2em;">Usted tiene acceso completo al sistema</p>
         </div>
     </div>
 }
 else
 {
-    <div class="container mt-4">
-        <div class="header-section">
-            <h2>Mis Reservas</h2>
+    <div class="main-container">
+        <!-- Header de la página -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-ticket-alt me-3"></i>
+                Mis Reservas
+            </h1>
+            <p class="page-subtitle">Gestiona y revisa todas tus reservas de vuelo</p>
         </div>
 
         @if (!userId.HasValue)
         {
-            <div class="alert">
-                <h4>Debes iniciar sesión para ver tus reservas</h4>
-                <p>Por favor, inicia sesión para acceder a tus reservas de vuelo.</p>
-                <a href="@Url.Action("Login", "Home")" class="btn btn-primary">Iniciar Sesión</a>
+            <div class="alert-card">
+                <h4 class="alert-title">
+                    <i class="fas fa-lock me-2"></i>
+                    Acceso Requerido
+                </h4>
+                <p class="alert-text">Debes iniciar sesión para ver tus reservas de vuelo.</p>
+                <a href="@Url.Action("Login", "Home")" class="btn-modern">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Iniciar Sesión
+                </a>
             </div>
         }
         else if (Model == null || !Model.Any())
         {
-            <div class="alert">
-                <h4>No tienes reservas</h4>
-                <p>Aún no has realizado ninguna reserva de vuelo.</p>
-                <a href="@Url.Action("Destinos", "Home")" class="btn btn-primary">Ver Vuelos Disponibles</a>
+            <div class="alert-card">
+                <h4 class="alert-title">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No tienes reservas
+                </h4>
+                <p class="alert-text">Aún no has realizado ninguna reserva de vuelo.</p>
+                <a href="@Url.Action("Destinos", "Home")" class="btn-modern">
+                    <i class="fas fa-plane me-2"></i>
+                    Ver Vuelos Disponibles
+                </a>
             </div>
         }
         else
         {
-            <div class="table-responsive">
-                <table class="table">
+            <div class="table-container">
+                <table class="custom-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Origen</th>
-                            <th>Destino</th>
-                            <th>Pasajeros</th>
-                            <th>Mascotas</th>
-                            <th>Precio Total</th>
-                            <th>Estado de Pago</th>
-                            <th>Acciones</th>
+                            <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                            <th><i class="fas fa-plane-departure me-2"></i>Origen</th>
+                            <th><i class="fas fa-plane-arrival me-2"></i>Destino</th>
+                            <th><i class="fas fa-users me-2"></i>Pasajeros</th>
+                            <th><i class="fas fa-paw me-2"></i>Mascotas</th>
+                            <th><i class="fas fa-dollar-sign me-2"></i>Precio Total</th>
+                            <th><i class="fas fa-credit-card me-2"></i>Estado de Pago</th>
+                            <th><i class="fas fa-cogs me-2"></i>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var reserva in Model)
                         {
                             <tr>
-                                <td>@reserva.idResVuelo</td>
-                                <td>@reserva.origenResVue</td>
-                                <td>@reserva.destinoVuelo</td>
-                                <td>@reserva.personasResVue</td>
-                                <td>@reserva.mascotasResVue</td>
-                                <td>S/ @reserva.precioVuelo.ToString("N2")</td>
+                                <td><strong>@reserva.idResVuelo</strong></td>
                                 <td>
-                                    <span class="badge @(reserva.pagadoVuelo ? "bg-success" : "bg-warning")">
+                                    <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                    @reserva.origenResVue
+                                </td>
+                                <td>
+                                    <i class="fas fa-map-marker-alt text-success me-1"></i>
+                                    @reserva.destinoVuelo
+                                </td>
+                                <td>
+                                    <i class="fas fa-user me-1"></i>
+                                    @reserva.personasResVue
+                                </td>
+                                <td>
+                                    <i class="fas fa-paw me-1"></i>
+                                    @reserva.mascotasResVue
+                                </td>
+                                <td>
+                                    <strong style="color: #28a745;">
+                                        <i class="fas fa-dollar-sign me-1"></i>
+                                        @reserva.precioVuelo.ToString("N2")
+                                    </strong>
+                                </td>
+                                <td>
+                                    <span class="custom-badge @(reserva.pagadoVuelo ? "badge-success" : "badge-warning")">
+                                        <i class="fas @(reserva.pagadoVuelo ? "fa-check-circle" : "fa-clock") me-1"></i>
                                         @(reserva.pagadoVuelo ? "Pagado" : "Pendiente")
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn btn-info">Ver Detalles</a>
+                                    <a href="@Url.Action("DetalleReserva", "Home", new { id = reserva.idResVuelo })" class="btn-details">
+                                        <i class="fas fa-eye me-1"></i>
+                                        Ver Detalles
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -461,8 +607,45 @@ else
     </div>
 }
 
-@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar efectos visuales
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Efecto de aparición gradual para las filas de la tabla
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            rows.forEach(row => observer.observe(row));
+        });
+
+        // Funciones del backend (mantenidas intactas)
         function realizarPago(idReserva) {
             if (confirm('¿Desea proceder con el pago de esta reserva?')) {
                 window.location.href = `/Home/RealizarPago/${idReserva}`;
@@ -473,4 +656,5 @@ else
             window.location.href = `/Home/DetallesReserva/${idReserva}`;
         }
     </script>
-} 
+</body>
+</html> 
