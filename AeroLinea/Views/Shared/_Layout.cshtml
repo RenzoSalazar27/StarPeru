@@ -305,18 +305,21 @@
         }
 
         .daltonism-dropdown .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 9999 !important;
+            position: fixed !important;
+            top: auto !important;
+            left: auto !important;
+            z-index: 9999999 !important;
             min-width: 250px;
-            background: white;
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            padding: 0.5rem 0;
-            margin-top: 5px;
-            display: none;
+            background: white !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+            padding: 0.5rem 0 !important;
+            margin-top: 5px !important;
+            display: none !important;
+            max-height: 300px !important;
+            overflow-y: auto !important;
+            transform: none !important;
         }
 
         .daltonism-dropdown .dropdown-menu.show {
@@ -324,27 +327,28 @@
         }
 
         .daltonism-dropdown .dropdown-item {
-            padding: 0.75rem 1rem;
-            color: #555;
-            text-decoration: none;
-            display: block;
-            transition: all 0.3s ease;
-            border: none;
-            background: transparent;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
+            padding: 0.75rem 1rem !important;
+            color: #555 !important;
+            text-decoration: none !important;
+            display: block !important;
+            transition: all 0.3s ease !important;
+            border: none !important;
+            background: transparent !important;
+            width: 100% !important;
+            text-align: left !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
         }
 
         .daltonism-dropdown .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(225, 74, 74, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
-            color: #e14a4a;
-            transform: translateX(5px);
+            background: linear-gradient(135deg, rgba(225, 74, 74, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%) !important;
+            color: #e14a4a !important;
+            transform: translateX(5px) !important;
         }
 
         .daltonism-dropdown .dropdown-divider {
-            margin: 0.5rem 0;
-            border-top: 1px solid rgba(0,0,0,0.1);
+            margin: 0.5rem 0 !important;
+            border-top: 1px solid rgba(0,0,0,0.1) !important;
         }
 
         /* Forzar visibilidad del dropdown */
@@ -359,10 +363,39 @@
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            z-index: 99999 !important;
-            position: absolute !important;
-            top: 100% !important;
-            left: 0 !important;
+            z-index: 9999999 !important;
+            position: fixed !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
+        }
+
+        /* Asegurar que el dropdown esté por encima de todo */
+        .daltonism-dropdown {
+            z-index: 9999999 !important;
+        }
+
+        /* Forzar que el dropdown se muestre por encima del header */
+        .daltonism-dropdown .dropdown-menu {
+            z-index: 9999999 !important;
+            position: fixed !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
+        }
+
+        /* Override para cualquier z-index del navbar */
+        .navbar {
+            z-index: 1000 !important;
+        }
+
+        /* Asegurar que el dropdown esté por encima de todo */
+        #daltonismMenu {
+            z-index: 9999999 !important;
+            position: fixed !important;
+            background: white !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
         }
 
         /* Secciones del menú */
@@ -803,6 +836,9 @@
             // Crear partículas del menú
             createMenuParticles();
             
+            // Inicializar daltonismo desde localStorage
+            initializeDaltonism();
+            
             function toggleMenu() {
                 menuOptions.classList.toggle('show');
                 menuOverlay.classList.toggle('show');
@@ -820,6 +856,42 @@
             hamburger.addEventListener('click', toggleMenu);
             menuOverlay.addEventListener('click', toggleMenu);
 
+            // Función para inicializar daltonismo
+            function initializeDaltonism() {
+                const isEnabled = localStorage.getItem('daltonismEnabled') === 'true';
+                const daltonismType = localStorage.getItem('daltonismType') || 'default';
+                
+                if (daltonismToggle) {
+                    daltonismToggle.checked = isEnabled;
+                    if (isEnabled) {
+                        daltonismDropdown.style.display = 'block';
+                        // Actualizar texto del dropdown
+                        updateDropdownText(daltonismType);
+                        // Aplicar filtro si no es default
+                        if (daltonismType !== 'default') {
+                            applyDaltonismFilter(daltonismType);
+                        }
+                    }
+                }
+            }
+
+            // Función para actualizar texto del dropdown
+            function updateDropdownText(daltonismType) {
+                const typeNames = {
+                    'default': 'Por defecto',
+                    'protanopia': 'Protanopía (Ceguera al Rojo)',
+                    'protanomaly': 'Protanomalía (Debilidad al Rojo)',
+                    'deuteranopia': 'Deuteranopía (Ceguera al Verde)',
+                    'deuteranomaly': 'Deuteranomalía (Debilidad al Verde)',
+                    'tritanopia': 'Tritanopía (Ceguera al Azul)',
+                    'tritanomaly': 'Tritanomalía (Debilidad al Azul)',
+                    'achromatopsia': 'Acromatopsia (Monocromatismo)'
+                };
+                if (daltonismOptionsDropdown) {
+                    daltonismOptionsDropdown.textContent = typeNames[daltonismType] || 'Seleccionar tipo';
+                }
+            }
+
             // Manejo del dropdown de daltonismo
             const daltonismToggle = document.getElementById('daltonismToggle');
             const daltonismDropdown = document.getElementById('daltonismDropdown');
@@ -830,10 +902,16 @@
                 daltonismToggle.addEventListener('change', function() {
                     if (this.checked) {
                         daltonismDropdown.style.display = 'block';
+                        // Aplicar el filtro actual si hay uno seleccionado
+                        const currentType = localStorage.getItem('daltonismType') || 'default';
+                        if (currentType !== 'default') {
+                            applyDaltonismFilter(currentType);
+                        }
                     } else {
                         daltonismDropdown.style.display = 'none';
-                        daltonismMenu.style.display = 'none';
-                        daltonismMenu.classList.remove('show');
+                        // Restaurar a por defecto cuando se desactiva
+                        applyDaltonismFilter('default');
+                        localStorage.setItem('daltonismEnabled', 'false');
                     }
                 });
             }
@@ -843,6 +921,9 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
+                    // Obtener la posición del botón
+                    const buttonRect = this.getBoundingClientRect();
+                    
                     // Forzar visibilidad del dropdown
                     if (daltonismMenu.style.display === 'none' || daltonismMenu.style.display === '') {
                         daltonismMenu.style.display = 'block';
@@ -850,12 +931,24 @@
                         daltonismMenu.style.opacity = '1';
                         daltonismMenu.classList.add('show', 'force-show');
                         
-                        // Forzar z-index alto
-                        daltonismMenu.style.zIndex = '99999';
-                        daltonismMenu.style.position = 'absolute';
+                        // Forzar z-index extremadamente alto y posicionamiento
+                        daltonismMenu.style.zIndex = '9999999';
+                        daltonismMenu.style.position = 'fixed';
+                        daltonismMenu.style.top = (buttonRect.bottom + 5) + 'px';
+                        daltonismMenu.style.left = buttonRect.left + 'px';
+                        daltonismMenu.style.minWidth = buttonRect.width + 'px';
+                        daltonismMenu.style.background = 'white';
+                        daltonismMenu.style.border = '1px solid rgba(0,0,0,0.1)';
+                        daltonismMenu.style.borderRadius = '10px';
+                        daltonismMenu.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
                         
                         // Asegurar que esté por encima de todo
                         daltonismMenu.style.pointerEvents = 'auto';
+                        daltonismMenu.style.maxHeight = '300px';
+                        daltonismMenu.style.overflowY = 'auto';
+                        
+                        // Forzar que esté por encima de cualquier elemento
+                        document.body.appendChild(daltonismMenu);
                     } else {
                         daltonismMenu.style.display = 'none';
                         daltonismMenu.classList.remove('show', 'force-show');
@@ -864,7 +957,7 @@
 
                 // Cerrar dropdown al hacer clic fuera
                 document.addEventListener('click', function(e) {
-                    if (daltonismDropdown && !daltonismDropdown.contains(e.target)) {
+                    if (daltonismDropdown && !daltonismDropdown.contains(e.target) && !daltonismMenu.contains(e.target)) {
                         daltonismMenu.style.display = 'none';
                         daltonismMenu.classList.remove('show', 'force-show');
                     }
@@ -877,14 +970,56 @@
                         e.preventDefault();
                         e.stopPropagation();
                         const daltonismType = this.getAttribute('data-daltonism');
+                        
+                        // Actualizar el texto del botón
                         daltonismOptionsDropdown.textContent = this.textContent;
+                        
+                        // Aplicar el filtro de daltonismo
+                        applyDaltonismFilter(daltonismType);
+                        
+                        // Cerrar el dropdown inmediatamente
                         daltonismMenu.style.display = 'none';
                         daltonismMenu.classList.remove('show', 'force-show');
                         
-                        // Aquí puedes agregar la lógica para aplicar el tipo de daltonismo
                         console.log('Tipo de daltonismo seleccionado:', daltonismType);
                     });
                 });
+            }
+
+            // Función para aplicar filtro de daltonismo
+            function applyDaltonismFilter(daltonismType) {
+                console.log('Aplicando filtro de daltonismo:', daltonismType);
+                
+                // Remover todas las clases de daltonismo del body
+                document.body.classList.remove(
+                    'daltonismo-protanopia',
+                    'daltonismo-protanomaly',
+                    'daltonismo-deuteranopia',
+                    'daltonismo-deuteranomaly',
+                    'daltonismo-tritanopia',
+                    'daltonismo-tritanomaly',
+                    'daltonismo-achromatopsia',
+                    'daltonismo-default'
+                );
+                
+                // Aplicar la clase correspondiente
+                if (daltonismType !== 'default') {
+                    document.body.classList.add(`daltonismo-${daltonismType}`);
+                    console.log(`Clase aplicada: daltonismo-${daltonismType}`);
+                } else {
+                    console.log('Restaurando colores por defecto');
+                }
+                
+                // Guardar en localStorage
+                localStorage.setItem('daltonismType', daltonismType);
+                localStorage.setItem('daltonismEnabled', 'true');
+                
+                // Forzar repaint del body para asegurar que el filtro se aplique
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = '';
+                
+                console.log('Filtro aplicado. Clases del body:', document.body.className);
             }
         });
 
