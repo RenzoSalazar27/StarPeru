@@ -1,29 +1,133 @@
-// Función para aplicar el modo de color
-function applyColorMode(mode) {
-    // Remover todas las clases de daltonismo
-    document.documentElement.classList.remove('protanopia', 'deuteranopia', 'tritanopia', 'achromatopsia');
+// Funcionalidad para Daltonismo
+document.addEventListener('DOMContentLoaded', () => {
+    const daltonismToggle = document.getElementById('daltonismToggle');
+    const daltonismDropdown = document.getElementById('daltonismDropdown');
+    const daltonismOptionsDropdown = document.getElementById('daltonismOptionsDropdown');
     
-    // Aplicar la nueva clase
-    if (mode !== 'normal') {
-        document.documentElement.classList.add(mode);
+    // Estado actual del daltonismo
+    let currentDaltonism = localStorage.getItem('daltonismType') || 'default';
+    let isDaltonismEnabled = localStorage.getItem('daltonismEnabled') === 'true';
+    let isDropdownOpen = false;
+    
+    // Establecer estado inicial
+    if (daltonismToggle) {
+        daltonismToggle.checked = isDaltonismEnabled;
+        if (isDaltonismEnabled) {
+            daltonismDropdown.style.display = 'block';
+            updateDropdownText(currentDaltonism);
+        }
     }
     
-    // Guardar la preferencia
-    localStorage.setItem('colorMode', mode);
-}
-
-// Cargar preferencias guardadas al iniciar
-document.addEventListener('DOMContentLoaded', function() {
-    const savedMode = localStorage.getItem('colorMode') || 'normal';
-    const selector = document.getElementById('colorModeSelector');
+    // Función para actualizar el texto del dropdown
+    function updateDropdownText(daltonismType) {
+        const dropdownButton = document.getElementById('daltonismOptionsDropdown');
+        if (dropdownButton) {
+            const typeNames = {
+                'default': 'Por defecto',
+                'protanopia': 'Protanopía',
+                'protanomaly': 'Protanomalía',
+                'deuteranopia': 'Deuteranopía',
+                'deuteranomaly': 'Deuteranomalía',
+                'tritanopia': 'Tritanopía',
+                'tritanomaly': 'Tritanomalía',
+                'achromatopsia': 'Acromatopsia'
+            };
+            dropdownButton.textContent = typeNames[daltonismType] || 'Seleccionar tipo';
+        }
+    }
     
-    if (selector) {
-        selector.value = savedMode;
-        applyColorMode(savedMode);
+    // Función para aplicar filtro de daltonismo
+    function applyDaltonismFilter(daltonismType) {
+        // Por ahora solo guardamos la selección
+        // La funcionalidad de filtros se implementará después
+        console.log('Tipo de daltonismo seleccionado:', daltonismType);
         
-        // Agregar evento de cambio
-        selector.addEventListener('change', function() {
-            applyColorMode(this.value);
+        // Guardar en localStorage
+        localStorage.setItem('daltonismType', daltonismType);
+        currentDaltonism = daltonismType;
+        
+        // Actualizar texto del dropdown
+        updateDropdownText(daltonismType);
+        
+        // Cerrar el dropdown después de la selección
+        closeDropdown();
+    }
+    
+    // Función para abrir/cerrar el dropdown manualmente
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById('daltonismMenu');
+        if (dropdownMenu) {
+            if (isDropdownOpen) {
+                dropdownMenu.style.display = 'none';
+                isDropdownOpen = false;
+            } else {
+                dropdownMenu.style.display = 'block';
+                isDropdownOpen = true;
+            }
+        }
+    }
+    
+    function closeDropdown() {
+        const dropdownMenu = document.getElementById('daltonismMenu');
+        if (dropdownMenu) {
+            dropdownMenu.style.display = 'none';
+            isDropdownOpen = false;
+        }
+    }
+    
+    // Event listener para el toggle principal
+    if (daltonismToggle) {
+        daltonismToggle.addEventListener('change', (e) => {
+            isDaltonismEnabled = e.target.checked;
+            localStorage.setItem('daltonismEnabled', isDaltonismEnabled);
+            
+            if (isDaltonismEnabled) {
+                daltonismDropdown.style.display = 'block';
+                // Aplicar el filtro actual si hay uno seleccionado
+                if (currentDaltonism !== 'default') {
+                    applyDaltonismFilter(currentDaltonism);
+                }
+            } else {
+                daltonismDropdown.style.display = 'none';
+                // Restaurar a por defecto cuando se desactiva
+                applyDaltonismFilter('default');
+            }
         });
     }
+    
+    // Event listener para el botón del dropdown
+    if (daltonismOptionsDropdown) {
+        daltonismOptionsDropdown.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleDropdown();
+        });
+    }
+    
+    // Event listeners para las opciones del dropdown
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('dropdown-item') && e.target.hasAttribute('data-daltonism')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const daltonismType = e.target.getAttribute('data-daltonism');
+            applyDaltonismFilter(daltonismType);
+        }
+    });
+    
+    // Cerrar dropdown al hacer click fuera
+    document.addEventListener('click', (e) => {
+        if (!daltonismOptionsDropdown.contains(e.target) && !e.target.classList.contains('dropdown-item')) {
+            closeDropdown();
+        }
+    });
+    
+    // Aplicar filtro inicial si está habilitado
+    if (isDaltonismEnabled && currentDaltonism !== 'default') {
+        applyDaltonismFilter(currentDaltonism);
+    }
+    
+    // Debug: Verificar que los elementos existen
+    console.log('Daltonism toggle:', daltonismToggle);
+    console.log('Daltonism dropdown:', daltonismDropdown);
+    console.log('Daltonism options dropdown:', daltonismOptionsDropdown);
 }); 

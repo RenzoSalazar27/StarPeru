@@ -183,26 +183,6 @@
         .menu-overlay.show {
             display: block;
         }
-        
-        /* Estilos para el dropdown de daltonismo */
-        .daltonism-dropdown {
-            margin-top: 8px;
-            padding: 8px;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .daltonism-dropdown .dropdown-toggle {
-            font-size: 0.85rem;
-            padding: 4px 8px;
-        }
-        
-        .daltonism-dropdown .dropdown-menu {
-            font-size: 0.85rem;
-            max-height: 200px;
-            overflow-y: auto;
-        }
     </style>
     @RenderSection("Styles", required: false)
 </head>
@@ -236,10 +216,10 @@
                             <!-- Dropdown que aparece solo cuando está activado -->
                             <div class="daltonism-dropdown" id="daltonismDropdown" style="display: none;">
                                 <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="daltonismOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" id="daltonismOptionsDropdown">
                                         Seleccionar tipo
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="daltonismOptionsDropdown">
+                                    <ul class="dropdown-menu" id="daltonismMenu" style="display: none;">
                                         <li><a class="dropdown-item" href="#" data-daltonism="default">Por defecto</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="#" data-daltonism="protanopia">Protanopía (Ceguera al Rojo)</a></li>
@@ -400,6 +380,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/vozPorTexto.js" asp-append-version="true"></script>
     <script src="~/js/vozNavegacion.js" asp-append-version="true"></script>
+    <script src="~/js/daltonismo.js" asp-append-version="true"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburger = document.querySelector('.hamburger');
@@ -423,22 +404,6 @@
             menuOverlay.classList.remove('show');
             document.body.style.overflow = '';
         }
-
-        // Control del dropdown de daltonismo
-        document.addEventListener('DOMContentLoaded', function() {
-            const daltonismToggle = document.getElementById('daltonismToggle');
-            const daltonismDropdown = document.getElementById('daltonismDropdown');
-            
-            if (daltonismToggle && daltonismDropdown) {
-                daltonismToggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        daltonismDropdown.style.display = 'block';
-                    } else {
-                        daltonismDropdown.style.display = 'none';
-                    }
-                });
-            }
-        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
