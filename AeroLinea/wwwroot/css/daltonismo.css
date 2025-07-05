@@ -38,4 +38,391 @@ body.daltonismo-achromatopsia {
 /* Por defecto - Sin filtro */
 body.daltonismo-default {
     filter: none;
+}
+
+/* ===== ESTILOS MODERNOS PARA LA LISTA DESPLEGABLE DE DALTONISMO ===== */
+
+/* Contenedor del dropdown de daltonismo - OCULTO POR DEFECTO */
+.daltonism-dropdown {
+    margin-top: 15px;
+    position: relative;
+    z-index: 1000;
+    /* OCULTO POR DEFECTO */
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Mostrar solo cuando esté activado */
+.daltonism-dropdown.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+/* Botón principal del dropdown */
+.daltonism-dropdown .btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    min-width: 200px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.daltonism-dropdown .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.daltonism-dropdown .btn:hover::before {
+    left: 100%;
+}
+
+.daltonism-dropdown .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.daltonism-dropdown .btn:active {
+    transform: translateY(-1px);
+}
+
+/* Flecha del dropdown */
+.daltonism-dropdown .btn::after {
+    content: '▼';
+    font-size: 0.8em;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.daltonism-dropdown .btn[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+/* Menú desplegable */
+.daltonism-dropdown .dropdown-menu {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    padding: 15px 0;
+    margin-top: 10px;
+    min-width: 280px;
+    animation: dropdownSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1001;
+    /* Forzar comportamiento personalizado */
+    transform: none !important;
+    display: none !important;
+}
+
+.daltonism-dropdown .dropdown-menu.show {
+    display: block !important;
+    animation: dropdownSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes dropdownSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Elementos del dropdown */
+.daltonism-dropdown .dropdown-item {
+    padding: 15px 25px;
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    margin: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.daltonism-dropdown .dropdown-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    transition: left 0.4s ease;
+    z-index: -1;
+}
+
+.daltonism-dropdown .dropdown-item:hover::before {
+    left: 0;
+}
+
+.daltonism-dropdown .dropdown-item:hover {
+    color: #667eea;
+    transform: translateX(8px);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+}
+
+.daltonism-dropdown .dropdown-item:active {
+    transform: translateX(5px) scale(0.98);
+}
+
+/* Separador del dropdown */
+.daltonism-dropdown .dropdown-divider {
+    margin: 10px 20px;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+}
+
+/* Efectos especiales para elementos específicos */
+.daltonism-dropdown .dropdown-item[data-daltonism="default"] {
+    border-left: 4px solid #28a745;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="protanopia"] {
+    border-left: 4px solid #dc3545;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="protanomaly"] {
+    border-left: 4px solid #fd7e14;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="deuteranopia"] {
+    border-left: 4px solid #20c997;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="deuteranomaly"] {
+    border-left: 4px solid #17a2b8;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="tritanopia"] {
+    border-left: 4px solid #6f42c1;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="tritanomaly"] {
+    border-left: 4px solid #e83e8c;
+}
+
+.daltonism-dropdown .dropdown-item[data-daltonism="achromatopsia"] {
+    border-left: 4px solid #6c757d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .daltonism-dropdown .dropdown-menu {
+        min-width: 250px;
+        left: -50px;
+    }
+    
+    .daltonism-dropdown .btn {
+        min-width: 180px;
+        font-size: 0.9em;
+    }
+}
+
+/* Efecto de partículas en el fondo del dropdown */
+.daltonism-dropdown .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ===== ESTILOS AGRESIVOS PARA GARANTIZAR EL COMPORTAMIENTO CORRECTO ===== */
+
+/* Deshabilitar estilos de Bootstrap que puedan interferir */
+.daltonism-dropdown .dropdown-menu[data-bs-popper] {
+    position: absolute !important;
+    transform: none !important;
+}
+
+/* Forzar que el dropdown se mantenga cerrado cuando debe estar cerrado */
+.daltonism-dropdown .dropdown-menu:not(.show) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-10px) scale(0.95) !important;
+}
+
+/* Asegurar que el dropdown se muestre cuando debe estar abierto */
+.daltonism-dropdown .dropdown-menu.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+/* Prevenir que Bootstrap interfiera con nuestro dropdown */
+.daltonism-dropdown .dropdown {
+    position: relative !important;
+}
+
+/* Asegurar que los elementos del dropdown sean clickeables */
+.daltonism-dropdown .dropdown-item {
+    pointer-events: auto !important;
+    user-select: none;
+}
+
+/* Estilo para cuando el dropdown está cerrado */
+.daltonism-dropdown .dropdown-menu.closed {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: translateY(-10px) scale(0.95) !important;
+    pointer-events: none !important;
+}
+
+/* ===== ESTILOS AGRESIVOS ADICIONALES ===== */
+
+/* Forzar el cierre del dropdown con múltiples selectores */
+.daltonism-dropdown .dropdown-menu[style*="display: none"],
+.daltonism-dropdown .dropdown-menu[style*="display:none"],
+.daltonism-dropdown .dropdown-menu.closed,
+.daltonism-dropdown .dropdown-menu:not(.show) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-10px) scale(0.95) !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+/* Prevenir que cualquier framework interfiera */
+.daltonism-dropdown .dropdown-menu {
+    /* Reset completo de Bootstrap */
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    z-index: 1001 !important;
+    float: none !important;
+    min-width: 280px !important;
+    padding: 15px 0 !important;
+    margin: 10px 0 0 0 !important;
+    font-size: inherit !important;
+    color: #333 !important;
+    text-align: left !important;
+    list-style: none !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    background-clip: padding-box !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Asegurar que el dropdown se comporte correctamente */
+.daltonism-dropdown {
+    /* Prevenir que Bootstrap interfiera */
+    position: relative !important;
+    display: none !important;
+}
+
+/* Forzar el estado cerrado por defecto */
+#daltonismMenu {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Solo mostrar cuando tenga la clase show */
+#daltonismMenu.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* ===== ESTILOS ULTRA-AGRESIVOS PARA EL CONTENEDOR PRINCIPAL ===== */
+
+/* Forzar que el contenedor principal esté oculto por defecto */
+#daltonismDropdown {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+/* Solo mostrar cuando JavaScript lo active */
+#daltonismDropdown.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin-top: 15px !important;
+    padding: 0 !important;
+    border: none !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+/* Prevenir que cualquier estilo inline interfiera */
+#daltonismDropdown[style*="display: block"]:not(.show) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
 } 
