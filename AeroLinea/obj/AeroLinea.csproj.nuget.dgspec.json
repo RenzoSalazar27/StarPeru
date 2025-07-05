@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj": {}
+    "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj": {}
   },
   "projects": {
-    "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj": {
+    "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+        "projectUniqueName": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj",
         "projectName": "AeroLinea",
-        "projectPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+        "projectPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj",
         "packagesPath": "C:\\Users\\renzo\\.nuget\\packages\\",
-        "outputPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\obj\\",
+        "outputPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

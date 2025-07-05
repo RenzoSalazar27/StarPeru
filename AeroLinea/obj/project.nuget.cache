@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "492mIe6RNYc=",
+  "dgSpecHash": "AyqafyIFIgQ=",
   "success": true,
-  "projectFilePath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+  "projectFilePath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\renzo\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\renzo\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -189,9 +189,9 @@
       "code": "NU1603",
       "level": "Warning",
       "message": "AeroLinea depende de Pomelo.EntityFrameworkCore.MySql (>= 9.0.0-preview.3), pero no se encontró Pomelo.EntityFrameworkCore.MySql 9.0.0-preview.3. Pomelo.EntityFrameworkCore.MySql 9.0.0-preview.3.efcore.9.0.0 se resolvió en su lugar.",
-      "projectPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+      "projectPath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\AeroLinea\\AeroLinea.csproj",
+      "filePath": "C:\\TECNOLOGIA\\Proyectos Visual Studio Code\\StarPeru\\Aerolinea\\AeroLinea.csproj",
       "libraryId": "Pomelo.EntityFrameworkCore.MySql",
       "targetGraphs": [
         "net8.0"

@@ -2550,6 +2550,8 @@ E:\PROYECTOS\StarPeru\AeroLinea\bin\Debug\net8.0\SixLabors.ImageSharp.dll
 E:\PROYECTOS\StarPeru\AeroLinea\bin\Debug\net8.0\de\PdfSharpCore.resources.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\appsettings.Development.json
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\appsettings.json
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Datos_Prueba_Postman.json
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\StarPeru.json
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\AeroLinea.staticwebassets.runtime.json
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\AeroLinea.staticwebassets.endpoints.json
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\AeroLinea.exe
@@ -2559,6 +2561,7 @@ C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\A
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\AeroLinea.pdb
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Azure.Core.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Azure.Identity.dll
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Google.Protobuf.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Humanizer.dll
@@ -2635,6 +2638,7 @@ C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\P
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\ICSharpCode.SharpZipLib.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\SixLabors.Fonts.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Stripe.net.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\System.ClientModel.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\System.CodeDom.dll
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\System.Composition.AttributedModel.dll
@@ -2836,6 +2840,7 @@ C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\s
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\scopedcss\bundle\AeroLinea.styles.css
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\scopedcss\projectbundle\AeroLinea.bundle.scp.css
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.build.json
+C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.development.json
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\AeroLinea.csproj.Up2Date
@@ -2844,8 +2849,3 @@ C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\r
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\AeroLinea.pdb
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\AeroLinea.genruntimeconfig.cache
 C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\ref\AeroLinea.dll
-C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\obj\Debug\net8.0\staticwebassets.build.json.cache
-C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\BCrypt.Net-Next.dll
-C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Stripe.net.dll
-C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\Datos_Prueba_Postman.json
-C:\TECNOLOGIA\Proyectos Visual Studio Code\StarPeru\AeroLinea\bin\Debug\net8.0\StarPeru.json

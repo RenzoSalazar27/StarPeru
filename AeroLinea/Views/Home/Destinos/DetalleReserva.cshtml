@@ -366,29 +366,15 @@
             font-size: 1.1em !important;
             font-weight: 600 !important;
             border-radius: 50px !important;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            transition: all 0.3s ease !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
             position: relative !important;
-            overflow: hidden !important;
             border: none !important;
             margin-right: 15px !important;
             margin-bottom: 10px !important;
-        }
-
-        .btn-modern::before {
-            content: '' !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: -100% !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
-            transition: left 0.5s ease !important;
-        }
-
-        .btn-modern:hover::before {
-            left: 100% !important;
+            text-decoration: none !important;
+            display: inline-block !important;
         }
 
         .btn-success-modern {
@@ -399,9 +385,10 @@
 
         .btn-success-modern:hover {
             background: linear-gradient(135deg, #20c997 0%, #28a745 100%) !important;
-            transform: translateY(-3px) scale(1.05) !important;
-            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 30px rgba(40, 167, 69, 0.4) !important;
             color: white !important;
+            text-decoration: none !important;
         }
 
         .btn-secondary-modern {
@@ -412,9 +399,10 @@
 
         .btn-secondary-modern:hover {
             background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%) !important;
-            transform: translateY(-3px) scale(1.05) !important;
-            box-shadow: 0 15px 35px rgba(108, 117, 125, 0.4) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 30px rgba(108, 117, 125, 0.4) !important;
             color: white !important;
+            text-decoration: none !important;
         }
 
         /* Badges modernos */
